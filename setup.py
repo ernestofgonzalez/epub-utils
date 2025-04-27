@@ -1,7 +1,7 @@
 from setuptools import setup
 import os
 
-VERSION = "0.1.0"
+VERSION = "0.0.0a1"
 
 
 def get_long_description():
@@ -14,7 +14,7 @@ def get_long_description():
 
 setup(
     name="epub_utils",
-    description="",
+    description="A Python CLI and utility library for manipulating EPUB files",
     long_description=get_long_description(),
     long_description_content_type="text/markdown",
     author="Ernesto González",
