@@ -1,0 +1,4 @@
+-r requirements/requirements-docs.txt
+-r requirements/requirements-linting.txt
+-r requirements/requirements-testing.txt
+-r requirements/requirements.txt

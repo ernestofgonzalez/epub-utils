@@ -1,11 +1,29 @@
-# python-template
+# epub-utils
 
-_GitHub template repository for creating a new Python library from [`ernestofgonzalez/cookiecutter-python`](https://github.com/ernestofgonzalez/cookiecutter-python)._
+[![PyPI](https://img.shields.io/pypi/v/epub-utils.svg)](https://pypi.org/project/epub-utils/)
+[![Latest Release](https://img.shields.io/github/v/release/ernestofgonzalez/epub-utils)](https://github.com/ernestofgonzalez/epub-utils/releases)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE)
+
+__
+
+For detailed information on usage, please refer to the full documentation.
 
 ## Features
 
-- Linting with Black, isort and Flake8
-- Testing with Pytest
-- Code coverage with Coverage.py
-- VSCode settings for testing
-- Makefile with linting, formatting and testing commands
+TODO
+
+## Requirements
+
+Before getting started, you'll need a local [pip](https://github.com/pypa/pip) installation.
+
+## Installation
+
+Install epub-utils library using [pip](https://github.com/pypa/pip):
+
+```bash
+pip install epub_utils
+```
+
+## Usage
+
+TODO
