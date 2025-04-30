@@ -1,4 +1,4 @@
-from setuptools import setup, Extension, find_packages
+from setuptools import setup, find_packages
 import os
 
 VERSION = "0.0.0a1"
@@ -9,13 +9,6 @@ def get_long_description():
         encoding="utf8",
     ) as fp:
         return fp.read()
-
-# Define the C extension
-doc_extension = Extension(
-    "doc",
-    sources=["epub_utils/doc.c"],
-    include_dirs=["epub_utils"],
-)
 
 setup(
     name="epub-utils",
@@ -33,7 +26,6 @@ setup(
     license="Apache License, Version 2.0",
     version=VERSION,
     packages=find_packages(),
-    ext_modules=[doc_extension],
     entry_points={
         'console_scripts': [
             'epub-utils = epub_utils.cli:main',
@@ -41,6 +33,7 @@ setup(
     },
     install_requires=[
         "click",
+        "lxml",
     ],
     extras_require={"test": ["pytest"]},
     python_requires=">=3.10",
