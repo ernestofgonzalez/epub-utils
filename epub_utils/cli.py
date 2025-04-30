@@ -1,17 +1,13 @@
 import click
-
-import epub_utils
-
+from epub_utils.doc import Document  # Import the Document class from the C extension
 
 VERSION = "0.0.0a1"
-
 
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
     click.echo(VERSION)
     ctx.exit()
-
 
 @click.group(
     context_settings=dict(help_option_names=["-h", "--help"]),
@@ -34,4 +30,5 @@ def main():
 )
 def toc(path):
     """Outputs the Table of Contents (TOC) of the EPUB file."""
-    doc = epub_utils.Document(path)
+    doc = Document(path)  # Instantiate the Document class
+    click.echo(doc.get_toc())  # Call the get_toc method and print the result

@@ -15,3 +15,9 @@ def test_help(options):
     assert result.exit_code == 0
     assert result.output.startswith("Usage: ")
     assert "-h, --help" in result.output
+
+
+def test_toc(doc_path):
+    result = CliRunner().invoke(cli.main, doc_path)
+    assert result.exit_code == 0
+    
