@@ -1,5 +1,8 @@
 import click
-from epub_utils.doc import Document  # Import the Document class from the C extension
+from epub_utils.doc import Document
+from pygments import highlight 
+from pygments.lexers import XmlLexer
+from pygments.formatters import TerminalFormatter 
 
 VERSION = "0.0.0a1"
 
@@ -35,7 +38,7 @@ def main(ctx, path):
 @main.command()
 @click.option(
     '-fmt', '--format',
-    type=click.Choice(['text'], case_sensitive=False),
+    type=click.Choice(['text', 'xml'], case_sensitive=False),
     default='text',
     help="Output format (default: text)"
 )
@@ -46,6 +49,9 @@ def container(ctx, format):
     doc = Document(path)
     if format == 'text':
         click.echo(doc.container)
+    elif format == 'xml':
+        highlighted_xml = highlight(doc.container.xml_content, XmlLexer(), TerminalFormatter())
+        click.echo(highlighted_xml)
 
 @main.command()
 @click.option(

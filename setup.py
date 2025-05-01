@@ -34,6 +34,7 @@ setup(
     install_requires=[
         "click",
         "lxml",
+        "pygments",
     ],
     extras_require={"test": ["pytest"]},
     python_requires=">=3.10",
