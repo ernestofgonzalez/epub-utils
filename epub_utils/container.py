@@ -36,6 +36,7 @@ class Container:
     Represents the parsed container.xml file of an EPUB.
 
     Attributes:
+        xml_content (str): The raw XML content of the container.xml file.
         rootfile_path (str): The path to the rootfile specified in the container.
     """
 
@@ -49,8 +50,12 @@ class Container:
         Args:
             xml_content (str): The raw XML content of the container.xml file.
         """
+        self.xml_content = xml_content
         self.rootfile_path: str = None
         self._parse(xml_content)
+
+    def __str__(self) -> str:
+        return self.xml_content
 
     def _find_rootfile_element(self, root: etree.Element) -> etree.Element:
         """

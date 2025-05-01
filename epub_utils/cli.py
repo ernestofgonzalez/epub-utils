@@ -33,13 +33,19 @@ def main(ctx, path):
 
 
 @main.command()
+@click.option(
+    '-fmt', '--format',
+    type=click.Choice(['text'], case_sensitive=False),
+    default='text',
+    help="Output format (default: text)"
+)
 @click.pass_context
-def toc(ctx):
-    """Outputs the Table of Contents (TOC) of the EPUB file."""
+def container(ctx, format):
+    """Outputs the container information of the EPUB file."""
     path = ctx.obj['path']
     doc = Document(path)
-    click.echo(doc.toc)
-
+    if format == 'text':
+        click.echo(doc.container)
 
 @main.command()
 @click.option(
@@ -52,6 +58,15 @@ def toc(ctx):
 def package(ctx, format):
     """Outputs the package information of the EPUB file."""
     path = ctx.obj['path']
-    doc = Document(path)  # Instantiate the Document class
+    doc = Document(path)
     if format == 'text':
-        click.echo(doc.package)  # Call the get_package method and print the result
+        click.echo(doc.package)
+
+
+@main.command()
+@click.pass_context
+def toc(ctx):
+    """Outputs the Table of Contents (TOC) of the EPUB file."""
+    path = ctx.obj['path']
+    doc = Document(path)
+    click.echo(doc.toc)

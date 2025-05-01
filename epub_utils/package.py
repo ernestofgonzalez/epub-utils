@@ -25,9 +25,7 @@ class Package:
     Represents the parsed OPF package file of an EPUB.
 
     Attributes:
-        title (str): The title of the EPUB.
-        author (str): The author of the EPUB.
-        identifier (str): The unique identifier of the EPUB.
+        xml_content (str): The raw XML content of the OPF package file.
     """
 
     NAMESPACE = "http://www.idpf.org/2007/opf"
@@ -44,10 +42,11 @@ class Package:
         Args:
             xml_content (str): The raw XML content of the OPF package file.
         """
-        self.title: str = None
-        self.author: str = None
-        self.identifier: str = None
+        self.xml_content = xml_content
         self._parse(xml_content)
+
+    def __str__(self) -> str:
+        return self.xml_content
 
     def _parse(self, xml_content: str) -> None:
         """
