@@ -17,7 +17,14 @@ def test_help(options):
     assert "-h, --help" in result.output
 
 
-def test_toc(doc_path):
-    result = CliRunner().invoke(cli.main, doc_path)
+@pytest.mark.parametrize(
+    "options",
+    (
+        ["-v"],
+        ["--version"],
+    ),
+)
+def test_version(options):
+    result = CliRunner().invoke(cli.main, options)
     assert result.exit_code == 0
-    
+    assert result.output.strip() == cli.VERSION
