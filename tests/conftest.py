@@ -3,6 +3,6 @@ import pytest
 
 
 @pytest.fixture
-def doc_path(tmpdir):
-    path = str(tmpdir / "example1.epub")
+def doc_path():
+    path = str("tests/assets/roads.epub")
     return path
