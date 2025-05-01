@@ -60,6 +60,8 @@ class Package:
             ParseError: If the XML is invalid or cannot be parsed.
         """
         try:
+            if isinstance(xml_content, str):
+                xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
             metadata = root.find(self.METADATA_XPATH)
             if metadata is None:

@@ -82,6 +82,8 @@ class Container:
             ParseError: If the XML is invalid or cannot be parsed.
         """
         try:
+            if isinstance(xml_content, str):
+                xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
             rootfile_element = self._find_rootfile_element(root)
             self.rootfile_path = rootfile_element.attrib["full-path"]
