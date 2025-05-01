@@ -34,13 +34,18 @@ def main(ctx, path):
     ctx.obj['path'] = path
 
 
+def format_option(default='xml'):
+    """Reusable decorator for the format option."""
+    return click.option(
+        '-fmt', '--format',
+        type=click.Choice(['text', 'xml'], case_sensitive=False),
+        default=default,
+        help=f"Output format (default: {default})"
+    )
+
+
 @main.command()
-@click.option(
-    '-fmt', '--format',
-    type=click.Choice(['text', 'xml'], case_sensitive=False),
-    default='xml',
-    help="Output format (default: xml)"
-)
+@format_option()
 @click.pass_context
 def container(ctx, format):
     """Outputs the container information of the EPUB file."""
@@ -53,12 +58,7 @@ def container(ctx, format):
 
 
 @main.command()
-@click.option(
-    '-fmt', '--format',
-    type=click.Choice(['text', 'xml'], case_sensitive=False),
-    default='xml',
-    help="Output format (default: xml)"
-)
+@format_option()
 @click.pass_context
 def package(ctx, format):
     """Outputs the package information of the EPUB file."""
