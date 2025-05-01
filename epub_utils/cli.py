@@ -3,11 +3,13 @@ from epub_utils.doc import Document  # Import the Document class from the C exte
 
 VERSION = "0.0.0a1"
 
+
 def print_version(ctx, param, value):
     if not value or ctx.resilient_parsing:
         return
     click.echo(VERSION)
     ctx.exit()
+
 
 @click.group(
     context_settings=dict(help_option_names=["-h", "--help"]),
@@ -19,16 +21,37 @@ def print_version(ctx, param, value):
     expose_value=False, 
     is_eager=True,
 )
-def main():
-    pass
-
-@main.command()
 @click.argument(
     'path', 
     type=click.Path(exists=True, file_okay=True),
     required=True,
 )
-def toc(path):
+@click.pass_context
+def main(ctx, path):
+    ctx.ensure_object(dict)
+    ctx.obj['path'] = path
+
+
+@main.command()
+@click.pass_context
+def toc(ctx):
     """Outputs the Table of Contents (TOC) of the EPUB file."""
+    path = ctx.obj['path']
+    doc = Document(path)
+    click.echo(doc.toc)
+
+
+@main.command()
+@click.option(
+    '-fmt', '--format',
+    type=click.Choice(['text'], case_sensitive=False),
+    default='text',
+    help="Output format (default: text)"
+)
+@click.pass_context
+def package(ctx, format):
+    """Outputs the package information of the EPUB file."""
+    path = ctx.obj['path']
     doc = Document(path)  # Instantiate the Document class
-    click.echo(doc.get_toc())  # Call the get_toc method and print the result
+    if format == 'text':
+        click.echo(doc.package)  # Call the get_package method and print the result
