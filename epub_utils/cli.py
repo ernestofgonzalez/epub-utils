@@ -38,8 +38,8 @@ def main(ctx, path):
 @click.option(
     '-fmt', '--format',
     type=click.Choice(['text', 'xml'], case_sensitive=False),
-    default='text',
-    help="Output format (default: text)"
+    default='xml',
+    help="Output format (default: xml)"
 )
 @click.pass_context
 def container(ctx, format):
@@ -51,12 +51,13 @@ def container(ctx, format):
     elif format == 'xml':
         click.echo(highlight_xml(doc.container.xml_content))
 
+
 @main.command()
 @click.option(
     '-fmt', '--format',
-    type=click.Choice(['text'], case_sensitive=False),
-    default='text',
-    help="Output format (default: text)"
+    type=click.Choice(['text', 'xml'], case_sensitive=False),
+    default='xml',
+    help="Output format (default: xml)"
 )
 @click.pass_context
 def package(ctx, format):
@@ -64,7 +65,9 @@ def package(ctx, format):
     path = ctx.obj['path']
     doc = Document(path)
     if format == 'text':
-        click.echo(doc.package)
+        click.echo(doc.package.xml_content)
+    elif format == 'xml':
+        click.echo(highlight_xml(doc.package.xml_content))
 
 
 @main.command()
