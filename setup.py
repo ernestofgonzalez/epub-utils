@@ -35,6 +35,7 @@ setup(
         "click",
         "lxml",
         "pygments",
+        "PyYAML",
     ],
     extras_require={"test": ["pytest"]},
     python_requires=">=3.10",

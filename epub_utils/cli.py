@@ -1,8 +1,7 @@
 import click
+
 from epub_utils.doc import Document
-from pygments import highlight 
-from pygments.lexers import XmlLexer
-from pygments.formatters import TerminalFormatter 
+from epub_utils.highlighters import highlight_xml
 
 VERSION = "0.0.0a1"
 
@@ -50,8 +49,7 @@ def container(ctx, format):
     if format == 'text':
         click.echo(doc.container)
     elif format == 'xml':
-        highlighted_xml = highlight(doc.container.xml_content, XmlLexer(), TerminalFormatter())
-        click.echo(highlighted_xml)
+        click.echo(highlight_xml(doc.container.xml_content))
 
 @main.command()
 @click.option(
