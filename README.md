@@ -4,26 +4,46 @@
 [![Latest Release](https://img.shields.io/github/v/release/ernestofgonzalez/epub-utils)](https://github.com/ernestofgonzalez/epub-utils/releases)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE)
 
-__
-
-For detailed information on usage, please refer to the full documentation.
+A Python CLI and utility library for manipulating EPUB files.
 
 ## Features
 
-TODO
+- Parse and validate EPUB container and package files
+- Extract metadata like title, author, and identifier
+- Command-line interface for quick file inspection
+- Syntax highlighted XML output
 
-## Requirements
+## Quick Start
 
-Before getting started, you'll need a local [pip](https://github.com/pypa/pip) installation.
-
-## Installation
-
-Install epub-utils library using [pip](https://github.com/pypa/pip):
-
+1. Install the package:
 ```bash
-pip install epub_utils
+pip install epub-utils
 ```
 
-## Usage
+2. Use as a CLI tool:
+```bash
+# Show container.xml contents
+epub-utils your-book.epub container
 
-TODO
+# Show package OPF contents
+epub-utils your-book.epub package
+
+# Show table of contents
+epub-utils your-book.epub toc
+```
+
+3. Use as a Python library:
+```python
+from epub_utils import Document
+
+# Load an EPUB document
+doc = Document("path/to/book.epub")
+
+# Access container metadata
+print(f"Package file location: {doc.container.rootfile_path}")
+
+# Access package metadata
+print(f"Title: {doc.package.title}")
+print(f"Author: {doc.package.author}")
+print(f"Identifier: {doc.package.identifier}")
+```
