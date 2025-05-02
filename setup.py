@@ -37,7 +37,15 @@ setup(
         "pygments",
         "PyYAML",
     ],
-    extras_require={"test": ["pytest"]},
+    extras_require={
+        "test": ["pytest"],
+        "docs": [
+            "sphinx",
+            "sphinx-copybutton",
+            "sphinx-issues",
+            "furo",
+        ],
+    },
     python_requires=">=3.10",
     classifiers=[
         "Intended Audience :: Developers",
