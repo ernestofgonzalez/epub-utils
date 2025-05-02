@@ -1,7 +1,7 @@
 # epub-utils
 
 [![PyPI](https://img.shields.io/pypi/v/epub-utils.svg)](https://pypi.org/project/epub-utils/)
-[![Latest Release](https://img.shields.io/github/v/release/ernestofgonzalez/epub-utils)](https://github.com/ernestofgonzalez/epub-utils/releases)
+[![Python 3.x](https://img.shields.io/pypi/pyversions/epub-utils.svg?logo=python&logoColor=white)](https://pypi.org/project/epub-utils/)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE)
 
 A Python CLI and utility library for manipulating EPUB files.

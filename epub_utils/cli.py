@@ -3,7 +3,7 @@ import click
 from epub_utils.doc import Document
 from epub_utils.highlighters import highlight_xml
 
-VERSION = "0.0.0a1"
+VERSION = "0.0.0a2"
 
 
 def print_version(ctx, param, value):

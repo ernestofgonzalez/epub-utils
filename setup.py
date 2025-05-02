@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import os
 
-VERSION = "0.0.0a1"
+VERSION = "0.0.0a2"
 
 def get_long_description():
     with open(
@@ -39,4 +39,13 @@ setup(
     ],
     extras_require={"test": ["pytest"]},
     python_requires=">=3.10",
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Libraries",
+        "Topic :: Utilities",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+    ],
 )
