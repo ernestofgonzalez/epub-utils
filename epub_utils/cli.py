@@ -41,7 +41,7 @@ def format_option(default='xml'):
         '-fmt', '--format',
         type=click.Choice(['text', 'xml'], case_sensitive=False),
         default=default,
-        help=f"Output format (default: {default})"
+        help=f"Output format, defaults to {default}."
     )
 
 
