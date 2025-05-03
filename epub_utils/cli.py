@@ -22,6 +22,7 @@ def print_version(ctx, param, value):
     callback=print_version,
     expose_value=False, 
     is_eager=True,
+    help='Print epub-utils version.'
 )
 @click.argument(
     'path', 
