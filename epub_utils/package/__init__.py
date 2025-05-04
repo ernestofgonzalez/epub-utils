@@ -19,6 +19,7 @@ except ImportError:
 
 from epub_utils.exceptions import ParseError
 from epub_utils.highlighters import highlight_xml
+from epub_utils.package.metadata import Metadata
 
 
 class Package:
@@ -27,6 +28,13 @@ class Package:
 
     Attributes:
         xml_content (str): The raw XML content of the OPF package file.
+        metadata (dict): The metadata section of the OPF file.
+        manifest (dict): The manifest section listing all resources.
+        spine (list): The spine section defining the reading order.
+        guide (dict): The guide section with navigation references.
+        cover (str): The cover image resource ID.
+        toc (str): The table of contents resource ID.
+        nav (str): The navigation document resource ID.
     """
 
     NAMESPACE = "http://www.idpf.org/2007/opf"
@@ -44,6 +52,15 @@ class Package:
             xml_content (str): The raw XML content of the OPF package file.
         """
         self.xml_content = xml_content
+        
+        self.metadata = None
+        self.manifest = None
+        self.spine = None
+        self.guide = None
+        self.cover = None
+        self.toc = None
+        self.nav = None
+
         self._parse(xml_content)
 
     def __str__(self) -> str:
@@ -69,16 +86,14 @@ class Package:
             if isinstance(xml_content, str):
                 xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
-            metadata = root.find(self.METADATA_XPATH)
-            if metadata is None:
+            metadata_el = root.find(self.METADATA_XPATH)
+            
+            if metadata_el is None:
                 raise ValueError("Invalid OPF file: Missing metadata element.")
+            
+            metadata_xml_content = etree.tostring(metadata_el, encoding='unicode')
+            self.metadata = Metadata(metadata_xml_content)
 
-            self.title = self._get_text(metadata, self.TITLE_XPATH)
-            self.author = self._get_text(metadata, self.CREATOR_XPATH)
-            self.identifier = self._get_text(metadata, self.IDENTIFIER_XPATH)
-
-            if not self.identifier:
-                raise ValueError("Invalid OPF file: Missing identifier.")
         except etree.ParseError as e:
             raise ParseError(f"Error parsing OPF file: {e}")
 
