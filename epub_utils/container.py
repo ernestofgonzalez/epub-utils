@@ -58,10 +58,10 @@ class Container:
     def __str__(self) -> str:
         return self.xml_content
     
-    def tostring(self) -> str:
+    def to_str(self) -> str:
         return str(self)
 
-    def toxml(self, highlight_syntax=True) -> str:
+    def to_xml(self, highlight_syntax=True) -> str:
         return highlight_xml(self.xml_content)
 
     def _find_rootfile_element(self, root: etree.Element) -> etree.Element:

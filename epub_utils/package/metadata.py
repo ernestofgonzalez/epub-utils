@@ -51,13 +51,28 @@ class Metadata:
     def __str__(self) -> str:
         return self.xml_content
     
-    def tostring(self) -> str:
+    def to_str(self) -> str:
         return str(self)
 
-    def toxml(self, highlight_syntax=True) -> str:
+    def to_xml(self, highlight_syntax=True) -> str:
         return highlight_xml(self.xml_content)
 
     def _get_text(self, root: etree.Element, xpath: str) -> str:
         """Extract text content from an XML element."""
         element = root.find(xpath)
         return element.text.strip() if element is not None and element.text else None
+
+    def to_kv(self) -> str:
+        """Format metadata as key-value pairs."""
+        fields = [
+            ("title", self.title),
+            ("creator", self.creator), 
+            ("identifier", self.identifier),
+            ("language", self.language),
+            ("subject", self.subject),
+            ("description", self.description),
+            ("publisher", self.publisher),
+            ("date", self.date),
+            ("rights", self.rights)
+        ]
+        return "\n".join(f"{k}: {v}" for k, v in fields if v is not None)

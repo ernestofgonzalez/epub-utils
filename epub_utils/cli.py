@@ -39,7 +39,7 @@ def format_option(default='xml'):
     """Reusable decorator for the format option."""
     return click.option(
         '-fmt', '--format',
-        type=click.Choice(['text', 'xml'], case_sensitive=False),
+        type=click.Choice(['text', 'xml', 'kv'], case_sensitive=False),
         default=default,
         help=f"Output format, defaults to {default}."
     )
@@ -49,9 +49,15 @@ def output_document_part(doc, part_name, format):
     """Helper function to output document parts in the specified format."""
     part = getattr(doc, part_name)
     if format == 'text':
-        click.echo(part.tostring())
+        click.echo(part.to_str())
     elif format == 'xml':
-        click.echo(part.toxml())
+        click.echo(part.to_xml())
+    elif format == 'kv':
+        if hasattr(part, 'to_kv') and callable(getattr(part, 'to_kv')):
+            click.echo(part.to_kv())
+        else:
+            click.secho('Key-value format not supported for this document part. Falling back to text:\n', fg="yellow")
+            click.echo(part.to_str())
 
 
 @main.command()
@@ -79,3 +85,13 @@ def toc(ctx, format):
     """Outputs the Table of Contents (TOC) of the EPUB file."""
     doc = Document(ctx.obj['path'])
     output_document_part(doc, 'toc', format)
+
+
+@main.command()
+@format_option()
+@click.pass_context
+def metadata(ctx, format):
+    """Outputs the metadata information from the package file."""
+    doc = Document(ctx.obj['path'])
+    package = doc.package
+    output_document_part(package, 'metadata', format)
