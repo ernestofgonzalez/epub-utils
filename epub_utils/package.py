@@ -18,6 +18,7 @@ except ImportError:
     import xml.etree.ElementTree as etree
 
 from epub_utils.exceptions import ParseError
+from epub_utils.highlighters import highlight_xml
 
 
 class Package:
@@ -47,6 +48,12 @@ class Package:
 
     def __str__(self) -> str:
         return self.xml_content
+    
+    def tostring(self) -> str:
+        return str(self)
+
+    def toxml(self, highlight_syntax=True) -> str:
+        return highlight_xml(self.xml_content)
 
     def _parse(self, xml_content: str) -> None:
         """

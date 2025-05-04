@@ -1,7 +1,7 @@
 import click
 
 from epub_utils.doc import Document
-from epub_utils.highlighters import highlight_xml
+
 
 VERSION = "0.0.0a2"
 
@@ -53,9 +53,9 @@ def container(ctx, format):
     path = ctx.obj['path']
     doc = Document(path)
     if format == 'text':
-        click.echo(doc.container)
+        click.echo(doc.container.tostring())
     elif format == 'xml':
-        click.echo(highlight_xml(doc.container.xml_content))
+        click.echo(doc.container.toxml())
 
 
 @main.command()
@@ -66,9 +66,9 @@ def package(ctx, format):
     path = ctx.obj['path']
     doc = Document(path)
     if format == 'text':
-        click.echo(doc.package.xml_content)
+        click.echo(doc.package.tostring())
     elif format == 'xml':
-        click.echo(highlight_xml(doc.package.xml_content))
+        click.echo(doc.package.toxml())
 
 
 @main.command()
