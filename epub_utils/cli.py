@@ -72,9 +72,13 @@ def package(ctx, format):
 
 
 @main.command()
+@format_option()
 @click.pass_context
-def toc(ctx):
+def toc(ctx, format):
     """Outputs the Table of Contents (TOC) of the EPUB file."""
     path = ctx.obj['path']
     doc = Document(path)
-    click.echo(doc.toc.tostring())
+    if format == 'text':
+        click.echo(doc.toc.tostring())
+    elif format == 'xml':
+        click.echo(doc.toc.toxml())
