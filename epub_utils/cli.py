@@ -77,4 +77,4 @@ def toc(ctx):
     """Outputs the Table of Contents (TOC) of the EPUB file."""
     path = ctx.obj['path']
     doc = Document(path)
-    click.echo(doc.toc)
+    click.echo(doc.toc.tostring())

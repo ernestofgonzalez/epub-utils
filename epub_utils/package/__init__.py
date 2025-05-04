@@ -99,6 +99,7 @@ class Package:
             self.metadata = Metadata(metadata_xml_content)
             
             self.toc_href = self._find_toc_href(root)
+            self.nav_href = self._find_nav_href(root)
 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing OPF file: {e}")
@@ -119,7 +120,7 @@ class Package:
 
     def _find_toc_href(self, root: etree.Element) -> str:
         """
-        Find the publication navigation control file
+        Find the publication navigation control file.
 
         Args:
             root (etree.Element): The root element of the OPF document.
@@ -143,5 +144,33 @@ class Package:
                         if href:
                             # Remove fragment identifier if present
                             return href.split('#')[0]
+        
+        return None
+    
+    def _find_nav_href(self, root: etree.Element) -> str:
+        """
+        Find the publication navigation file.
+
+        Args:
+            root (etree.Element): The root element of the OPF document.
+
+        Returns:
+            str: The href to navigation file, or None if not found.
+        """
+        # Check for item with nav properties
+        for item in root.findall(self.ITEM_XPATH):
+            if item.get('properties') == "nav":
+                href = item.get('href')
+                if href:
+                    return href.split('#')[0]
+
+        # Fall back to guide TOC reference
+        guide = root.find(f".//{{{self.NAMESPACE}}}guide")
+        if guide is not None:
+            for reference in guide.findall(f".//{{{self.NAMESPACE}}}reference"):
+                if reference.get('type') == "toc":
+                    href = reference.get('href')
+                    if href:
+                        return href.split('#')[0]
         
         return None

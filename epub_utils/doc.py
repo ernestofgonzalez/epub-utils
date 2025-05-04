@@ -1,3 +1,4 @@
+import os
 import zipfile
 from pathlib import Path
 from typing import Union
@@ -63,6 +64,7 @@ class Document:
     def package(self) -> Package:
         if self._package is None:
             rootfile_path = self.container.rootfile_path
+            self._package_href = Path(rootfile_path).parent
             package_xml_content = self._read_file_from_epub(rootfile_path)
             self._package = Package(package_xml_content)
         return self._package
@@ -73,9 +75,9 @@ class Document:
             package = self.package
 
             if package.nav_href is not None:
-                toc_href = package.nav_href
+                toc_href = os.path.join(self._package_href, package.nav_href)
             elif package.toc_href is not None:
-                toc_href = package.toc_href
+                toc_href = os.path.join(self._package_href, package.toc_href)
 
             toc_xml_content = self._read_file_from_epub(toc_href)
             self._toc = TableOfContents(toc_xml_content)
