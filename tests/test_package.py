@@ -29,15 +29,15 @@ def test_package_initialization():
     Test that the Package class initializes correctly with valid OPF XML content.
     """
     package = Package(VALID_OPF_XML)
-    assert package.title == "Sample EPUB"
-    assert package.author == "John Doe"
-    assert package.identifier == "12345"
+    assert package.metadata.title == "Sample EPUB"
+    assert package.metadata.creator == "John Doe"
+    assert package.metadata.identifier == "12345"
 
 def test_package_missing_identifier():
     """
     Test that the Package class raises an error for missing identifier in OPF XML.
     """
-    with pytest.raises(ValueError, match="Invalid OPF file: Missing identifier."):
+    with pytest.raises(ValueError, match="Invalid metadata element: Missing identifier."):
         Package(INVALID_OPF_XML_MISSING_INDENTIFIER)
 
 def test_package_invalid_xml():
