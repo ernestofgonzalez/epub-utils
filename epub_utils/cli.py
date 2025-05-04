@@ -3,7 +3,7 @@ import click
 from epub_utils.doc import Document
 
 
-VERSION = "0.0.0a2"
+VERSION = "0.0.0a3"
 
 
 def print_version(ctx, param, value):
