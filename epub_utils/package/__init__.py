@@ -40,6 +40,10 @@ class Package:
     NAMESPACE = "http://www.idpf.org/2007/opf"
     DC_NAMESPACE = "http://purl.org/dc/elements/1.1/"
     METADATA_XPATH = f".//{{{NAMESPACE}}}metadata"
+    SPINE_XPATH = f".//{{{NAMESPACE}}}spine"
+    MANIFEST_XPATH = f".//{{{NAMESPACE}}}manifest"
+    ITEM_XPATH = f".//{{{NAMESPACE}}}item"
+    NCX_MEDIA_TYPE = "application/x-dtbncx+xml"
     TITLE_XPATH = f".//{{{DC_NAMESPACE}}}title"
     CREATOR_XPATH = f".//{{{DC_NAMESPACE}}}creator"
     IDENTIFIER_XPATH = f".//{{{DC_NAMESPACE}}}identifier"
@@ -58,8 +62,8 @@ class Package:
         self.spine = None
         self.guide = None
         self.cover = None
-        self.toc = None
-        self.nav = None
+        self.toc_href = None
+        self.nav_href = None
 
         self._parse(xml_content)
 
@@ -93,6 +97,8 @@ class Package:
             
             metadata_xml_content = etree.tostring(metadata_el, encoding='unicode')
             self.metadata = Metadata(metadata_xml_content)
+            
+            self.toc_href = self._find_toc_href(root)
 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing OPF file: {e}")
@@ -110,3 +116,32 @@ class Package:
         """
         element = root.find(xpath)
         return element.text.strip() if element is not None and element.text else None
+
+    def _find_toc_href(self, root: etree.Element) -> str:
+        """
+        Find the publication navigation control file
+
+        Args:
+            root (etree.Element): The root element of the OPF document.
+
+        Returns:
+            str: The href to the NCX document, or None if not found.
+        """
+        # First check for NCX media-type in manifest
+        for item in root.findall(self.ITEM_XPATH):
+            if item.get('media-type') == self.NCX_MEDIA_TYPE:
+                return item.get('href')
+
+        # Then check spine toc attribute
+        spine = root.find(self.SPINE_XPATH)
+        if spine is not None:
+            toc_id = spine.get('toc')
+            if toc_id:
+                for item in root.findall(self.ITEM_XPATH):
+                    if item.get('id') == toc_id:
+                        href = item.get('href')
+                        if href:
+                            # Remove fragment identifier if present
+                            return href.split('#')[0]
+        
+        return None
