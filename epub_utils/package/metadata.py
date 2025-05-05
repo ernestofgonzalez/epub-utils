@@ -110,4 +110,11 @@ class Metadata:
         return self.fields.get(name)
 
     def to_kv(self) -> str:
-        return "\n".join(f"{k}: {v}" for k, v in self.fields.items())
+        if not self.fields:
+            return ""
+            
+        max_key_length = max(len(k) for k in self.fields.keys())
+        
+        lines = [f"{k.rjust(max_key_length)}: {str(v)}" for k, v in self.fields.items()]
+        
+        return "\n".join(lines)
