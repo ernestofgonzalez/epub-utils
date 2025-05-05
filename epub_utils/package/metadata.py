@@ -16,6 +16,7 @@ class Metadata:
     TITLE_XPATH = f".//{{{DC_NAMESPACE}}}title"
     CREATOR_XPATH = f".//{{{DC_NAMESPACE}}}creator"
     IDENTIFIER_XPATH = f".//{{{DC_NAMESPACE}}}identifier"
+    REQUIRED_FIELDS = ['identifier', 'title', 'creator']
 
     def __init__(self, xml_content: str):
         self.xml_content = xml_content 
@@ -38,16 +39,48 @@ class Metadata:
                 xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
             
+            # Parse required metadata fields
             self.title = self._get_text(root, self.TITLE_XPATH)
             self.creator = self._get_text(root, self.CREATOR_XPATH)
             self.identifier = self._get_text(root, self.IDENTIFIER_XPATH)
-
-            if not self.identifier:
-                raise ValueError("Invalid metadata element: Missing identifier.")
-
+            
+            # Validate fields
+            self._validate()
+                
         except etree.ParseError as e:
             raise ParseError(f"Error parsing metadata element: {e}")
+    
+    def _validate(self, raise_exception=False) -> None:
+        """
+        Validate all required fields and raise ValueError if validation fails.
+        """
+        errors = {}
         
+        for field in self.REQUIRED_FIELDS:
+            try:
+                self._validate_field(field)
+            except ValueError as e:
+                errors[field] = str(e)
+        
+        if errors and raise_exception:
+            error_messages = [f"{field}: {msg}" for field, msg in errors.items()]
+            # TODO: save validation errors for check functionality
+            raise ValueError(f"Invalid metadata element: {', '.join(error_messages)}")
+
+    def _validate_field(self, field_name: str) -> None:
+        """
+        Validate an individual field.
+        
+        Args:
+            field_name: Name of the field to validate
+
+        Raises:
+            ValueError: If the field validation fails
+        """
+        value = getattr(self, field_name)
+        if value is None or (isinstance(value, str) and not value.strip()):
+            raise ValueError(f"This field is required")
+    
     def __str__(self) -> str:
         return self.xml_content
     

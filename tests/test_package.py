@@ -11,14 +11,6 @@ VALID_OPF_XML = """<?xml version="1.0"?>
 </package>
 """
 
-INVALID_OPF_XML_MISSING_INDENTIFIER = """<?xml version="1.0"?>
-<package xmlns="http://www.idpf.org/2007/opf" version="3.0">
-    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
-        <dc:title>Sample EPUB</dc:title>
-    </metadata>
-</package>
-"""
-
 INVALID_OPF_XML_MISSING_METADATA = """<?xml version="1.0"?>
 <package xmlns="http://www.idpf.org/2007/opf" version="3.0">
 </package>
@@ -33,12 +25,6 @@ def test_package_initialization():
     assert package.metadata.creator == "John Doe"
     assert package.metadata.identifier == "12345"
 
-def test_package_missing_identifier():
-    """
-    Test that the Package class raises an error for missing identifier in OPF XML.
-    """
-    with pytest.raises(ValueError, match="Invalid metadata element: Missing identifier."):
-        Package(INVALID_OPF_XML_MISSING_INDENTIFIER)
 
 def test_package_invalid_xml():
     """

@@ -28,7 +28,7 @@ def test_metadata_parse_valid_element():
     assert metadata.identifier == "test-id-123"
 
 
-def test_metadata_parse_missing_identifier():
+def test_metadata_validate_missing_identifier_with_raise_exception():
     """Test that parsing metadata without identifier raises error."""
-    with pytest.raises(ValueError, match="Invalid metadata element: Missing identifier."):
-        Metadata(INVALID_METADATA_XML)
+    with pytest.raises(ValueError, match="Invalid metadata element: identifier: This field is required"):
+        Metadata(INVALID_METADATA_XML)._validate(raise_exception=True)
