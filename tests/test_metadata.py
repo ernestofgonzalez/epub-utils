@@ -4,10 +4,16 @@ from epub_utils.package.metadata import Metadata
 
 
 VALID_METADATA_XML = """
-<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/">
     <dc:title>Test Book</dc:title>
     <dc:creator>Test Author</dc:creator>
     <dc:identifier>test-id-123</dc:identifier>
+    <dc:language>en</dc:language>
+    <dc:subject>Fiction</dc:subject>
+    <dc:subject>Science Fiction</dc:subject>
+    <dc:date>2024-01-01</dc:date>
+    <dc:publisher>Test Publisher</dc:publisher>
+    <dcterms:abstract>A test book about testing</dcterms:abstract>
 </metadata>
 """
 
@@ -20,12 +26,22 @@ INVALID_METADATA_XML = """
 
 
 def test_metadata_parse_valid_element():
-    """Test parsing valid metadata XML."""
+    """Test parsing valid metadata XML with both required and optional DC terms."""
     metadata = Metadata(VALID_METADATA_XML)
     
     assert metadata.title == "Test Book"
     assert metadata.creator == "Test Author"
     assert metadata.identifier == "test-id-123"
+    
+    assert metadata.language == "en"
+    assert metadata.subject == ["Fiction", "Science Fiction"]
+    assert metadata.date == "2024-01-01"
+    assert metadata.publisher == "Test Publisher"
+    
+    assert metadata.abstract == "A test book about testing"
+    
+    assert metadata.fields["title"] == "Test Book"
+    assert metadata.fields["subject"] == ["Fiction", "Science Fiction"]
 
 
 def test_metadata_validate_missing_identifier_with_raise_exception():

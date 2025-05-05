@@ -10,27 +10,21 @@ from epub_utils.highlighters import highlight_xml
 class Metadata:
     """
     Represents the metadata section of an EPUB package document.
+    Handles Dublin Core (DC) and Dublin Core Terms (DCTERMS) metadata elements.
     """
 
     DC_NAMESPACE = "http://purl.org/dc/elements/1.1/"
-    TITLE_XPATH = f".//{{{DC_NAMESPACE}}}title"
-    CREATOR_XPATH = f".//{{{DC_NAMESPACE}}}creator"
-    IDENTIFIER_XPATH = f".//{{{DC_NAMESPACE}}}identifier"
+    DCTERMS_NAMESPACE = "http://purl.org/dc/terms/"
     REQUIRED_FIELDS = ['identifier', 'title', 'creator']
+    
+    NSMAP = {
+        'dc': DC_NAMESPACE,
+        'dcterms': DCTERMS_NAMESPACE
+    }
 
     def __init__(self, xml_content: str):
-        self.xml_content = xml_content 
-
-        self.identifier = None
-        self.title = None
-        self.creator = None
-        self.language = None
-        self.subject = None
-        self.description = None
-        self.publisher = None
-        self.date = None
-        self.rights = None
-
+        self.xml_content = xml_content
+        self.fields = {}
         self._parse(xml_content)
 
     def _parse(self, xml_content: str) -> None:
@@ -39,17 +33,24 @@ class Metadata:
                 xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
             
-            # Parse required metadata fields
-            self.title = self._get_text(root, self.TITLE_XPATH)
-            self.creator = self._get_text(root, self.CREATOR_XPATH)
-            self.identifier = self._get_text(root, self.IDENTIFIER_XPATH)
+            for ns_prefix, ns_uri in self.NSMAP.items():
+                for element in root.findall(f".//{{{ns_uri}}}*"):
+                    name = element.tag.split('}')[-1]
+                    text = element.text.strip() if element.text else None
+                    if text:
+                        if name in self.fields:
+                            if isinstance(self.fields[name], list):
+                                self.fields[name].append(text)
+                            else:
+                                self.fields[name] = [self.fields[name], text]
+                        else:
+                            self.fields[name] = text
             
-            # Validate fields
             self._validate()
                 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing metadata element: {e}")
-    
+
     def _validate(self, raise_exception=False) -> None:
         """
         Validate all required fields and raise ValueError if validation fails.
@@ -77,7 +78,7 @@ class Metadata:
         Raises:
             ValueError: If the field validation fails
         """
-        value = getattr(self, field_name)
+        value = self.fields.get(field_name)
         if value is None or (isinstance(value, str) and not value.strip()):
             raise ValueError(f"This field is required")
     
@@ -91,21 +92,11 @@ class Metadata:
         return highlight_xml(self.xml_content)
 
     def _get_text(self, root: etree.Element, xpath: str) -> str:
-        """Extract text content from an XML element."""
         element = root.find(xpath)
         return element.text.strip() if element is not None and element.text else None
 
+    def __getattr__(self, name: str) -> str:
+        return self.fields.get(name)
+
     def to_kv(self) -> str:
-        """Format metadata as key-value pairs."""
-        fields = [
-            ("title", self.title),
-            ("creator", self.creator), 
-            ("identifier", self.identifier),
-            ("language", self.language),
-            ("subject", self.subject),
-            ("description", self.description),
-            ("publisher", self.publisher),
-            ("date", self.date),
-            ("rights", self.rights)
-        ]
-        return "\n".join(f"{k}: {v}" for k, v in fields if v is not None)
+        return "\n".join(f"{k}: {v}" for k, v in self.fields.items())
