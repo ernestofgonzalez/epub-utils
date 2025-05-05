@@ -38,18 +38,29 @@ class Metadata:
                     name = element.tag.split('}')[-1]
                     text = element.text.strip() if element.text else None
                     if text:
-                        if name in self.fields:
-                            if isinstance(self.fields[name], list):
-                                self.fields[name].append(text)
-                            else:
-                                self.fields[name] = [self.fields[name], text]
-                        else:
-                            self.fields[name] = text
+                        self._add_field(name, text)
+            
+            for meta in root.findall(".//meta[@property]"):
+                prop = meta.get('property', '')
+                if prop.startswith('dcterms:'):
+                    name = prop.split(':')[1]
+                    text = meta.text.strip() if meta.text else None
+                    if text:
+                        self._add_field(name, text)
             
             self._validate()
                 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing metadata element: {e}")
+
+    def _add_field(self, name: str, value: str) -> None:
+        if name in self.fields:
+            if isinstance(self.fields[name], list):
+                self.fields[name].append(value)
+            else:
+                self.fields[name] = [self.fields[name], value]
+        else:
+            self.fields[name] = value
 
     def _validate(self, raise_exception=False) -> None:
         """

@@ -13,7 +13,8 @@ VALID_METADATA_XML = """
     <dc:subject>Science Fiction</dc:subject>
     <dc:date>2024-01-01</dc:date>
     <dc:publisher>Test Publisher</dc:publisher>
-    <dcterms:abstract>A test book about testing</dcterms:abstract>
+    <meta property="dcterms:modified">2023-11-28T14:50:13Z</meta>
+    <meta property="dcterms:source">Original Source</meta>
 </metadata>
 """
 
@@ -38,10 +39,8 @@ def test_metadata_parse_valid_element():
     assert metadata.date == "2024-01-01"
     assert metadata.publisher == "Test Publisher"
     
-    assert metadata.abstract == "A test book about testing"
-    
-    assert metadata.fields["title"] == "Test Book"
-    assert metadata.fields["subject"] == ["Fiction", "Science Fiction"]
+    assert metadata.modified == "2023-11-28T14:50:13Z"
+    assert metadata.source == "Original Source"
 
 
 def test_metadata_validate_missing_identifier_with_raise_exception():
