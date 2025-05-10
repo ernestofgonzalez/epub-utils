@@ -73,7 +73,7 @@ class Document:
 
     @cached_property
     def __package_href(self):
-        return os.path.dirname(os.path.normpath(self.container.rootfile_path))
+        return os.path.dirname(self.container.rootfile_path)
 
     @property
     def toc(self):
@@ -86,7 +86,7 @@ class Document:
             else:
                 return None
 
-            toc_path = os.path.normpath(os.path.join(self.__package_href, toc_href))
+            toc_path = os.path.join(self.__package_href, toc_href)
             toc_xml_content = self._read_file_from_epub(toc_path)
             self._toc = TableOfContents(toc_xml_content)
 
