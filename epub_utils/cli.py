@@ -95,3 +95,13 @@ def metadata(ctx, format):
     doc = Document(ctx.obj['path'])
     package = doc.package
     output_document_part(package, 'metadata', format)
+
+
+@main.command()
+@format_option()
+@click.pass_context
+def spine(ctx, format):
+    """Outputs the spine information from the package file."""
+    doc = Document(ctx.obj['path'])
+    package = doc.package
+    output_document_part(package, 'spine', format)
