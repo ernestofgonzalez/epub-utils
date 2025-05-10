@@ -33,7 +33,7 @@ class Document:
             raise ValueError(f"Invalid EPUB file: {self.path}")
         self._container: Container = None
         self._package: Package = None
-        self._toc = TableOfContents = None
+        self._toc: TableOfContents = None
 
     def _read_file_from_epub(self, file_path: str) -> str:
         """
