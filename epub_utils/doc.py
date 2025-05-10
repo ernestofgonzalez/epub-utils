@@ -1,5 +1,6 @@
 import os
 import zipfile
+from functools import cached_property
 from pathlib import Path
 from typing import Union
 
@@ -59,26 +60,30 @@ class Document:
             container_xml_content = self._read_file_from_epub(self.CONTAINER_FILE_PATH)
             self._container = Container(container_xml_content)
         return self._container
-    
+
     @property
     def package(self) -> Package:
         if self._package is None:
-            rootfile_path = self.container.rootfile_path
-            self._package_href = Path(rootfile_path).parent
-            package_xml_content = self._read_file_from_epub(rootfile_path)
+            package_xml_content = self._read_file_from_epub(self.container.rootfile_path)
             self._package = Package(package_xml_content)
         return self._package
-    
+
+    @cached_property
+    def __package_href(self):
+        return Path(self.container.rootfile_path).parent
+
     @property
     def toc(self):
         if self._toc is None:
             package = self.package
+            if package.major_version == "3" and package.nav_href is not None:
+                toc_href = package.nav_href
+            elif package.major_version == "2" and package.toc_href is not None:
+                toc_href = package.toc_href
+            else:
+                return None
 
-            if package.nav_href is not None:
-                toc_href = os.path.join(self._package_href, package.nav_href)
-            elif package.toc_href is not None:
-                toc_href = os.path.join(self._package_href, package.toc_href)
-
-            toc_xml_content = self._read_file_from_epub(toc_href)
+            toc_xml_content = self._read_file_from_epub(os.path.join(self.__package_href, toc_href))
             self._toc = TableOfContents(toc_xml_content)
+
         return self._toc
