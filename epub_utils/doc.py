@@ -50,12 +50,11 @@ class Document:
             ValueError: If the file is missing from the EPUB archive.
         """
         with zipfile.ZipFile(self.path, 'r') as epub_zip:
-            # Normalize path to handle both Windows and Unix-style paths
-            file_path = os.path.normpath(file_path)
+            file_normpath = os.path.normpath(file_path)
             namelist = [os.path.normpath(name) for name in epub_zip.namelist()]
             
-            if file_path not in namelist:
-                raise ValueError(f"Missing {file_path} in EPUB file.")
+            if file_normpath not in namelist:
+                raise ValueError(f"Missing {file_normpath} in EPUB file.")
             return epub_zip.read(file_path).decode("utf-8")
 
     @property
