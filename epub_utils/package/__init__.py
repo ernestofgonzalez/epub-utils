@@ -20,6 +20,7 @@ except ImportError:
 from epub_utils.exceptions import ParseError
 from epub_utils.highlighters import highlight_xml
 from epub_utils.package.metadata import Metadata
+from epub_utils.package.spine import Spine
 
 
 class Package:
@@ -64,6 +65,8 @@ class Package:
         self.cover = None
         self.toc_href = None
         self.nav_href = None
+        self.major_version = None
+        self.version = None
 
         self._parse(xml_content)
 
@@ -90,16 +93,27 @@ class Package:
             if isinstance(xml_content, str):
                 xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
+            self.version = root.attrib["version"]
+            self.major_version = self.version.split(".", 1)[0]
+
+            # Parse metadata
             metadata_el = root.find(self.METADATA_XPATH)
-            
             if metadata_el is None:
                 raise ValueError("Invalid OPF file: Missing metadata element.")
-            
-            metadata_xml_content = etree.tostring(metadata_el, encoding='unicode')
-            self.metadata = Metadata(metadata_xml_content)
-            
-            self.toc_href = self._find_toc_href(root)
-            self.nav_href = self._find_nav_href(root)
+            metadata_xml = etree.tostring(metadata_el, encoding='unicode')
+            self.metadata = Metadata(metadata_xml)
+
+            # Parse spine
+            spine_el = root.find(self.SPINE_XPATH)
+            if spine_el is not None:
+                spine_xml = etree.tostring(spine_el, encoding='unicode')
+                self.spine = Spine(spine_xml)
+
+            # Parse TOC references
+            if self.major_version == "3":
+                self.nav_href = self._find_nav_href(root)
+            else:
+                self.toc_href = self._find_toc_href(root)
 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing OPF file: {e}")
