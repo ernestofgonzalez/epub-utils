@@ -34,7 +34,7 @@ class Document:
             raise ValueError(f"Invalid EPUB file: {self.path}")
         self._container: Container = None
         self._package: Package = None
-        self._toc = TableOfContents = None
+        self._toc: TableOfContents = None
 
     def _read_file_from_epub(self, file_path: str) -> str:
         """
@@ -50,7 +50,11 @@ class Document:
             ValueError: If the file is missing from the EPUB archive.
         """
         with zipfile.ZipFile(self.path, 'r') as epub_zip:
-            if file_path not in epub_zip.namelist():
+            # Normalize path to handle both Windows and Unix-style paths
+            file_path = os.path.normpath(file_path)
+            namelist = [os.path.normpath(name) for name in epub_zip.namelist()]
+            
+            if file_path not in namelist:
                 raise ValueError(f"Missing {file_path} in EPUB file.")
             return epub_zip.read(file_path).decode("utf-8")
 
@@ -70,7 +74,7 @@ class Document:
 
     @cached_property
     def __package_href(self):
-        return Path(self.container.rootfile_path).parent
+        return os.path.dirname(os.path.normpath(self.container.rootfile_path))
 
     @property
     def toc(self):
@@ -83,7 +87,8 @@ class Document:
             else:
                 return None
 
-            toc_xml_content = self._read_file_from_epub(os.path.join(self.__package_href, toc_href))
+            toc_path = os.path.normpath(os.path.join(self.__package_href, toc_href))
+            toc_xml_content = self._read_file_from_epub(toc_path)
             self._toc = TableOfContents(toc_xml_content)
 
         return self._toc
