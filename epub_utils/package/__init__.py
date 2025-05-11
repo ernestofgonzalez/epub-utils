@@ -17,6 +17,8 @@ try:
 except ImportError:
     import xml.etree.ElementTree as etree
 
+import packaging.version
+
 from epub_utils.exceptions import ParseError
 from epub_utils.highlighters import highlight_xml
 from epub_utils.package.metadata import Metadata
@@ -65,7 +67,6 @@ class Package:
         self.cover = None
         self.toc_href = None
         self.nav_href = None
-        self.major_version = None
         self.version = None
 
         self._parse(xml_content)
@@ -93,8 +94,7 @@ class Package:
             if isinstance(xml_content, str):
                 xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
-            self.version = root.attrib["version"]
-            self.major_version = self.version.split(".", 1)[0]
+            self.version = self._parse_version(root.attrib["version"])
 
             # Parse metadata
             metadata_el = root.find(self.METADATA_XPATH)
@@ -110,7 +110,7 @@ class Package:
                 self.spine = Spine(spine_xml)
 
             # Parse TOC references
-            if self.major_version == "3":
+            if self.version.major == 3:
                 self.nav_href = self._find_nav_href(root)
             else:
                 self.toc_href = self._find_toc_href(root)
@@ -188,3 +188,9 @@ class Package:
                         return href.split('#')[0]
         
         return None
+
+    def _parse_version(self, version):
+        version = packaging.version.Version(version)
+        if version.major not in (1, 2, 3):
+            raise ValueError(f"Unsupported epub version: {version.major}")
+        return version

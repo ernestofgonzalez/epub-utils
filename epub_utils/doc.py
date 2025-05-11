@@ -80,12 +80,14 @@ class Document:
     def toc(self):
         if self._toc is None:
             package = self.package
-            if package.major_version == "3" and package.nav_href is not None:
+            if package.version.major == 3:
+                if not package.nav_href:
+                    return None
                 toc_href = package.nav_href
-            elif package.major_version == "2" and package.toc_href is not None:
-                toc_href = package.toc_href
             else:
-                return None
+                if not package.toc_href:
+                    return None
+                toc_href = package.toc_href
 
             toc_path = os.path.join(self.__package_href, toc_href)
             toc_xml_content = self._read_file_from_epub(toc_path)
