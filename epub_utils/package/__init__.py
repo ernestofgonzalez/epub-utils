@@ -23,6 +23,7 @@ from epub_utils.exceptions import ParseError
 from epub_utils.highlighters import highlight_xml
 from epub_utils.package.metadata import Metadata
 from epub_utils.package.spine import Spine
+from epub_utils.package.manifest import Manifest
 
 
 class Package:
@@ -102,6 +103,12 @@ class Package:
                 raise ValueError("Invalid OPF file: Missing metadata element.")
             metadata_xml = etree.tostring(metadata_el, encoding='unicode')
             self.metadata = Metadata(metadata_xml)
+
+            # Parse manifest
+            manifest_el = root.find(self.MANIFEST_XPATH)
+            if manifest_el is not None:
+                manifest_xml = etree.tostring(manifest_el, encoding='unicode')
+                self.manifest = Manifest(manifest_xml)
 
             # Parse spine
             spine_el = root.find(self.SPINE_XPATH)
