@@ -13,6 +13,9 @@ class Manifest:
     The manifest element provides an exhaustive list of the publication resources.
     """
 
+    NAMESPACE = "http://www.idpf.org/2007/opf"
+    ITEM_XPATH = f".//{{{NAMESPACE}}}item"
+
     def __init__(self, xml_content: str):
         self.xml_content = xml_content
         self.items = []
@@ -36,7 +39,7 @@ class Manifest:
                 xml_content = xml_content.encode("utf-8")
             root = etree.fromstring(xml_content)
             
-            for item in root.findall('.//item'):
+            for item in root.findall(self.ITEM_XPATH):
                 item_data = {
                     'id': item.get('id'),
                     'href': item.get('href'),
