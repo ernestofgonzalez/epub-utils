@@ -14,14 +14,10 @@ release = '0.0.0a3'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = [
-    'sphinx_copybutton',
-    'sphinx_issues'
-]
+extensions = ['sphinx_copybutton', 'sphinx_issues']
 
 templates_path = ['_templates']
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
-
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -33,4 +29,4 @@ html_static_path = ['_static']
 # -- Linking Github issues --------------------------------------------------
 # https://github.com/sloria/sphinx-issues
 
-issues_github_path = "ernestofgonzalez/epub-utils"
+issues_github_path = 'ernestofgonzalez/epub-utils'

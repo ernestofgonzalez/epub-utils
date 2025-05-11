@@ -1,4 +1,4 @@
-from epub_utils.doc import Document
 from epub_utils.container import Container
+from epub_utils.doc import Document
 
-__all__ = ["Document", "Container"]
+__all__ = ['Document', 'Container']
