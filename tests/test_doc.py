@@ -48,3 +48,9 @@ def test_document_toc(doc_path):
     """
     doc = Document(doc_path)
     assert isinstance(doc.toc, TableOfContents)
+
+
+def test_document_find_content_by_id(doc_path):
+    doc = Document(doc_path)
+    content = doc.find_content_by_id("main")
+    assert content is not None

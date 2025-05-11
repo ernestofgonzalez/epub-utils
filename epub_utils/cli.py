@@ -115,3 +115,25 @@ def spine(ctx, format):
     doc = Document(ctx.obj['path'])
     package = doc.package
     output_document_part(package, 'spine', format)
+
+
+@main.command()
+@click.argument('item_id', required=True)
+@format_option()
+@click.pass_context
+def content(ctx, item_id, format):
+    """Outputs the content of a document by its manifest item ID."""
+    doc = Document(ctx.obj['path'])
+    
+    try:
+        content = doc.find_content_by_id(item_id)
+        if format == 'text':
+            click.echo(content.to_str())
+        elif format == 'xml':
+            click.echo(content.to_xml())
+        elif format == 'kv':
+            click.secho('Key-value format not supported for content documents. Falling back to text:\n', fg="yellow")
+            click.echo(content.to_str())
+    except ValueError as e:
+        click.secho(str(e), fg="red", err=True)
+        ctx.exit(1)

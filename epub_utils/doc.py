@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Union
 
 from epub_utils.container import Container
+from epub_utils.content import XHTMLContent
 from epub_utils.package import Package
 from epub_utils.toc import TableOfContents
 
@@ -94,3 +95,15 @@ class Document:
             self._toc = TableOfContents(toc_xml_content)
 
         return self._toc
+
+    def find_content_by_id(self, item_id: str) -> str:
+        manifest_item = self.package.manifest.find_by_id(item_id)
+        if not manifest_item:
+            raise ValueError(f"Item ID '{item_id}' not found in manifest")
+        
+        content_path = os.path.join(self.__package_href, manifest_item['href'])
+        xml_content = self._read_file_from_epub(content_path)
+
+        content = XHTMLContent(xml_content, manifest_item["media_type"], manifest_item["href"])
+
+        return content
