@@ -100,6 +100,16 @@ def metadata(ctx, format):
 @main.command()
 @format_option()
 @click.pass_context
+def manifest(ctx, format):
+    """Outputs the manifest information from the package file."""
+    doc = Document(ctx.obj['path'])
+    package = doc.package
+    output_document_part(package, 'manifest', format)
+
+
+@main.command()
+@format_option()
+@click.pass_context
 def spine(ctx, format):
     """Outputs the spine information from the package file."""
     doc = Document(ctx.obj['path'])
