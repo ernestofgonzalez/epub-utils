@@ -34,6 +34,7 @@ setup(
     install_requires=[
         "click",
         "lxml",
+        "packaging",
         "pygments",
         "PyYAML",
     ],
