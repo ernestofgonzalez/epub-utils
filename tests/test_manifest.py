@@ -2,7 +2,7 @@ from epub_utils.package.manifest import Manifest
 
 
 VALID_MANIFEST_XML = """
-<manifest>
+<manifest xmlns="http://www.idpf.org/2007/opf">
     <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>
     <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>
     <item id="style" href="style.css" media-type="text/css"/>
@@ -11,7 +11,7 @@ VALID_MANIFEST_XML = """
 """
 
 MINIMAL_MANIFEST_XML = """
-<manifest>
+<manifest xmlns="http://www.idpf.org/2007/opf">
     <item id="content" href="content.xhtml" media-type="application/xhtml+xml"/>
 </manifest>
 """
