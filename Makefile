@@ -32,12 +32,10 @@ coverage:
 # Lint code
 lint:
 	@echo "${LIGHT_CYAN}Linting code...${NO_COLOR}"
-	isort . --check-only
-	black . --check
-	flake8 .
+	ruff check
 
 # Format code
 format:
 	@echo "${LIGHT_CYAN}Formatting code...${NO_COLOR}"
-	isort .
-	black .
+	ruff check --select I --fix
+	ruff format
