@@ -11,115 +11,115 @@ from epub_utils.toc import TableOfContents
 
 
 class Document:
-    """
-    Represents an EPUB document.
+	"""
+	Represents an EPUB document.
 
-    Attributes:
-        path (Path): The path to the EPUB file.
-        _container (Container): The parsed container document.
-        _package (Package): The parsed package document.
-        _toc (TableOfContents): The parsed table of contents document.
-    """
+	Attributes:
+	    path (Path): The path to the EPUB file.
+	    _container (Container): The parsed container document.
+	    _package (Package): The parsed package document.
+	    _toc (TableOfContents): The parsed table of contents document.
+	"""
 
-    CONTAINER_FILE_PATH = "META-INF/container.xml"
+	CONTAINER_FILE_PATH = 'META-INF/container.xml'
 
-    def __init__(self, path: Union[str, Path]) -> None:
-        """
-        Initialize the Document from a given path.
+	def __init__(self, path: Union[str, Path]) -> None:
+		"""
+		Initialize the Document from a given path.
 
-        Args:
-            path (str | Path): The path to the EPUB file.
-        """
-        self.path: Path = Path(path)
-        if not self.path.exists() or not zipfile.is_zipfile(self.path):
-            raise ValueError(f"Invalid EPUB file: {self.path}")
-        self._container: Container = None
-        self._package: Package = None
-        self._toc: TableOfContents = None
+		Args:
+		    path (str | Path): The path to the EPUB file.
+		"""
+		self.path: Path = Path(path)
+		if not self.path.exists() or not zipfile.is_zipfile(self.path):
+			raise ValueError(f'Invalid EPUB file: {self.path}')
+		self._container: Container = None
+		self._package: Package = None
+		self._toc: TableOfContents = None
 
-    def _read_file_from_epub(self, file_path: str) -> str:
-        """
-        Read and decode a file from the EPUB archive.
+	def _read_file_from_epub(self, file_path: str) -> str:
+		"""
+		Read and decode a file from the EPUB archive.
 
-        Args:
-            file_path (str): Path to the file within the EPUB archive.
+		Args:
+		    file_path (str): Path to the file within the EPUB archive.
 
-        Returns:
-            str: Decoded contents of the file.
+		Returns:
+		    str: Decoded contents of the file.
 
-        Raises:
-            ValueError: If the file is missing from the EPUB archive.
-        """
-        with zipfile.ZipFile(self.path, 'r') as epub_zip:
-            norm_namelist = {os.path.normpath(name): name for name in epub_zip.namelist()}
-            norm_path = os.path.normpath(file_path)
-            
-            if norm_path not in norm_namelist:
-                raise ValueError(f"Missing {norm_path} in EPUB file.")
+		Raises:
+		    ValueError: If the file is missing from the EPUB archive.
+		"""
+		with zipfile.ZipFile(self.path, 'r') as epub_zip:
+			norm_namelist = {os.path.normpath(name): name for name in epub_zip.namelist()}
+			norm_path = os.path.normpath(file_path)
 
-            return epub_zip.read(norm_namelist[norm_path]).decode("utf-8")
+			if norm_path not in norm_namelist:
+				raise ValueError(f'Missing {norm_path} in EPUB file.')
 
-    @property
-    def container(self) -> Container:
-        if self._container is None:
-            container_xml_content = self._read_file_from_epub(self.CONTAINER_FILE_PATH)
-            self._container = Container(container_xml_content)
-        return self._container
+			return epub_zip.read(norm_namelist[norm_path]).decode('utf-8')
 
-    @property
-    def package(self) -> Package:
-        if self._package is None:
-            package_xml_content = self._read_file_from_epub(self.container.rootfile_path)
-            self._package = Package(package_xml_content)
-        return self._package
+	@property
+	def container(self) -> Container:
+		if self._container is None:
+			container_xml_content = self._read_file_from_epub(self.CONTAINER_FILE_PATH)
+			self._container = Container(container_xml_content)
+		return self._container
 
-    @cached_property
-    def __package_href(self):
-        return os.path.dirname(self.container.rootfile_path)
+	@property
+	def package(self) -> Package:
+		if self._package is None:
+			package_xml_content = self._read_file_from_epub(self.container.rootfile_path)
+			self._package = Package(package_xml_content)
+		return self._package
 
-    @property
-    def toc(self):
-        if self._toc is None:
-            package = self.package
-            if package.version.major == 3:
-                if not package.nav_href:
-                    return None
-                toc_href = package.nav_href
-            else:
-                if not package.toc_href:
-                    return None
-                toc_href = package.toc_href
+	@cached_property
+	def __package_href(self):
+		return os.path.dirname(self.container.rootfile_path)
 
-            toc_path = os.path.join(self.__package_href, toc_href)
-            toc_xml_content = self._read_file_from_epub(toc_path)
-            self._toc = TableOfContents(toc_xml_content)
+	@property
+	def toc(self):
+		if self._toc is None:
+			package = self.package
+			if package.version.major == 3:
+				if not package.nav_href:
+					return None
+				toc_href = package.nav_href
+			else:
+				if not package.toc_href:
+					return None
+				toc_href = package.toc_href
 
-        return self._toc
+			toc_path = os.path.join(self.__package_href, toc_href)
+			toc_xml_content = self._read_file_from_epub(toc_path)
+			self._toc = TableOfContents(toc_xml_content)
 
-    def find_content_by_id(self, item_id: str) -> str:
-        spine_item = self.package.spine.find_by_idref(item_id)
-        if not spine_item:
-            raise ValueError(f"Item id '{item_id}' not found in spine")
-        
-        manifest_item = self.package.manifest.find_by_id(item_id)
-        if not manifest_item:
-            raise ValueError(f"Item id '{item_id}' not found in manifest")
-        
-        content_path = os.path.join(self.__package_href, manifest_item['href'])
-        xml_content = self._read_file_from_epub(content_path)
+		return self._toc
 
-        content = XHTMLContent(xml_content, manifest_item["media_type"], manifest_item["href"])
+	def find_content_by_id(self, item_id: str) -> str:
+		spine_item = self.package.spine.find_by_idref(item_id)
+		if not spine_item:
+			raise ValueError(f"Item id '{item_id}' not found in spine")
 
-        return content
-    
-    def find_pub_resource_by_id(self, item_id: str) -> str:
-        manifest_item = self.package.manifest.find_by_id(item_id)
-        if not manifest_item:
-            raise ValueError(f"Item id '{item_id}' not found in manifest")
-        
-        content_path = os.path.join(self.__package_href, manifest_item['href'])
-        xml_content = self._read_file_from_epub(content_path)
+		manifest_item = self.package.manifest.find_by_id(item_id)
+		if not manifest_item:
+			raise ValueError(f"Item id '{item_id}' not found in manifest")
 
-        content = XHTMLContent(xml_content, manifest_item["media_type"], manifest_item["href"])
+		content_path = os.path.join(self.__package_href, manifest_item['href'])
+		xml_content = self._read_file_from_epub(content_path)
 
-        return content
+		content = XHTMLContent(xml_content, manifest_item['media_type'], manifest_item['href'])
+
+		return content
+
+	def find_pub_resource_by_id(self, item_id: str) -> str:
+		manifest_item = self.package.manifest.find_by_id(item_id)
+		if not manifest_item:
+			raise ValueError(f"Item id '{item_id}' not found in manifest")
+
+		content_path = os.path.join(self.__package_href, manifest_item['href'])
+		xml_content = self._read_file_from_epub(content_path)
+
+		content = XHTMLContent(xml_content, manifest_item['media_type'], manifest_item['href'])
+
+		return content
