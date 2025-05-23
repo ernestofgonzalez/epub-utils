@@ -58,3 +58,10 @@ class Spine:
 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing spine element: {e}")
+        
+    def find_by_idref(self, itemref_idref: str) -> dict:
+        """Find an itemref by its idref."""
+        for item in self.itemrefs:
+            if item['idref'] == itemref_idref:
+                return item
+        return None
