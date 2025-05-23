@@ -13,6 +13,9 @@ class Spine:
     The spine element defines the default reading order of the content.
     """
 
+    NAMESPACE = "http://www.idpf.org/2007/opf"
+    ITEMREF_XPATH = f".//{{{NAMESPACE}}}itemref"
+
     def __init__(self, xml_content: str):
         self.xml_content = xml_content
         self.itemrefs = []
@@ -41,7 +44,7 @@ class Spine:
             self.toc = root.get('toc')
             self.page_progression_direction = root.get('page-progression-direction', 'default')
             
-            for itemref in root.findall('.//itemref'):
+            for itemref in root.findall(self.ITEMREF_XPATH):
                 idref = itemref.get('idref')
                 linear = itemref.get('linear', 'yes')
                 properties = itemref.get('properties', '').split()
@@ -55,3 +58,10 @@ class Spine:
 
         except etree.ParseError as e:
             raise ParseError(f"Error parsing spine element: {e}")
+        
+    def find_by_idref(self, itemref_idref: str) -> dict:
+        """Find an itemref by its idref."""
+        for item in self.itemrefs:
+            if item['idref'] == itemref_idref:
+                return item
+        return None

@@ -1,10 +1,7 @@
-import pytest
-
 from epub_utils.package.spine import Spine
-from epub_utils.exceptions import ParseError
 
 VALID_SPINE_XML = """
-<spine toc="ncx" page-progression-direction="ltr">
+<spine xmlns="http://www.idpf.org/2007/opf" toc="ncx" page-progression-direction="ltr">
     <itemref idref="cover" linear="no"/>
     <itemref idref="nav" linear="yes"/>
     <itemref idref="chapter1" properties="page-spread-left"/>
@@ -13,7 +10,7 @@ VALID_SPINE_XML = """
 """
 
 MINIMAL_SPINE_XML = """
-<spine>
+<spine xmlns="http://www.idpf.org/2007/opf">
     <itemref idref="content"/>
 </spine>
 """

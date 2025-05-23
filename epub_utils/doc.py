@@ -97,9 +97,25 @@ class Document:
         return self._toc
 
     def find_content_by_id(self, item_id: str) -> str:
+        spine_item = self.package.spine.find_by_idref(item_id)
+        if not spine_item:
+            raise ValueError(f"Item id '{item_id}' not found in spine")
+        
         manifest_item = self.package.manifest.find_by_id(item_id)
         if not manifest_item:
-            raise ValueError(f"Item ID '{item_id}' not found in manifest")
+            raise ValueError(f"Item id '{item_id}' not found in manifest")
+        
+        content_path = os.path.join(self.__package_href, manifest_item['href'])
+        xml_content = self._read_file_from_epub(content_path)
+
+        content = XHTMLContent(xml_content, manifest_item["media_type"], manifest_item["href"])
+
+        return content
+    
+    def find_pub_resource_by_id(self, item_id: str) -> str:
+        manifest_item = self.package.manifest.find_by_id(item_id)
+        if not manifest_item:
+            raise ValueError(f"Item id '{item_id}' not found in manifest")
         
         content_path = os.path.join(self.__package_href, manifest_item['href'])
         xml_content = self._read_file_from_epub(content_path)

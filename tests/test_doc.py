@@ -1,8 +1,8 @@
 import unittest
 
-from epub_utils.doc import Document
 from epub_utils.container import Container
-from epub_utils.package import Package, Manifest
+from epub_utils.doc import Document
+from epub_utils.package import Manifest, Package
 from epub_utils.toc import TableOfContents
 
 
