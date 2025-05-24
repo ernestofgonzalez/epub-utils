@@ -88,3 +88,34 @@ print(f"Title: {doc.package.metadata.title}")
 print(f"Creator: {doc.package.metadata.creator}")
 print(f"Identifier: {doc.package.metadata.identifier}")
 ```
+
+## Industry Standards & Compliance
+
+`epub-utils` provides comprehensive support for industry-standard ePub specifications and related technologies, ensuring broad compatibility across the digital publishing ecosystem.
+
+### Supported EPUB Standards
+
+- **EPUB 2.0.1** (IDPF, 2010)
+  - Complete OPF 2.0 package document support
+  - NCX navigation control file support
+  - Dublin Core metadata extraction
+  - Legacy EPUB compatibility
+
+- **EPUB 3.0+** (IDPF/W3C, 2011-present)
+  - EPUB 3.3 specification compliance
+  - HTML5-based content documents
+  - Navigation document (nav.xhtml) support
+  - Enhanced accessibility features
+  - Media overlays and scripting support
+
+### Metadata Standards
+
+- **Dublin Core Metadata Initiative (DCMI)**
+  - Dublin Core Metadata Element Set v1.1
+  - Dublin Core Metadata Terms (DCTERMS)
+
+- **Open Packaging Format (OPF)**
+  - OPF 2.0 specification (EPUB 2.0.1)
+  - OPF 3.0 specification (EPUB 3.0+)
+
+The library maintains strict adherence to published specifications while providing robust handling of real-world EPUB variations commonly found in commercial and open-source reading applications.
