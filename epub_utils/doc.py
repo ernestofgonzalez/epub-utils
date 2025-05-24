@@ -1,8 +1,9 @@
 import os
 import zipfile
+from datetime import datetime
 from functools import cached_property
 from pathlib import Path
-from typing import Union
+from typing import Dict, List, Union
 
 from epub_utils.container import Container
 from epub_utils.content import XHTMLContent
@@ -123,3 +124,51 @@ class Document:
 		content = XHTMLContent(xml_content, manifest_item['media_type'], manifest_item['href'])
 
 		return content
+
+	def list_files(self) -> List[Dict[str, str]]:
+		"""
+		List all files in the EPUB archive.
+
+		Returns:
+		    List[Dict[str, str]]: A list of dictionaries containing file information.
+		"""
+		with zipfile.ZipFile(self.path, 'r') as epub_zip:
+			file_list = []
+			for zip_info in epub_zip.infolist():
+				file_info = {
+					'filename': zip_info.filename,
+					'file_size': zip_info.file_size,
+					'compress_size': zip_info.compress_size,
+					'file_mode': zip_info.external_attr >> 16,
+					'last_modified': datetime(*zip_info.date_time),
+				}
+				file_list.append(file_info)
+			return file_list
+
+	def get_files_info(self) -> List[Dict[str, Union[str, int]]]:
+		"""
+		Get information about all files in the EPUB archive.
+
+		Returns:
+		    List[Dict]: A list of dictionaries containing file information.
+		        Each dictionary contains: 'path', 'size', 'compressed_size', 'modified'.
+		"""
+		files_info = []
+
+		with zipfile.ZipFile(self.path, 'r') as epub_zip:
+			for zip_info in epub_zip.infolist():
+				if zip_info.filename.endswith('/'):
+					continue
+
+				modified_time = datetime(*zip_info.date_time).strftime('%Y-%m-%d %H:%M:%S')
+
+				file_info = {
+					'path': zip_info.filename,
+					'size': zip_info.file_size,
+					'compressed_size': zip_info.compress_size,
+					'modified': modified_time,
+				}
+				files_info.append(file_info)
+
+		files_info.sort(key=lambda x: x['path'])
+		return files_info
