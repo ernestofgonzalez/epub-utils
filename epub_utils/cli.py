@@ -64,6 +64,63 @@ def output_document_part(doc, part_name, format):
 			click.echo(part.to_str())
 
 
+def format_file_size(size_bytes: int) -> str:
+	"""Format file size in human-readable format."""
+	if size_bytes == 0:
+		return '0 B'
+
+	size_names = ['B', 'KB', 'MB', 'GB']
+	i = 0
+	size = float(size_bytes)
+
+	while size >= 1024.0 and i < len(size_names) - 1:
+		size /= 1024.0
+		i += 1
+
+	if i == 0:
+		return f'{int(size)} {size_names[i]}'
+	else:
+		return f'{size:.1f} {size_names[i]}'
+
+
+def format_files_table(files_info: list) -> str:
+	"""Format file information as a table."""
+	if not files_info:
+		return 'No files found in EPUB archive.'
+
+	# Calculate column widths
+	max_path_width = max(len(file_info['path']) for file_info in files_info)
+	max_size_width = max(len(format_file_size(file_info['size'])) for file_info in files_info)
+	max_compressed_width = max(
+		len(format_file_size(file_info['compressed_size'])) for file_info in files_info
+	)
+
+	# Ensure minimum widths for headers
+	path_width = max(max_path_width, len('Path'))
+	size_width = max(max_size_width, len('Size'))
+	compressed_width = max(max_compressed_width, len('Compressed'))
+	modified_width = len('Modified')  # Fixed width for date/time
+
+	# Create header
+	header = f'{"Path":<{path_width}} | {"Size":>{size_width}} | {"Compressed":>{compressed_width}} | {"Modified":<{modified_width}}'
+	separator = '-' * len(header)
+
+	# Create rows
+	rows = []
+	for file_info in files_info:
+		path = file_info['path'][:path_width]  # Truncate if too long
+		size = format_file_size(file_info['size'])
+		compressed = format_file_size(file_info['compressed_size'])
+		modified = file_info['modified']
+
+		row = f'{path:<{path_width}} | {size:>{size_width}} | {compressed:>{compressed_width}} | {modified:<{modified_width}}'
+		rows.append(row)
+
+	# Combine all parts
+	result = [header, separator] + rows
+	return '\n'.join(result)
+
+
 @main.command()
 @format_option()
 @click.pass_context
@@ -146,3 +203,26 @@ def content(ctx, item_id, format):
 	except ValueError as e:
 		click.secho(str(e), fg='red', err=True)
 		ctx.exit(1)
+
+
+@main.command()
+@click.option(
+	'-fmt',
+	'--format',
+	type=click.Choice(['table', 'raw'], case_sensitive=False),
+	default='table',
+	help='Output format, defaults to table.',
+)
+@click.pass_context
+def files(ctx, format):
+	"""List all files in the EPUB archive with their metadata."""
+	doc = Document(ctx.obj['path'])
+	files_info = doc.get_files_info()
+
+	if format == 'table':
+		click.echo(format_files_table(files_info))
+	elif format == 'raw':
+		for file_info in files_info:
+			click.echo(f'{file_info["path"]}')
+	else:
+		click.echo(format_files_table(files_info))
