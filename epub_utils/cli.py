@@ -40,7 +40,7 @@ def format_option(default='xml'):
 	return click.option(
 		'-fmt',
 		'--format',
-		type=click.Choice(['text', 'xml', 'kv'], case_sensitive=False),
+		type=click.Choice(['raw', 'xml', 'plain', 'kv'], case_sensitive=False),
 		default=default,
 		help=f'Output format, defaults to {default}.',
 	)
@@ -49,7 +49,7 @@ def format_option(default='xml'):
 def output_document_part(doc, part_name, format):
 	"""Helper function to output document parts in the specified format."""
 	part = getattr(doc, part_name)
-	if format == 'text':
+	if format == 'raw':
 		click.echo(part.to_str())
 	elif format == 'xml':
 		click.echo(part.to_xml())
@@ -58,7 +58,7 @@ def output_document_part(doc, part_name, format):
 			click.echo(part.to_kv())
 		else:
 			click.secho(
-				'Key-value format not supported for this document part. Falling back to text:\n',
+				'Key-value format not supported for this document part. Falling back to raw:\n',
 				fg='yellow',
 			)
 			click.echo(part.to_str())
@@ -131,13 +131,15 @@ def content(ctx, item_id, format):
 
 	try:
 		content = doc.find_content_by_id(item_id)
-		if format == 'text':
+		if format == 'raw':
 			click.echo(content.to_str())
 		elif format == 'xml':
 			click.echo(content.to_xml())
+		elif format == 'plain':
+			click.echo(content.to_plain())
 		elif format == 'kv':
 			click.secho(
-				'Key-value format not supported for content documents. Falling back to text:\n',
+				'Key-value format not supported for content documents. Falling back to raw:\n',
 				fg='yellow',
 			)
 			click.echo(content.to_str())

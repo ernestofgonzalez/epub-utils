@@ -35,8 +35,8 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
     # Show container.xml with syntax highlighting
     epub-utils book.epub container
 
-    # Show container.xml as plain text
-    epub-utils book.epub container --format text
+    # Show container.xml as raw content
+    epub-utils book.epub container --format raw
     ```
 
 - `package` - Display the package OPF file contents
@@ -44,8 +44,8 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
     # Show package.opf with syntax highlighting
     epub-utils book.epub package
 
-    # Show package.opf as plain text
-    epub-utils book.epub package --format text
+    # Show package.opf as raw content
+    epub-utils book.epub package --format raw
     ```
 
 - `toc` - Display the table of contents file contents
@@ -53,21 +53,71 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
     # Show toc.ncx/nav.xhtml with syntax highlighting
     epub-utils book.epub toc
 
-    # Show toc.ncx/nav.xhtml as plain text
-    epub-utils book.epub toc --format text
+    # Show toc.ncx/nav.xhtml as raw content
+    epub-utils book.epub toc --format raw
+    ```
+
+- `metadata` - Display the metadata information from the package file
+    ```bash
+    # Show metadata with syntax highlighting
+    epub-utils book.epub metadata
+
+    # Show metadata as key-value pairs
+    epub-utils book.epub metadata --format kv
+    ```
+
+- `manifest` - Display the manifest information from the package file
+    ```bash
+    # Show manifest with syntax highlighting
+    epub-utils book.epub manifest
+
+    # Show manifest as raw content
+    epub-utils book.epub manifest --format raw
+    ```
+
+- `spine` - Display the spine information from the package file
+    ```bash
+    # Show spine with syntax highlighting
+    epub-utils book.epub spine
+
+    # Show spine as raw content
+    epub-utils book.epub spine --format raw
+    ```
+
+- `content` - Display the content of a document by its manifest item ID
+    ```bash
+    # Show content with syntax highlighting
+    epub-utils book.epub content chapter1
+
+    # Show raw HTML/XML content
+    epub-utils book.epub content chapter1 --format raw
+    
+    # Show plain text content (HTML tags stripped)
+    epub-utils book.epub content chapter1 --format plain
     ```
 
 ### Options
 
 - `-h, --help` - Show help message and exit
 - `-v, --version` - Show program version and exit
-- `-fmt, --format` - Output format, either 'text' or 'xml' (default: xml)
+- `-fmt, --format` - Output format (default: xml)
+    - `xml` - Display with XML syntax highlighting (default)
+    - `raw` - Display raw content without formatting
+    - `plain` - Display plain text content (HTML tags stripped, for content command only)
+    - `kv` - Display key-value pairs (where supported)
+    
     ```bash
-    # Display as plain text
-    epub-utils book.epub package --format text
+    # Display as raw content
+    epub-utils book.epub package --format raw
     
     # Display with XML syntax highlighting (default)
     epub-utils book.epub package --format xml
+    
+    # Display as key-value pairs (for supported commands)
+    epub-utils book.epub metadata --format kv
+    
+    # Display plain text content (content command only)
+    epub-utils book.epub content chapter1 --format plain
     ```
 
 ## Use as a Python library
