@@ -48,6 +48,21 @@ Command Line Usage
     # Show table of contents
     epub-utils your-book.epub toc
 
+    # Show metadata as key-value pairs
+    epub-utils your-book.epub metadata --format kv
+
+    # Show manifest information
+    epub-utils your-book.epub manifest
+
+    # Show spine information
+    epub-utils your-book.epub spine
+
+    # Show content by manifest item ID
+    epub-utils your-book.epub content chapter1
+
+    # Show content as plain text (HTML tags stripped)
+    epub-utils your-book.epub content chapter1 --format plain
+
 Python Library Usage
 ~~~~~~~~~~~~~~~~~~
 
