@@ -4,7 +4,7 @@ Installation Guide
 System Requirements
 -------------------
 
-``epub-utils`` requires Python 3.8 or higher and works on:
+``epub-utils`` requires Python 3.10 or higher and works on:
 
 - **Linux** (Ubuntu 18.04+, Debian 10+, CentOS 7+, Fedora 30+)
 - **macOS** (10.14+)
@@ -69,7 +69,7 @@ Using conda
 .. code-block:: bash
 
    # Create conda environment
-   $ conda create -n epub-utils python=3.9
+   $ conda create -n epub-utils python=3.10
 
    # Activate environment
    $ conda activate epub-utils

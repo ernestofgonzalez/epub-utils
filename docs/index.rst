@@ -14,8 +14,7 @@ epub-utils: EPUB Inspection and Manipulation
    :alt: License
 
 **epub-utils** is a comprehensive Python library and command-line tool for working with EPUB files. 
-It provides both a programmatic API and an intuitive CLI interface for inspecting, parsing, and 
-manipulating EPUB metadata, content, and structure.
+It provides both a programmatic API and an intuitive CLI interface for inspecting and parsing EPUB archives.
 
 .. note::
    epub-utils supports **EPUB 2.0.1** and **EPUB 3.0+** specifications, ensuring compatibility 
@@ -24,23 +23,23 @@ manipulating EPUB metadata, content, and structure.
 Key Features
 ------------
 
-✨ **Rich CLI Interface**
+**Rich CLI Interface**
    - Syntax-highlighted XML output
    - Multiple output formats (XML, raw, key-value, plain text)
    - Comprehensive file inspection capabilities
 
-📚 **Complete EPUB Support**
+**Complete EPUB Support**
    - Parse container.xml and package files
    - Extract and display table of contents
    - Access manifest and spine information
    - Retrieve document content by ID
 
-🔍 **Metadata Extraction**
+**Metadata Extraction**
    - Dublin Core metadata support
    - EPUB-specific metadata fields
    - Key-value output for easy parsing
 
-🐍 **Python API**
+**Python API**
    - Clean, object-oriented interface
    - Lazy loading for performance
    - Comprehensive error handling
@@ -96,56 +95,20 @@ Why epub-utils?
 epub-utils fills a crucial gap in the Python ecosystem for EPUB file manipulation. While there are 
 libraries for creating EPUBs, few focus on inspection and analysis. This tool is perfect for:
 
-   **Publishers and Authors**
+**Publishers and Authors**
    Validate EPUB structure and metadata before distribution
 
-   **Digital Librarians**
+**Digital Librarians**
    Batch process and analyze EPUB collections
 
-   **Automation Scripts**
+**Automation Scripts**
    Extract metadata for catalogs and databases
 
-   **Debugging**
+**Debugging**
    Inspect malformed or problematic EPUB files
 
-   **Learning**
+**Learning**
    Understand EPUB structure and standards compliance
-
-Real-World Examples
--------------------
-
-**Scenario 1: Batch Metadata Extraction**
-
-.. code-block:: bash
-
-   # Extract titles from all EPUB files in a directory
-   for epub in *.epub; do
-       echo "$epub: $(epub-utils "$epub" metadata --format kv | grep 'title:')"
-   done
-
-**Scenario 2: Content Analysis**
-
-.. code-block:: python
-
-   from epub_utils import Document
-   import os
-
-   # Analyze all EPUBs in a directory
-   for filename in os.listdir('/path/to/epub/collection'):
-       if filename.endswith('.epub'):
-           doc = Document(filename)
-           print(f"{filename}:")
-           print(f"  Title: {doc.package.metadata.title}")
-           print(f"  Files: {len(doc.package.manifest.items)} items")
-           print(f"  Size: {os.path.getsize(filename)} bytes")
-
-**Scenario 3: Quality Assurance**
-
-.. code-block:: bash
-
-   # Validate EPUB structure
-   epub-utils suspicious-book.epub container
-   epub-utils suspicious-book.epub package --format raw | xmllint --format -
 
 Documentation Contents
 ----------------------
@@ -185,11 +148,4 @@ Community & Support
 License
 -------
 
-epub-utils is distributed under the `Apache License 2.0 <https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE>`_.
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+``epub-utils`` is distributed under the `Apache License 2.0 <https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE>`_.

@@ -15,14 +15,13 @@ release = '0.0.0a3'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.intersphinx',
-    'sphinx_copybutton',
-    'sphinx_issues',
-    'myst_parser',
+	'sphinx.ext.autodoc',
+	'sphinx.ext.autosummary',
+	'sphinx.ext.napoleon',
+	'sphinx.ext.viewcode',
+	'sphinx_copybutton',
+	'sphinx_issues',
+	'myst_parser',
 ]
 
 templates_path = ['_templates']
@@ -41,8 +40,8 @@ autosummary_generate = True
 
 # -- Intersphinx mapping -----------------------------------------------------
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3', None),
-    'lxml': ('https://lxml.de/', None),
+	'python': ('https://docs.python.org/3', None),
+	'lxml': ('https://lxml.de/', None),
 }
 
 

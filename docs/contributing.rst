@@ -192,17 +192,12 @@ Example of properly formatted code:
 Linting
 -------
 
-We use **flake8** for linting:
+We use **ruff** for linting:
 
 .. code-block:: bash
 
     # Check for linting errors
-    flake8 src/ tests/
-    
-    # Configuration in setup.cfg or pyproject.toml
-    [flake8]
-    max-line-length = 88
-    extend-ignore = E203, W503
+    make lint
 
 Type Hints
 ----------
@@ -316,30 +311,19 @@ Use pytest for all tests:
     from epub_utils import Document
     from pathlib import Path
 
-    class TestDocument:
-        """Test Document class functionality."""
-        
-        def setup_method(self):
-            """Set up test fixtures."""
-            self.test_epub = Path("tests/fixtures/sample.epub")
+
+    def test_document_with_invalid_file():
+        """Test error handling with invalid file."""
+        with pytest.raises(FileNotFoundError):
+            Document("nonexistent.epub")
             
-        def test_document_creation(self):
-            """Test creating a Document instance."""
-            doc = Document(str(self.test_epub))
-            assert doc is not None
-            assert len(doc.metadata) > 0
-            
-        def test_document_with_invalid_file(self):
-            """Test error handling with invalid file."""
-            with pytest.raises(FileNotFoundError):
-                Document("nonexistent.epub")
-                
-        @pytest.mark.parametrize("format_type", ["dict", "xml", "json"])
-        def test_metadata_formats(self, format_type):
-            """Test different metadata formats."""
-            doc = Document(str(self.test_epub))
-            metadata = doc.get_metadata(format_type=format_type)
-            assert metadata is not None
+
+    @pytest.mark.parametrize("format_type", ["dict", "xml", "json"])
+    def test_metadata_formats(doc_path, format_type):
+        """Test different metadata formats."""
+        doc = Document(str(doc_path)
+        metadata = doc.get_metadata(format_type=format_type)
+        assert metadata is not None
 
 Test Fixtures
 -------------
@@ -352,11 +336,13 @@ Create test EPUB files in ``tests/fixtures/``:
     import pytest
     from pathlib import Path
 
+
     @pytest.fixture
     def sample_epub():
         """Provide path to sample EPUB for testing."""
         return Path(__file__).parent / "fixtures" / "sample.epub"
-        
+
+
     @pytest.fixture
     def invalid_epub():
         """Provide path to invalid EPUB for error testing."""
@@ -368,19 +354,10 @@ Running Tests
 .. code-block:: bash
 
     # Run all tests
-    pytest
-    
-    # Run with verbose output
-    pytest -v
+    make test
     
     # Run specific test file
     pytest tests/test_document.py
-    
-    # Run specific test
-    pytest tests/test_document.py::TestDocument::test_document_creation
-    
-    # Run with coverage
-    pytest --cov=epub_utils --cov-report=html
 
 Types of Contributions
 ======================
@@ -390,10 +367,10 @@ Bug Reports
 
 When reporting bugs:
 
-1. **Check existing issues** first
-2. **Use the issue template** if available
-3. **Provide minimal reproduction case**
-4. **Include system information**
+1. Check existing issues first
+2. Use the issue template if available
+3. Provide minimal reproduction case
+4. Include system information
 
 .. code-block:: text
 
@@ -424,33 +401,33 @@ Feature Requests
 
 For new features:
 
-1. **Describe the use case** clearly
-2. **Explain why it's valuable** to users
-3. **Suggest implementation approach** if you have ideas
-4. **Consider backward compatibility**
+1. Describe the use case clearly
+2. Explain why it's valuable to users
+3. Suggest implementation approach if you have ideas
+4. Consider backward compatibility
 
 Documentation Improvements
 --------------------------
 
 Documentation contributions are highly valued:
 
-- **Fix typos** and grammar errors
-- **Improve clarity** of explanations
-- **Add more examples** to existing docs
-- **Create new tutorials** for common use cases
-- **Update outdated information**
+- Fix typos and grammar errors
+- Improve clarity of explanations
+- Add more examples to existing docs
+- Create new tutorials for common use cases
+- Update outdated information
 
 Code Contributions
 ------------------
 
 Areas where contributions are welcome:
 
-1. **Performance improvements**
-2. **New output formats**
-3. **Additional EPUB validation**
-4. **Better error handling**
-5. **CLI usability enhancements**
-6. **Support for EPUB 3 features**
+1. Performance improvements
+2. New output formats
+3. Additional EPUB validation
+4. Better error handling
+5. CLI usability enhancements
+6. Support for EPUB 3 features
 
 Release Process
 ===============
@@ -460,98 +437,12 @@ Versioning
 
 We follow `Semantic Versioning <https://semver.org/>`_:
 
-- **MAJOR**: Incompatible API changes
-- **MINOR**: New functionality (backward compatible)
-- **PATCH**: Bug fixes (backward compatible)
+- MAJOR: Incompatible API changes
+- MINOR: New functionality (backward compatible)
+- PATCH: Bug fixes (backward compatible)
 
 Version format: ``MAJOR.MINOR.PATCH`` (e.g., ``1.2.3``)
 
 Development versions may include additional identifiers:
 - ``1.2.3-dev`` (development)
 - ``1.2.3rc1`` (release candidate)
-
-Changelog
----------
-
-Update ``CHANGELOG.md`` with:
-
-- **Added**: New features
-- **Changed**: Changes in existing functionality
-- **Deprecated**: Soon-to-be removed features
-- **Removed**: Removed features
-- **Fixed**: Bug fixes
-- **Security**: Security vulnerabilities
-
-Example entry:
-
-.. code-block:: markdown
-
-    ## [1.2.0] - 2024-05-25
-    
-    ### Added
-    - New `--batch` option for processing multiple files
-    - Support for EPUB 3.3 navigation documents
-    - JSON output format for metadata
-    
-    ### Fixed
-    - Handle corrupted ZIP files gracefully
-    - Fix Unicode encoding issues on Windows
-    
-    ### Changed
-    - Improved error messages for invalid EPUB files
-
-Community Guidelines
-====================
-
-Code of Conduct
----------------
-
-We are committed to providing a welcoming and inclusive environment:
-
-- **Be respectful** and considerate
-- **Be collaborative** and helpful
-- **Focus on what's best** for the project and community
-- **Show empathy** towards other community members
-
-Communication
--------------
-
-- **GitHub Issues**: Bug reports and feature requests
-- **Pull Requests**: Code review and discussion
-- **Documentation**: Examples and tutorials
-
-Recognition
------------
-
-Contributors will be recognized in:
-
-- **CHANGELOG.md**: For significant contributions
-- **README.md**: In the contributors section
-- **Release notes**: For major features
-
-Getting Help
-============
-
-If you need help with contributing:
-
-1. **Check this guide** first
-2. **Look at existing issues** and pull requests
-3. **Ask questions** in GitHub issues
-4. **Start with small contributions** to get familiar
-
-Mentorship
-----------
-
-New contributors are welcome! If you're new to open source:
-
-- **Start with documentation** improvements
-- **Look for "good first issue"** labels
-- **Ask for guidance** - maintainers are happy to help
-- **Don't be afraid** to make mistakes
-
-Thank You!
-==========
-
-Every contribution, no matter how small, helps make ``epub-utils`` better for everyone. Whether you're fixing a typo, reporting a bug, or implementing a new feature, your efforts are appreciated!
-
-Happy contributing!

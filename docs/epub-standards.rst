@@ -253,7 +253,7 @@ Format Evolution
 +==================+=========================+=========================+
 | Navigation       | NCX file required       | XHTML nav document      |
 +------------------+-------------------------+-------------------------+
-| Content Types    | XHTML 1.1, limited     | XHTML5, SVG, MathML     |
+| Content Types    | XHTML 1.1, limited      | XHTML5, SVG, MathML     |
 +------------------+-------------------------+-------------------------+
 | Metadata         | Dublin Core only        | Enhanced metadata       |
 +------------------+-------------------------+-------------------------+
@@ -334,7 +334,7 @@ Testing and Validation Tools
 ============================
 
 External Validators
-------------------
+-------------------
 
 - **EPUBCheck**: Official EPUB validator
 - **Ace by DAISY**: Accessibility checker
@@ -388,14 +388,14 @@ Official Specifications
 - `EPUB Open Container Format 3.0.1 <https://www.w3.org/TR/epub-ocf-301/>`_
 
 Validation Tools
----------------
+----------------
 
 - `EPUBCheck <https://github.com/w3c/epubcheck>`_
 - `Ace Accessibility Checker <https://github.com/daisy/ace>`_
 - `EPUB Validator <https://validator.idpf.org/>`_
 
 Developer Resources
-------------------
+-------------------
 
 - `EPUB 3 Best Practices <https://www.w3.org/TR/epub-bp/>`_
 - `IDPF EPUB Resources <http://idpf.org/epub/31/spec/>`_

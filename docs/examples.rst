@@ -1,5 +1,5 @@
 Examples and Use Cases
-=====================
+======================
 
 This page showcases real-world examples of using epub-utils for various tasks. Each example 
 includes both CLI and Python API approaches where applicable.
@@ -729,7 +729,7 @@ Automated EPUB Processing Pipeline
    results = processor.process_new_files()
 
 Command-Line Power User Examples
--------------------------------
+--------------------------------
 
 Advanced Shell Scripts
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -858,4 +858,4 @@ Advanced Shell Scripts
    find "$EPUB_DIR" -name "*.epub" -type f | \
    xargs -n 1 -P $MAX_JOBS -I {} bash -c 'check_single_epub "$@"' _ {}
 
-These examples demonstrate the power and flexibility of epub-utils for various real-world scenarios. Whether you're managing a digital library, performing quality assurance, or building automated workflows, epub-utils provides the tools you need to work effectively with EPUB files.
+These examples demonstrate the power and flexibility of ``epub-utils`` for various real-world scenarios. Whether you're managing a digital library, performing quality assurance, or building automated workflows, epub-utils provides the tools you need to work effectively with EPUB files.
