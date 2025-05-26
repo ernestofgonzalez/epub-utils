@@ -1,5 +1,5 @@
 Use as a Python library
-================
+=======================
 
 This guide covers using ``epub-utils`` as a Python library. The API is designed to be intuitive 
 and follows Python best practices for ease of use and integration into your projects.

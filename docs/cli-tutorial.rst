@@ -1,5 +1,5 @@
 Use as a command-line tool
-============
+==========================
 
 This tutorial will guide you through using ``epub-utils`` from the command line. We'll cover all 
 available commands with practical examples and tips for everyday usage.
