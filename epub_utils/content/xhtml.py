@@ -4,7 +4,7 @@ from lxml import etree
 
 from epub_utils.content.base import Content
 from epub_utils.exceptions import ParseError
-from epub_utils.highlighters import highlight_xml
+from epub_utils.printers import highlight_xml
 
 
 class XHTMLContent(Content):

@@ -4,7 +4,7 @@ except ImportError:
 	import xml.etree.ElementTree as etree
 
 from epub_utils.exceptions import ParseError
-from epub_utils.highlighters import highlight_xml
+from epub_utils.printers import highlight_xml
 
 
 class Manifest:

@@ -1,4 +1,4 @@
-from epub_utils.highlighters import highlight_xml
+from epub_utils.printers import highlight_xml
 
 
 class TableOfContents:

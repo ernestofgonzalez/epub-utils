@@ -29,7 +29,7 @@ except ImportError:
 	import xml.etree.ElementTree as etree
 
 from epub_utils.exceptions import ParseError
-from epub_utils.highlighters import highlight_xml
+from epub_utils.printers import highlight_xml, pretty_print_xml
 
 
 class Container:
@@ -61,8 +61,16 @@ class Container:
 	def to_str(self) -> str:
 		return str(self)
 
-	def to_xml(self, highlight_syntax=True) -> str:
-		return highlight_xml(self.xml_content)
+	def to_xml(self, highlight_syntax=True, pretty_print=False) -> str:
+		xml_content = self.xml_content
+
+		if pretty_print:
+			xml_content = pretty_print_xml(xml_content)
+
+		if highlight_syntax:
+			xml_content = highlight_xml(xml_content)
+
+		return xml_content
 
 	def _find_rootfile_element(self, root: etree.Element) -> etree.Element:
 		"""
