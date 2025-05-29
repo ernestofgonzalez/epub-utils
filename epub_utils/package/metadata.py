@@ -96,8 +96,20 @@ class Metadata:
 	def to_str(self) -> str:
 		return str(self)
 
-	def to_xml(self, highlight_syntax=True) -> str:
-		return highlight_xml(self.xml_content)
+	def to_xml(self, highlight_syntax=True, pretty_print=False) -> str:
+		xml_content = self.xml_content
+
+		if pretty_print:
+			from epub_utils.printers import pretty_print_xml
+
+			xml_content = pretty_print_xml(xml_content)
+
+		if highlight_syntax:
+			from epub_utils.printers import highlight_xml
+
+			xml_content = highlight_xml(xml_content)
+
+		return xml_content
 
 	def _get_text(self, root: etree.Element, xpath: str) -> str:
 		element = root.find(xpath)

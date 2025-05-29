@@ -31,9 +31,19 @@ class XHTMLContent(Content):
 	def to_str(self) -> str:
 		return str(self)
 
-	def to_xml(self, highlight_syntax=True) -> str:
+	def to_xml(self, highlight_syntax=True, pretty_print=False) -> str:
 		"""Return syntax-highlighted XML content."""
-		return highlight_xml(self.xml_content)
+		xml_content = self.xml_content
+
+		if pretty_print:
+			from epub_utils.printers import pretty_print_xml
+
+			xml_content = pretty_print_xml(xml_content)
+
+		if highlight_syntax:
+			xml_content = highlight_xml(xml_content)
+
+		return xml_content
 
 	def to_plain(self) -> str:
 		return self.inner_text
