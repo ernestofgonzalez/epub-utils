@@ -18,5 +18,6 @@ def pretty_print_xml(xml_content: str) -> str:
 			xml_content = xml_content.encode('utf-8')
 		root = etree.fromstring(xml_content)
 		xml_content = etree.tostring(root, pretty_print=True, encoding='unicode')
+		return xml_content
 	except etree.ParseError:
 		return xml_content
