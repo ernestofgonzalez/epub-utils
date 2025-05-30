@@ -210,14 +210,7 @@ def content(ctx, item_id, format, pretty_print):
 			click.echo(content.to_str())
 		elif format == 'xml':
 			if hasattr(content, 'to_xml'):
-				# Check if the to_xml method supports pretty_print parameter
-				import inspect
-
-				sig = inspect.signature(content.to_xml)
-				if 'pretty_print' in sig.parameters:
-					click.echo(content.to_xml(pretty_print=pretty_print))
-				else:
-					click.echo(content.to_xml())
+				click.echo(content.to_xml(pretty_print=pretty_print))
 			else:
 				click.echo(content.to_str())
 		elif format == 'plain':
