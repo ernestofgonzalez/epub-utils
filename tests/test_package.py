@@ -117,3 +117,25 @@ def test_epub1():
 def test_invalid_version():
 	with pytest.raises(ValueError, match='Unsupported epub version: 4'):
 		package = Package(INVALID_VERSION)
+
+
+@pytest.mark.parametrize(
+	'xml_content,pretty_print,expected',
+	[
+		(
+			'<?xml version="1.0"?>\n<package xmlns="http://www.idpf.org/2007/opf" version="3.0">\n\n    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n\n        <dc:title>Sample EPUB</dc:title>\n    </metadata>\n</package>',
+			False,
+			'<?xml version="1.0"?>\n<package xmlns="http://www.idpf.org/2007/opf" version="3.0">\n\n    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n\n        <dc:title>Sample EPUB</dc:title>\n    </metadata>\n</package>',
+		),
+		(
+			'<?xml version="1.0"?>\n<package xmlns="http://www.idpf.org/2007/opf" version="3.0">\n\n    <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n\n        <dc:title>Sample EPUB</dc:title>\n    </metadata>\n</package>',
+			True,
+			'<?xml version="1.0"?>\n<package xmlns="http://www.idpf.org/2007/opf" version="3.0">\n  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n    <dc:title>Sample EPUB</dc:title>\n  </metadata>\n</package>\n',
+		),
+	],
+)
+def test_package_to_str_pretty_print_parameter(xml_content, pretty_print, expected):
+	"""Test XML output with and without pretty printing for Package."""
+	package = Package(xml_content)
+
+	assert package.to_str(pretty_print=pretty_print) == expected

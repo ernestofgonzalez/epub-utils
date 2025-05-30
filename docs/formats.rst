@@ -15,6 +15,8 @@ All commands in ``epub-utils`` support the ``--format`` option with these values
 - ``plain`` - Plain text with HTML tags stripped (content command only)
 - ``table`` - Formatted table (files command only)
 
+Additionally, most commands support the ``--pretty-print`` option to format XML output with proper indentation and structure.
+
 XML Format (Default)
 --------------------
 
@@ -391,6 +393,60 @@ You can create custom output formats by post-processing the raw output:
        fi
    done
 
+Pretty-Print Option
+-------------------
+
+The ``--pretty-print`` (or ``-pp``) option enhances XML output by adding proper indentation and structure, making it more readable for human inspection.
+
+**When to use**: Human review, debugging XML structure, cleaner output for documentation
+
+**Supported formats**: ``xml`` and ``raw``
+
+**Example without pretty-print**:
+
+.. code-block:: bash
+
+   $ epub-utils book.epub metadata --format raw
+
+**Output**:
+
+.. code-block:: xml
+
+   <?xml version="1.0" encoding="UTF-8"?><metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf"><dc:title>The Great Gatsby</dc:title><dc:creator>F. Scott Fitzgerald</dc:creator><dc:language>en</dc:language></metadata>
+
+**Example with pretty-print**:
+
+.. code-block:: bash
+
+   $ epub-utils book.epub metadata --format raw --pretty-print
+
+**Output**:
+
+.. code-block:: xml
+
+   <?xml version="1.0" encoding="UTF-8"?>
+   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" 
+             xmlns:opf="http://www.idpf.org/2007/opf">
+     <dc:title>The Great Gatsby</dc:title>
+     <dc:creator>F. Scott Fitzgerald</dc:creator>
+     <dc:language>en</dc:language>
+   </metadata>
+
+**Use cases**:
+
+.. code-block:: bash
+
+   # Better readability for manual inspection
+   epub-utils book.epub package --pretty-print
+   
+   # Clean output for documentation or examples
+   epub-utils book.epub container --format raw --pretty-print
+   
+   # Pipe to file with proper formatting
+   epub-utils book.epub toc --pretty-print > toc-formatted.xml
+
+**Note**: Pretty-print has no effect on ``kv``, ``plain``, or ``table`` formats as these are already optimized for readability.
+
 Best Practices
 --------------
 
@@ -398,8 +454,9 @@ Best Practices
 2. **Use raw for scripting** - it's the most reliable for automation
 3. **Use kv for metadata extraction** - it's purpose-built for simple parsing
 4. **Use plain for content analysis** - it removes HTML complexity
-5. **Always handle errors** - EPUB files can be malformed
-6. **Test with various EPUB files** - format output can vary with different EPUB structures
+5. **Use pretty-print for human review** - it makes XML structure clearer
+6. **Always handle errors** - EPUB files can be malformed
+7. **Test with various EPUB files** - format output can vary with different EPUB structures
 
 These format options make epub-utils flexible enough to handle everything from quick 
 interactive inspection to complex automated workflows.

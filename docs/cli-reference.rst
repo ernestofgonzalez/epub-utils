@@ -19,10 +19,13 @@ Global Options
 ``-v, --version``
    Show program version and exit
 
+``-pp, --pretty-print``
+   Pretty-print XML output with proper indentation (applies to xml and raw formats only)
+
 Commands
 --------
 
-All commands operate on an EPUB file and support the ``--format`` option unless otherwise noted.
+All commands operate on an EPUB file and support the ``--format`` and ``--pretty-print`` options unless otherwise noted.
 
 container
 ~~~~~~~~~
@@ -33,7 +36,7 @@ Display the container.xml file contents.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE container [--format FORMAT]
+   epub-utils EPUB_FILE container [--format FORMAT] [--pretty-print]
 
 **Description**:
 The container command shows the contents of META-INF/container.xml, which defines the 
@@ -49,6 +52,13 @@ location of the main package file within the EPUB.
    epub-utils book.epub container
 
    # Show raw container XML
+   epub-utils book.epub container --format raw
+   
+   # Show container with pretty formatting
+   epub-utils book.epub container --pretty-print
+   
+   # Combine both options
+   epub-utils book.epub container --format raw --pretty-print
    epub-utils book.epub container --format raw
 
 **Sample output**:
@@ -71,7 +81,7 @@ Display the main package (OPF) file contents.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE package [--format FORMAT]
+   epub-utils EPUB_FILE package [--format FORMAT] [--pretty-print]
 
 **Description**:
 The package command shows the complete OPF (Open Packaging Format) file, which contains 
@@ -88,6 +98,9 @@ metadata, manifest, and spine information.
 
    # Show raw package XML for processing
    epub-utils book.epub package --format raw | xmllint --format -
+   
+   # Show package with pretty formatting
+   epub-utils book.epub package --pretty-print
 
 toc
 ~~~
@@ -98,7 +111,7 @@ Display the table of contents file.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE toc [--format FORMAT]
+   epub-utils EPUB_FILE toc [--format FORMAT] [--pretty-print]
 
 **Description**:
 Shows the table of contents, which can be either an NCX file (EPUB 2.x) or a 
@@ -115,6 +128,9 @@ Navigation Document (EPUB 3.x).
 
    # Extract navigation structure
    epub-utils book.epub toc --format raw
+   
+   # Show TOC with pretty formatting
+   epub-utils book.epub toc --pretty-print
 
 metadata
 ~~~~~~~~
@@ -125,7 +141,7 @@ Display metadata information from the package file.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE metadata [--format FORMAT]
+   epub-utils EPUB_FILE metadata [--format FORMAT] [--pretty-print]
 
 **Description**:
 Extracts and displays Dublin Core and EPUB-specific metadata from the package file.
@@ -144,6 +160,9 @@ Extracts and displays Dublin Core and EPUB-specific metadata from the package fi
 
    # Raw metadata XML
    epub-utils book.epub metadata --format raw
+   
+   # Show metadata with pretty formatting
+   epub-utils book.epub metadata --pretty-print
 
 **Key-value output format**:
 
@@ -166,7 +185,7 @@ Display the manifest section from the package file.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE manifest [--format FORMAT]
+   epub-utils EPUB_FILE manifest [--format FORMAT] [--pretty-print]
 
 **Description**:
 Shows the manifest, which lists all files included in the EPUB package with their 
@@ -183,6 +202,10 @@ IDs, file paths, and media types.
 
    # Find all CSS files
    epub-utils book.epub manifest --format raw | grep 'media-type="text/css"'
+   
+   # Show manifest with pretty formatting
+   epub-utils book.epub manifest --pretty-print
+   epub-utils book.epub manifest --format raw | grep 'media-type="text/css"'
 
    # Count content files
    epub-utils book.epub manifest --format raw | grep -c 'application/xhtml+xml'
@@ -196,7 +219,7 @@ Display the spine section from the package file.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE spine [--format FORMAT]
+   epub-utils EPUB_FILE spine [--format FORMAT] [--pretty-print]
 
 **Description**:
 Shows the spine, which defines the default reading order of the book's content.
@@ -212,6 +235,9 @@ Shows the spine, which defines the default reading order of the book's content.
 
    # Extract reading order
    epub-utils book.epub spine --format raw
+   
+   # Show spine with pretty formatting
+   epub-utils book.epub spine --pretty-print
 
 content
 ~~~~~~~
@@ -222,7 +248,7 @@ Display the content of a document by its manifest item ID.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE content ITEM_ID [--format FORMAT]
+   epub-utils EPUB_FILE content ITEM_ID [--format FORMAT] [--pretty-print]
 
 **Description**:
 Extracts and displays the content of a specific document within the EPUB, identified 
@@ -245,6 +271,9 @@ by its manifest item ID.
 
    # Extract plain text (no HTML tags)
    epub-utils book.epub content chapter2 --format plain
+   
+   # Show content with pretty formatting
+   epub-utils book.epub content chapter1 --pretty-print
 
 **Finding item IDs**:
 
@@ -302,7 +331,7 @@ including sizes, compression ratios, and modification dates.
 Format Options
 --------------
 
-Most commands support the ``--format`` option to control output formatting:
+Most commands support the ``--format`` and ``--pretty-print`` options to control output formatting:
 
 ``xml`` (default for most commands)
    Syntax-highlighted, formatted XML output
@@ -318,6 +347,24 @@ Most commands support the ``--format`` option to control output formatting:
 
 ``table`` (files command only)
    Formatted table with aligned columns
+
+Pretty Print Option
+~~~~~~~~~~~~~~~~~~~
+
+The ``--pretty-print`` (or ``-pp``) option formats XML output with proper indentation and structure:
+
+.. code-block:: bash
+
+   # Default output (with syntax highlighting but compact)
+   epub-utils book.epub metadata
+   
+   # Pretty-printed output (with proper indentation)
+   epub-utils book.epub metadata --pretty-print
+   
+   # Combine with raw format for clean, formatted XML
+   epub-utils book.epub package --format raw --pretty-print
+
+**Note**: The pretty-print option applies to both ``xml`` and ``raw`` formats, but has no effect on ``kv``, ``plain``, or ``table`` formats.
 
 Exit Codes
 ----------

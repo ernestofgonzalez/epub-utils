@@ -4,7 +4,7 @@ from lxml import etree
 
 from epub_utils.content.base import Content
 from epub_utils.exceptions import ParseError
-from epub_utils.highlighters import highlight_xml
+from epub_utils.printers import XMLPrinter
 
 
 class XHTMLContent(Content):
@@ -25,15 +25,16 @@ class XHTMLContent(Content):
 
 		self._parse(xml_content)
 
+		self._printer = XMLPrinter(self)
+
 	def __str__(self) -> str:
 		return self.xml_content
 
-	def to_str(self) -> str:
-		return str(self)
+	def to_str(self, *args, **kwargs) -> str:
+		return self._printer.to_str(*args, **kwargs)
 
-	def to_xml(self, highlight_syntax=True) -> str:
-		"""Return syntax-highlighted XML content."""
-		return highlight_xml(self.xml_content)
+	def to_xml(self, *args, **kwargs) -> str:
+		return self._printer.to_xml(*args, **kwargs)
 
 	def to_plain(self) -> str:
 		return self.inner_text

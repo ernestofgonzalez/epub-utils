@@ -48,3 +48,25 @@ def test_metadata_validate_missing_identifier_with_raise_exception():
 		ValueError, match='Invalid metadata element: identifier: This field is required'
 	):
 		Metadata(INVALID_METADATA_XML)._validate(raise_exception=True)
+
+
+@pytest.mark.parametrize(
+	'xml_content,pretty_print,expected',
+	[
+		(
+			'<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n    <dc:title>Test Book</dc:title>\n\n    <dc:creator>Test Author</dc:creator>\n\n    <dc:identifier>test-id-123</dc:identifier>\n</metadata>',
+			False,
+			'<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n    <dc:title>Test Book</dc:title>\n\n    <dc:creator>Test Author</dc:creator>\n\n    <dc:identifier>test-id-123</dc:identifier>\n</metadata>',
+		),
+		(
+			'<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n    <dc:title>Test Book</dc:title>\n\n    <dc:creator>Test Author</dc:creator>\n\n    <dc:identifier>test-id-123</dc:identifier>\n</metadata>',
+			True,
+			'<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">\n  <dc:title>Test Book</dc:title>\n  <dc:creator>Test Author</dc:creator>\n  <dc:identifier>test-id-123</dc:identifier>\n</metadata>\n',
+		),
+	],
+)
+def test_metadata_to_str_pretty_print_parameter(xml_content, pretty_print, expected):
+	"""Test XML output with and without pretty printing for Metadata."""
+	metadata = Metadata(xml_content)
+
+	assert metadata.to_str(pretty_print=pretty_print) == expected

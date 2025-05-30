@@ -1,3 +1,5 @@
+import pytest
+
 from epub_utils.package.manifest import Manifest
 
 VALID_MANIFEST_XML = """
@@ -61,3 +63,25 @@ def test_find_by_media_type():
 	xhtml_items = manifest.find_by_media_type('application/xhtml+xml')
 	assert len(xhtml_items) == 2
 	assert all(item['media_type'] == 'application/xhtml+xml' for item in xhtml_items)
+
+
+@pytest.mark.parametrize(
+	'xml_content,pretty_print,expected',
+	[
+		(
+			'<manifest xmlns="http://www.idpf.org/2007/opf">\n    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>\n\n    <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>\n</manifest>',
+			False,
+			'<manifest xmlns="http://www.idpf.org/2007/opf">\n    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>\n\n    <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>\n</manifest>',
+		),
+		(
+			'<manifest xmlns="http://www.idpf.org/2007/opf">\n    <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>\n\n    <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>\n</manifest>',
+			True,
+			'<manifest xmlns="http://www.idpf.org/2007/opf">\n  <item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>\n  <item id="chapter1" href="chapter1.xhtml" media-type="application/xhtml+xml"/>\n</manifest>\n',
+		),
+	],
+)
+def test_manifest_to_str_pretty_print_parameter(xml_content, pretty_print, expected):
+	"""Test XML output with and without pretty printing for Manifest."""
+	manifest = Manifest(xml_content)
+
+	assert manifest.to_str(pretty_print=pretty_print) == expected
