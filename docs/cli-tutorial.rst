@@ -204,10 +204,10 @@ Extract content from specific documents using their manifest ID:
    # Then extract specific content
    epub-utils book.epub content intro --format plain
 
-File Listing
-~~~~~~~~~~~~
+File Listing and Content Access
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Get detailed information about all files in the EPUB:
+Get detailed information about all files in the EPUB, or access specific file content:
 
 .. code-block:: bash
 
@@ -216,6 +216,26 @@ Get detailed information about all files in the EPUB:
 
    # Raw file list
    epub-utils book.epub files --format raw
+
+   # Display content of a specific file by path
+   epub-utils book.epub files OEBPS/chapter1.xhtml
+
+   # Access different file types
+   epub-utils book.epub files META-INF/container.xml
+   epub-utils book.epub files OEBPS/styles/main.css
+   epub-utils book.epub files OEBPS/images/cover.jpg
+
+   # Different output formats for XHTML content
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format raw
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format xml --pretty-print
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format plain
+
+**Key advantages of the files command**:
+
+- Access any file in the EPUB archive by its path
+- No need to know manifest item IDs
+- Works with all file types (XHTML, CSS, XML, images, etc.)
+- Complements the ``content`` command which uses manifest IDs
 
 Content Analysis
 ~~~~~~~~~~~~~~~~

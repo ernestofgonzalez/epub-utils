@@ -172,3 +172,36 @@ class Document:
 
 		files_info.sort(key=lambda x: x['path'])
 		return files_info
+
+	def get_file_by_path(self, file_path: str):
+		"""
+		Retrieve a file from the EPUB archive by its path.
+
+		Args:
+		    file_path (str): Path to the file within the EPUB archive.
+
+		Returns:
+		    XHTMLContent or str: For XHTML files, returns XHTMLContent object.
+		                        For other files, returns raw content as string.
+
+		Raises:
+		    ValueError: If the file is missing from the EPUB archive.
+		"""
+		file_content = self._read_file_from_epub(file_path)
+
+		if file_path.lower().endswith(('.xhtml', '.html', '.htm')):
+			media_type = 'application/xhtml+xml'
+
+			try:
+				for item in self.package.manifest.items:
+					manifest_path = os.path.join(self._Document__package_href, item['href'])
+					if os.path.normpath(manifest_path) == os.path.normpath(file_path):
+						media_type = item.get('media_type', 'application/xhtml+xml')
+						break
+			except:
+				pass
+
+			return XHTMLContent(file_content, media_type, file_path)
+		else:
+
+			return file_content

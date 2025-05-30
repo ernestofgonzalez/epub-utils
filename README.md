@@ -102,6 +102,27 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
     epub-utils book.epub content chapter1 --format plain
     ```
 
+- `files` - List all files in the EPUB archive or display content of a specific file
+    ```bash
+    # List all files in table format (default)
+    epub-utils book.epub files
+
+    # List all files as simple paths
+    epub-utils book.epub files --format raw
+
+    # Display content of a specific file by path
+    epub-utils book.epub files OEBPS/chapter1.xhtml
+
+    # Display XHTML file content in different formats
+    epub-utils book.epub files OEBPS/chapter1.xhtml --format raw
+    epub-utils book.epub files OEBPS/chapter1.xhtml --format xml --pretty-print
+    epub-utils book.epub files OEBPS/chapter1.xhtml --format plain
+
+    # Display non-XHTML files (CSS, images, etc.)
+    epub-utils book.epub files OEBPS/styles/main.css
+    epub-utils book.epub files META-INF/container.xml
+    ```
+
 ### Options
 
 - `-h, --help` - Show help message and exit

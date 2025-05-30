@@ -288,17 +288,27 @@ by its manifest item ID.
 files
 ~~~~~
 
-List all files in the EPUB archive with metadata.
+List all files in the EPUB archive with metadata, or display content of a specific file.
 
 **Syntax**:
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE files [--format FORMAT]
+   epub-utils EPUB_FILE files [FILE_PATH] [--format FORMAT] [--pretty-print]
 
 **Description**:
-Provides detailed information about all files contained within the EPUB archive, 
-including sizes, compression ratios, and modification dates.
+When used without a file path, provides detailed information about all files contained 
+within the EPUB archive, including sizes, compression ratios, and modification dates.
+
+When used with a file path, displays the content of the specified file within the EPUB archive.
+
+**Supported formats**: 
+
+- For file listing: ``table`` (default), ``raw``
+- For file content: ``raw``, ``xml`` (default), ``plain``, ``kv``
+
+**Arguments**:
+- ``FILE_PATH`` (optional): Path to a specific file within the EPUB archive
 
 **Supported formats**: ``table`` (default), ``raw``
 
@@ -306,7 +316,7 @@ including sizes, compression ratios, and modification dates.
 
 .. code-block:: bash
 
-   # Show formatted file table
+   # List all files in table format (default)
    epub-utils book.epub files
 
    # Get simple file list
@@ -314,6 +324,24 @@ including sizes, compression ratios, and modification dates.
 
    # Count total files
    epub-utils book.epub files --format raw | wc -l
+
+   # Display content of a specific XHTML file
+   epub-utils book.epub files OEBPS/chapter1.xhtml
+
+   # Display XHTML file in different formats
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format raw
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format xml --pretty-print
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format plain
+
+   # Display non-XHTML files (CSS, etc.)
+   epub-utils book.epub files OEBPS/styles/main.css
+
+**Key differences from content command**:
+
+- ``files`` uses file paths within the EPUB archive
+- ``content`` uses manifest item IDs
+- ``files`` can access any file, including CSS, XML, and image files
+- ``content`` only accesses files listed in the manifest
 
 **Sample table output**:
 
