@@ -140,7 +140,7 @@ The plain text format strips HTML tags and returns readable text content.
 
 **When to use**: Content analysis, word counting, text extraction
 
-**Supported commands**: ``content``
+**Supported commands**: ``content``, ``files`` (with file path)
 
 **Example**:
 
@@ -163,17 +163,21 @@ The plain text format strips HTML tags and returns readable text content.
 
 .. code-block:: bash
 
-   # Count words in a chapter
+   # Count words in a chapter (using content command)
    word_count=$(epub-utils book.epub content chapter1 --format plain | wc -w)
    echo "Chapter 1 has $word_count words"
 
-   # Extract all text for analysis
-   epub-utils book.epub content intro --format plain > intro.txt
+   # Extract all text for analysis (using files command)
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format plain > chapter1.txt
 
-   # Search for specific content
-   if epub-utils book.epub content chapter2 --format plain | grep -q "important phrase"; then
+   # Search for specific content in any file
+   if epub-utils book.epub files OEBPS/chapter2.xhtml --format plain | grep -q "important phrase"; then
        echo "Found the phrase in chapter 2"
    fi
+
+   # Access files by path without knowing manifest IDs
+   epub-utils book.epub files OEBPS/styles/main.css
+   epub-utils book.epub files META-INF/container.xml
 
 Table Format
 ------------
@@ -265,11 +269,14 @@ Here's a quick reference for which formats each command supports:
      - ✓
      - ✗
    * - ``files``
-     - ✗
+     - ✓*
      - ✓
      - ✗
-     - ✗
-     - ✓
+     - ✓*
+     - ✓*
+
+.. note::
+   \* For the ``files`` command: ``xml``, ``plain``, and ``table`` formats are only available when specifying a file path. When listing files (no path specified), only ``table`` and ``raw`` formats are supported.
 
 Advanced Format Usage
 ---------------------

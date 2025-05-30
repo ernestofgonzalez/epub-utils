@@ -227,23 +227,79 @@ def content(ctx, item_id, format, pretty_print):
 
 
 @main.command()
+@click.argument('file_path', required=False)
 @click.option(
 	'-fmt',
 	'--format',
-	type=click.Choice(['table', 'raw'], case_sensitive=False),
+	type=click.Choice(['table', 'raw', 'xml', 'plain', 'kv'], case_sensitive=False),
 	default='table',
-	help='Output format, defaults to table.',
+	help='Output format. For file listing: table, raw. For file content: raw, xml, plain, kv. Defaults to table.',
 )
+@pretty_print_option()
 @click.pass_context
-def files(ctx, format):
-	"""List all files in the EPUB archive with their metadata."""
+def files(ctx, file_path, format, pretty_print):
+	"""List all files in the EPUB archive with their metadata, or output content of a specific file."""
 	doc = Document(ctx.obj['path'])
-	files_info = doc.get_files_info()
 
-	if format == 'table':
-		click.echo(format_files_table(files_info))
-	elif format == 'raw':
-		for file_info in files_info:
-			click.echo(f'{file_info["path"]}')
+	if file_path:
+		# Display content of specific file
+		try:
+			content = doc.get_file_by_path(file_path)
+
+			# Handle XHTMLContent objects
+			if hasattr(content, 'to_str'):
+				if format == 'raw':
+					click.echo(content.to_str())
+				elif format == 'xml':
+					if hasattr(content, 'to_xml'):
+						# Check if the to_xml method supports pretty_print parameter
+						import inspect
+
+						sig = inspect.signature(content.to_xml)
+						if 'pretty_print' in sig.parameters:
+							click.echo(content.to_xml(pretty_print=pretty_print))
+						else:
+							click.echo(content.to_xml())
+					else:
+						click.echo(content.to_str())
+				elif format == 'plain':
+					if hasattr(content, 'to_plain'):
+						click.echo(content.to_plain())
+					else:
+						click.echo(content.to_str())
+				elif format == 'kv':
+					click.secho(
+						'Key-value format not supported for file content. Falling back to raw:\n',
+						fg='yellow',
+					)
+					click.echo(content.to_str())
+				elif format == 'table':
+					# For file content, table format doesn't make sense, fall back to raw
+					click.secho(
+						'Table format not supported for file content. Falling back to raw:\n',
+						fg='yellow',
+					)
+					click.echo(content.to_str())
+			else:
+				# Handle raw string content (non-XHTML files)
+				click.echo(content)
+		except ValueError as e:
+			click.secho(str(e), fg='red', err=True)
+			ctx.exit(1)
 	else:
-		click.echo(format_files_table(files_info))
+		# List all files (existing behavior)
+		files_info = doc.get_files_info()
+
+		if format == 'table':
+			click.echo(format_files_table(files_info))
+		elif format == 'raw':
+			for file_info in files_info:
+				click.echo(f'{file_info["path"]}')
+		else:
+			# For file listing, only table and raw make sense
+			if format in ['xml', 'plain', 'kv']:
+				click.secho(
+					f'{format.title()} format not supported for file listing. Using table format:\n',
+					fg='yellow',
+				)
+			click.echo(format_files_table(files_info))

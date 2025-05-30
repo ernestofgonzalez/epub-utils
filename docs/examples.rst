@@ -509,6 +509,107 @@ Reading Level Analysis
    print(f"Reading Level: {analysis['reading_level']}")
    print(f"Flesch-Kincaid Grade: {analysis['flesch_kincaid_grade']}")
 
+Direct File Access and Extraction
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Scenario**: Extract specific files from EPUB archives for processing or analysis.
+
+**CLI Approach**:
+
+.. code-block:: bash
+
+   #!/bin/bash
+   # extract-epub-assets.sh - Extract and process EPUB content files
+
+   epub_file="$1"
+   output_dir="extracted_content"
+   
+   mkdir -p "$output_dir"
+   
+   echo "Extracting content from: $epub_file"
+   
+   # Get list of all XHTML content files
+   epub-utils "$epub_file" files --format raw | grep '\.xhtml$' | while read -r file_path; do
+       echo "Processing: $file_path"
+       
+       # Extract plain text content
+       safe_name=$(echo "$file_path" | tr '/' '_')
+       epub-utils "$epub_file" files "$file_path" --format plain > "$output_dir/${safe_name}.txt"
+       
+       # Extract styled HTML content
+       epub-utils "$epub_file" files "$file_path" --format raw > "$output_dir/${safe_name}.html"
+   done
+   
+   # Extract CSS files for styling reference
+   epub-utils "$epub_file" files --format raw | grep '\.css$' | while read -r css_path; do
+       echo "Extracting CSS: $css_path"
+       safe_name=$(echo "$css_path" | tr '/' '_')
+       epub-utils "$epub_file" files "$css_path" > "$output_dir/${safe_name}"
+   done
+   
+   echo "Extraction complete! Files saved to $output_dir/"
+
+**Comparing files vs content commands**:
+
+.. code-block:: bash
+
+   # Using files command (direct path access)
+   epub-utils book.epub files OEBPS/chapter1.xhtml --format plain
+   epub-utils book.epub files OEBPS/styles/main.css
+   epub-utils book.epub files META-INF/container.xml
+   
+   # Using content command (requires manifest item ID)
+   epub-utils book.epub manifest | grep chapter1  # Find the ID first
+   epub-utils book.epub content chapter1-id --format plain
+
+**Key advantages of the files command**:
+
+- **Direct access**: Use actual file paths without needing manifest IDs
+- **Universal file access**: Access any file type (XHTML, CSS, XML, images, etc.)
+- **Simpler automation**: No need to parse manifest to find item IDs
+- **Better for file-system-based workflows**: Mirrors actual EPUB structure
+
+**Python equivalent using API**:
+
+.. code-block:: python
+
+   from epub_utils import Document
+
+   def extract_file_content(epub_path, file_path):
+       """Extract content from a specific file in EPUB."""
+       doc = Document(epub_path)
+       
+       try:
+           content = doc.get_file_by_path(file_path)
+           
+           # Handle different content types
+           if hasattr(content, 'to_plain'):
+               # XHTML content - can extract plain text
+               return {
+                   'raw_html': content.to_str(),
+                   'plain_text': content.to_plain(),
+                   'formatted_xml': content.to_xml(pretty_print=True)
+               }
+           else:
+               # Other file types (CSS, XML, etc.)
+               return {'raw_content': content}
+               
+       except ValueError as e:
+           return {'error': str(e)}
+
+   # Usage
+   doc = Document("book.epub")
+   
+   # Extract chapter content
+   chapter_content = extract_file_content("book.epub", "OEBPS/chapter1.xhtml")
+   if 'plain_text' in chapter_content:
+       print(f"Chapter text: {chapter_content['plain_text'][:200]}...")
+   
+   # Extract CSS for styling analysis
+   css_content = extract_file_content("book.epub", "OEBPS/styles/main.css")
+   if 'raw_content' in css_content:
+       print(f"CSS rules: {len(css_content['raw_content'].split('{'))} rules found")
+
 Automation and Workflows
 -------------------------
 

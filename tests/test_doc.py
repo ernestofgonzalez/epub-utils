@@ -54,3 +54,34 @@ def test_document_find_content_by_id(doc_path):
 	doc = Document(doc_path)
 	content = doc.find_content_by_id('main')
 	assert content is not None
+
+
+def test_document_get_file_by_path_xhtml(doc_path):
+	"""
+	Test that the Document class can retrieve XHTML files by path.
+	"""
+	doc = Document(doc_path)
+	content = doc.get_file_by_path('GoogleDoc/Roads.xhtml')
+
+	# Should return XHTMLContent object for XHTML files
+	assert hasattr(content, 'to_str')
+	assert hasattr(content, 'to_xml')
+	assert hasattr(content, 'to_plain')
+
+	# Content should not be empty
+	content_str = content.to_str()
+	assert len(content_str) > 0
+	assert 'xhtml' in content_str.lower()
+
+
+def test_document_get_file_by_path_missing_file(doc_path):
+	"""
+	Test that the Document class raises an error for missing files.
+	"""
+	doc = Document(doc_path)
+
+	try:
+		doc.get_file_by_path('nonexistent/file.xhtml')
+		assert False, 'Expected ValueError for missing file'
+	except ValueError as e:
+		assert 'Missing' in str(e)
