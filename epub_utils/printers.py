@@ -49,3 +49,58 @@ def pretty_print_xml(xml_content: str) -> str:
 		return result
 	except etree.ParseError:
 		return original_content if isinstance(original_content, str) else xml_content
+
+
+def print_to_str(xml_content: bool, pretty_print: bool) -> str:
+	if pretty_print:
+		xml_content = pretty_print_xml(xml_content)
+
+	return xml_content
+
+
+def print_to_xml(xml_content: str, pretty_print: bool, highlight_syntax: bool) -> str:
+	if pretty_print:
+		xml_content = pretty_print_xml(xml_content)
+
+	if highlight_syntax:
+		xml_content = highlight_xml(xml_content)
+
+	return xml_content
+
+
+class XMLPrinter:
+	"""Handles XML printing operations for objects with xml_content."""
+
+	def __init__(self, xml_content_provider):
+		"""
+		Initialize the XMLPrinter with an object that provides xml_content.
+
+		Args:
+			xml_content_provider: Object that has an xml_content attribute
+		"""
+		self._xml_content_provider = xml_content_provider
+
+	def to_str(self, pretty_print: bool = False) -> str:
+		"""
+		Get string representation of the XML content.
+
+		Args:
+			pretty_print: Whether to format the XML with proper indentation
+
+		Returns:
+			String representation of the XML content
+		"""
+		return print_to_str(self._xml_content_provider.xml_content, pretty_print)
+
+	def to_xml(self, pretty_print: bool = False, highlight_syntax: bool = True) -> str:
+		"""
+		Get formatted XML representation with optional syntax highlighting.
+
+		Args:
+			pretty_print: Whether to format the XML with proper indentation
+			highlight_syntax: Whether to apply syntax highlighting
+
+		Returns:
+			Formatted XML string with optional syntax highlighting
+		"""
+		return print_to_xml(self._xml_content_provider.xml_content, pretty_print, highlight_syntax)

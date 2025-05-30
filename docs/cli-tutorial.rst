@@ -38,6 +38,9 @@ The container command shows the EPUB's container.xml file, which points to the m
 
    # Show raw XML without highlighting
    epub-utils book.epub container --format raw
+   
+   # Show container with pretty formatting
+   epub-utils book.epub container --pretty-print
 
 **Example output**:
 
@@ -62,6 +65,9 @@ The package command displays the main OPF (Open Packaging Format) file:
 
    # Show raw package content
    epub-utils book.epub package --format raw
+   
+   # Show package with pretty formatting
+   epub-utils book.epub package --pretty-print
 
 This reveals the complete EPUB structure including metadata, manifest, and spine.
 
@@ -80,6 +86,9 @@ The metadata command is perfect for getting book information:
 
    # Key-value format for scripting
    epub-utils book.epub metadata --format kv
+   
+   # Metadata with pretty formatting
+   epub-utils book.epub metadata --pretty-print
 
 **Example key-value output**:
 
@@ -128,6 +137,9 @@ View the navigation structure of your EPUB:
 
    # Raw TOC for processing
    epub-utils book.epub toc --format raw
+   
+   # TOC with pretty formatting
+   epub-utils book.epub toc --pretty-print
 
 Manifest Inspection
 ~~~~~~~~~~~~~~~~~~~
@@ -141,6 +153,9 @@ The manifest lists all files contained in the EPUB:
 
    # Raw manifest content
    epub-utils book.epub manifest --format raw
+   
+   # Manifest with pretty formatting
+   epub-utils book.epub manifest --pretty-print
 
 **What you'll see**: Each item in the manifest includes:
 - ``id``: Unique identifier for the item
@@ -263,6 +278,22 @@ Plain Text Format
 
    epub-utils book.epub content chapter1 --format plain
    # Strips HTML tags, produces readable text
+
+Pretty-Print Option
+~~~~~~~~~~~~~~~~~~~
+
+Use the ``--pretty-print`` (or ``-pp``) option to format XML output with proper indentation:
+
+.. code-block:: bash
+
+   # Default output (compact XML)
+   epub-utils book.epub metadata --format raw
+   
+   # Pretty-formatted output (with indentation)
+   epub-utils book.epub metadata --format raw --pretty-print
+   
+   # Works with syntax highlighting too
+   epub-utils book.epub package --pretty-print
 
 Next Steps
 ----------

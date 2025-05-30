@@ -46,13 +46,24 @@ def format_option(default='xml'):
 	)
 
 
-def output_document_part(doc, part_name, format):
+def pretty_print_option():
+	"""Reusable decorator for the pretty-print option."""
+	return click.option(
+		'-pp',
+		'--pretty-print',
+		is_flag=True,
+		default=False,
+		help='Pretty-print XML output (only applies to str and xml format).',
+	)
+
+
+def output_document_part(doc, part_name, format, pretty_print=False):
 	"""Helper function to output document parts in the specified format."""
 	part = getattr(doc, part_name)
 	if format == 'raw':
-		click.echo(part.to_str())
+		click.echo(part.to_str(pretty_print=pretty_print))
 	elif format == 'xml':
-		click.echo(part.to_xml())
+		click.echo(part.to_xml(pretty_print=pretty_print))
 	elif format == 'kv':
 		if hasattr(part, 'to_kv') and callable(getattr(part, 'to_kv')):
 			click.echo(part.to_kv())
@@ -123,66 +134,73 @@ def format_files_table(files_info: list) -> str:
 
 @main.command()
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def container(ctx, format):
+def container(ctx, format, pretty_print):
 	"""Outputs the container information of the EPUB file."""
 	doc = Document(ctx.obj['path'])
-	output_document_part(doc, 'container', format)
+	output_document_part(doc, 'container', format, pretty_print)
 
 
 @main.command()
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def package(ctx, format):
+def package(ctx, format, pretty_print):
 	"""Outputs the package information of the EPUB file."""
 	doc = Document(ctx.obj['path'])
-	output_document_part(doc, 'package', format)
+	output_document_part(doc, 'package', format, pretty_print)
 
 
 @main.command()
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def toc(ctx, format):
+def toc(ctx, format, pretty_print):
 	"""Outputs the Table of Contents (TOC) of the EPUB file."""
 	doc = Document(ctx.obj['path'])
-	output_document_part(doc, 'toc', format)
+	output_document_part(doc, 'toc', format, pretty_print)
 
 
 @main.command()
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def metadata(ctx, format):
+def metadata(ctx, format, pretty_print):
 	"""Outputs the metadata information from the package file."""
 	doc = Document(ctx.obj['path'])
 	package = doc.package
-	output_document_part(package, 'metadata', format)
+	output_document_part(package, 'metadata', format, pretty_print)
 
 
 @main.command()
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def manifest(ctx, format):
+def manifest(ctx, format, pretty_print):
 	"""Outputs the manifest information from the package file."""
 	doc = Document(ctx.obj['path'])
 	package = doc.package
-	output_document_part(package, 'manifest', format)
+	output_document_part(package, 'manifest', format, pretty_print)
 
 
 @main.command()
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def spine(ctx, format):
+def spine(ctx, format, pretty_print):
 	"""Outputs the spine information from the package file."""
 	doc = Document(ctx.obj['path'])
 	package = doc.package
-	output_document_part(package, 'spine', format)
+	output_document_part(package, 'spine', format, pretty_print)
 
 
 @main.command()
 @click.argument('item_id', required=True)
 @format_option()
+@pretty_print_option()
 @click.pass_context
-def content(ctx, item_id, format):
+def content(ctx, item_id, format, pretty_print):
 	"""Outputs the content of a document by its manifest item ID."""
 	doc = Document(ctx.obj['path'])
 
@@ -191,7 +209,17 @@ def content(ctx, item_id, format):
 		if format == 'raw':
 			click.echo(content.to_str())
 		elif format == 'xml':
-			click.echo(content.to_xml())
+			if hasattr(content, 'to_xml'):
+				# Check if the to_xml method supports pretty_print parameter
+				import inspect
+
+				sig = inspect.signature(content.to_xml)
+				if 'pretty_print' in sig.parameters:
+					click.echo(content.to_xml(pretty_print=pretty_print))
+				else:
+					click.echo(content.to_xml())
+			else:
+				click.echo(content.to_str())
 		elif format == 'plain':
 			click.echo(content.to_plain())
 		elif format == 'kv':

@@ -37,6 +37,9 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
 
     # Show container.xml as raw content
     epub-utils book.epub container --format raw
+    
+    # Show container.xml with pretty formatting
+    epub-utils book.epub container --pretty-print
     ```
 
 - `package` - Display the package OPF file contents
@@ -64,6 +67,9 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
 
     # Show metadata as key-value pairs
     epub-utils book.epub metadata --format kv
+    
+    # Show metadata with pretty formatting
+    epub-utils book.epub metadata --pretty-print
     ```
 
 - `manifest` - Display the manifest information from the package file
@@ -105,6 +111,7 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
     - `raw` - Display raw content without formatting
     - `plain` - Display plain text content (HTML tags stripped, for content command only)
     - `kv` - Display key-value pairs (where supported)
+- `-pp, --pretty-print` - Pretty-print XML output (applies to xml and raw formats only)
     
     ```bash
     # Display as raw content
@@ -118,6 +125,12 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
     
     # Display plain text content (content command only)
     epub-utils book.epub content chapter1 --format plain
+    
+    # Pretty-print XML with proper indentation
+    epub-utils book.epub package --pretty-print
+    
+    # Combine format and pretty-print options
+    epub-utils book.epub metadata --format raw --pretty-print
     ```
 
 ## Use as a Python library

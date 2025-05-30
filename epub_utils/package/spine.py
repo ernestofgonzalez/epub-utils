@@ -4,7 +4,7 @@ except ImportError:
 	import xml.etree.ElementTree as etree
 
 from epub_utils.exceptions import ParseError
-from epub_utils.printers import highlight_xml, pretty_print_xml
+from epub_utils.printers import XMLPrinter
 
 
 class Spine:
@@ -18,27 +18,23 @@ class Spine:
 
 	def __init__(self, xml_content: str):
 		self.xml_content = xml_content
+
 		self.itemrefs = []
 		self.toc = None
 		self.page_progression_direction = None
+
 		self._parse(xml_content)
+
+		self._printer = XMLPrinter(self)
 
 	def __str__(self) -> str:
 		return self.xml_content
 
-	def to_str(self) -> str:
-		return str(self)
+	def to_str(self, *args, **kwargs) -> str:
+		return self._printer.to_str(*args, **kwargs)
 
-	def to_xml(self, highlight_syntax=True, pretty_print=False) -> str:
-		xml_content = self.xml_content
-
-		if pretty_print:
-			xml_content = pretty_print_xml(xml_content)
-
-		if highlight_syntax:
-			xml_content = highlight_xml(xml_content)
-
-		return xml_content
+	def to_xml(self, *args, **kwargs) -> str:
+		return self._printer.to_xml(*args, **kwargs)
 
 	def _parse(self, xml_content: str) -> None:
 		"""
