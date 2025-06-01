@@ -161,16 +161,175 @@ from epub_utils import Document
 
 # Load an EPUB document
 doc = Document("path/to/book.epub")
+```
 
-# Get raw XML content
-print(doc.container)
-print(doc.package)
-print(doc.toc)
+### Basic Document Access
 
+Access the main components of an EPUB document:
+
+```python
+# Get container information
+container = doc.container
+print(container.to_xml())  # Formatted XML with syntax highlighting
+print(container.to_str())  # Raw XML content
+
+# Get package information  
+package = doc.package
+print(package.to_xml())    # Formatted XML with syntax highlighting
+print(package.to_str())    # Raw XML content
+
+# Get table of contents
+toc = doc.toc
+if toc:  # TOC might be None if not present
+    print(toc.to_xml())    # Formatted XML with syntax highlighting
+    print(toc.to_str())    # Raw XML content
+```
+
+### Working with Metadata
+
+Access and format metadata information:
+
+```python
 # Access package metadata
-print(f"Title: {doc.package.metadata.title}")
-print(f"Creator: {doc.package.metadata.creator}")
-print(f"Identifier: {doc.package.metadata.identifier}")
+metadata = doc.package.metadata
+
+# Basic Dublin Core elements
+print(f"Title: {metadata.title}")
+print(f"Creator: {metadata.creator}")
+print(f"Identifier: {metadata.identifier}")
+print(f"Language: {metadata.language}")
+print(f"Publisher: {metadata.publisher}")
+print(f"Date: {metadata.date}")
+
+# Dynamic attribute access for any metadata field
+isbn = getattr(metadata, 'isbn', 'Not available')
+series = getattr(metadata, 'series', 'Not available')
+
+# Get formatted metadata output
+print(metadata.to_xml())     # Formatted XML with syntax highlighting
+print(metadata.to_str())     # Raw XML content  
+print(metadata.to_kv())      # Key-value format for easy parsing
+```
+
+### Working with Manifest
+
+Access the manifest to see all files in the EPUB:
+
+```python
+# Get manifest information
+manifest = doc.package.manifest
+
+# Access all manifest items
+for item in manifest.items:
+    print(f"ID: {item['id']}")
+    print(f"File: {item['href']}")
+    print(f"Type: {item['media_type']}")
+    print(f"Properties: {item['properties']}")
+
+# Find specific items
+nav_item = manifest.find_by_property('nav')
+chapter = manifest.find_by_id('chapter1')
+xhtml_items = manifest.find_by_media_type('application/xhtml+xml')
+
+# Get formatted manifest output
+print(manifest.to_xml())     # Formatted XML with syntax highlighting
+print(manifest.to_str())     # Raw XML content
+```
+
+### Working with Spine
+
+Access the spine to see the reading order:
+
+```python
+# Get spine information
+spine = doc.package.spine
+
+# Access spine properties
+print(f"TOC reference: {spine.toc}")
+print(f"Page progression: {spine.page_progression_direction}")
+
+# Access spine items in reading order
+for itemref in spine.itemrefs:
+    print(f"ID: {itemref['idref']}")
+    print(f"Linear: {itemref['linear']}")
+    print(f"Properties: {itemref['properties']}")
+
+# Find specific spine item
+spine_item = spine.find_by_idref('chapter1')
+
+# Get formatted spine output
+print(spine.to_xml())        # Formatted XML with syntax highlighting
+print(spine.to_str())        # Raw XML content
+```
+
+### Content Extraction
+
+Extract content from specific documents within the EPUB:
+
+```python
+# Access content by manifest item ID
+try:
+    content = doc.find_content_by_id('chapter1')
+    
+    # Get content in different formats
+    print(content.to_xml())      # Formatted XHTML with syntax highlighting
+    print(content.to_str())      # Raw XHTML content
+    print(content.to_plain())    # Plain text with HTML tags stripped
+    
+    # Access the parsed content tree for advanced processing
+    tree = content.tree
+    inner_text = content.inner_text
+    
+except ValueError as e:
+    print(f"Content not found: {e}")
+
+# Find publication resources by ID (for non-spine items)
+try:
+    resource = doc.find_pub_resource_by_id('cover-image')
+except ValueError as e:
+    print(f"Resource not found: {e}")
+```
+
+### File Operations
+
+List and access files directly by their paths in the EPUB archive:
+
+```python
+# Get information about all files
+files_info = doc.get_files_info()
+for file_info in files_info:
+    print(f"Path: {file_info['path']}")
+    print(f"Size: {file_info['size']} bytes")
+    print(f"Compressed: {file_info['compressed_size']} bytes")
+    print(f"Modified: {file_info['modified']}")
+
+# Access specific file by path
+try:
+    # For XHTML files, returns XHTMLContent object
+    xhtml_content = doc.get_file_by_path('OEBPS/chapter1.xhtml')
+    print(xhtml_content.to_xml())
+    print(xhtml_content.to_plain())
+    
+    # For other files, returns raw string content
+    css_content = doc.get_file_by_path('OEBPS/styles/main.css')
+    print(css_content)
+    
+except ValueError as e:
+    print(f"File not found: {e}")
+```
+
+### Output Formatting Options
+
+All document components support flexible output formatting:
+
+```python
+# Pretty-printed XML output
+print(metadata.to_str(pretty_print=True))
+print(manifest.to_xml(pretty_print=True))
+
+# Syntax highlighting can be controlled
+print(package.to_xml(highlight_syntax=True))   # With highlighting (default)
+print(package.to_xml(highlight_syntax=False))  # Without highlighting
 ```
 
 ## Industry Standards & Compliance
