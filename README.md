@@ -20,6 +20,8 @@ A Python library and CLI tool for inspecting ePub from the terminal.
 
 ## Installation
 
+`epub-utils` is available as a [PyPI](https://pypi.org/) package
+
 ```bash
 pip install epub-utils
 ```
