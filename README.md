@@ -9,10 +9,14 @@ A Python library and CLI tool for inspecting ePub from the terminal.
 
 ## Features
 
-- Parse and validate EPUB container and package files
-- Extract metadata like title, author, and identifier
-- Command-line interface for quick file inspection
-- Syntax highlighted XML output
+- **Complete EPUB Support** - Parse both EPUB 2.0.1 and EPUB 3.0+ specifications with container, package, manifest, spine, and table of contents inspection
+- **Rich Metadata Extraction** - Extract Dublin Core metadata (title, author, language, publisher) with key-value, XML, and raw output formats for easy scripting
+- **Content Analysis** - Access document content by manifest ID or file path, with plain text extraction for content analysis and word counting
+- **File System Navigation** - Browse and extract any file within EPUB archives (XHTML, CSS, images, fonts) with detailed file information including sizes and compression ratios
+- **Multiple Output Formats** - XML with syntax highlighting, raw content, key-value pairs, plain text, and formatted tables to suit different workflows
+- **CLI and Python API** - Comprehensive command-line tool for terminal workflows plus a clean Python library for programmatic access
+- **Standards Compliance** - Built-in validation capabilities and adherence to W3C/IDPF specifications for reliable EPUB processing
+- **Performance Optimized** - Lazy loading, efficient ZIP parsing, and optional lxml support for handling large EPUB collections
 
 ## Installation
 
