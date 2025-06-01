@@ -4,6 +4,14 @@
 Changelog
 =========
 
+.. _v_0_0_0a5:
+
+0.0.0a5 (2025-06-01)
+--------------------
+
+* Added file retrieval by file path. (:issue:`22`)
+* Added pretty printing to XML inspection (:issue:`23`)
+
 .. _v_0_0_0a4:
 
 0.0.0a4 (2025-05-26)
