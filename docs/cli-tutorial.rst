@@ -132,7 +132,7 @@ View the navigation structure of your EPUB:
 
 .. code-block:: bash
 
-   # Show table of contents with highlighting
+   # Show table of contents with highlighting (auto-detect format)
    epub-utils book.epub toc
 
    # Raw TOC for processing
@@ -140,6 +140,24 @@ View the navigation structure of your EPUB:
    
    # TOC with pretty formatting
    epub-utils book.epub toc --pretty-print
+
+**EPUB Version-Specific Access**:
+
+For precise control over which navigation format to access:
+
+.. code-block:: bash
+
+   # Force NCX format (EPUB 2 navigation control file)
+   epub-utils book.epub toc --ncx
+
+   # Force Navigation Document (EPUB 3 navigation file)
+   epub-utils book.epub toc --nav
+
+**Use Cases**:
+
+- Use ``--ncx`` when you specifically need the EPUB 2 style navigation or want to access backward-compatible NCX in EPUB 3
+- Use ``--nav`` when you specifically need the EPUB 3 Navigation Document features
+- Use the default (no flags) for general TOC access that works with any EPUB version
 
 Manifest Inspection
 ~~~~~~~~~~~~~~~~~~~

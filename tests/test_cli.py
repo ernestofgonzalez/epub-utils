@@ -62,3 +62,24 @@ def test_files_command_without_file_path_raw(doc_path):
 	assert result.exit_code == 0
 	assert len(result.output) > 0
 	assert 'GoogleDoc/Roads.xhtml' in result.output
+
+
+def test_toc_command_default(doc_path):
+	"""Test the toc command with default behavior (auto-detect)."""
+	result = CliRunner().invoke(cli.main, [str(doc_path), 'toc'])
+	assert result.exit_code == 0
+	assert len(result.output) > 0
+
+
+def test_toc_command_nav_flag(doc_path):
+	"""Test the toc command with --nav flag."""
+	result = CliRunner().invoke(cli.main, [str(doc_path), 'toc', '--nav'])
+	assert result.exit_code == 0
+	assert len(result.output) > 0
+
+
+def test_toc_command_mutually_exclusive_flags(doc_path):
+	"""Test that --ncx and --nav flags are mutually exclusive."""
+	result = CliRunner().invoke(cli.main, [str(doc_path), 'toc', '--ncx', '--nav'])
+	assert result.exit_code == 1
+	assert '--ncx and --nav flags cannot be used together' in result.output

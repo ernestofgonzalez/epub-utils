@@ -59,11 +59,17 @@ epub-utils EPUB_PATH COMMAND [OPTIONS]
 
 - `toc` - Display the table of contents file contents
     ```bash
-    # Show toc.ncx/nav.xhtml with syntax highlighting
+    # Show toc.ncx/nav.xhtml with syntax highlighting (auto-detect)
     epub-utils book.epub toc
 
     # Show toc.ncx/nav.xhtml as raw content
     epub-utils book.epub toc --format raw
+
+    # Force NCX format (EPUB 2 navigation control file)
+    epub-utils book.epub toc --ncx
+
+    # Force Navigation Document (EPUB 3 navigation file)
+    epub-utils book.epub toc --nav
     ```
 
 - `metadata` - Display the metadata information from the package file
@@ -188,6 +194,18 @@ print(package.to_str())    # Raw XML content
 toc = doc.toc
 if toc:  # TOC might be None if not present
     print(toc.to_xml())    # Formatted XML with syntax highlighting
+    print(toc.to_str())    # Raw XML content
+
+# Access specific navigation formats
+ncx = doc.ncx  # NCX format (EPUB 2 or EPUB 3 with NCX)
+if ncx:
+    print("NCX navigation available")
+    print(ncx.to_xml())
+
+nav = doc.nav  # Navigation Document (EPUB 3 only)
+if nav:
+    print("Navigation Document available")
+    print(nav.to_xml())
     print(toc.to_str())    # Raw XML content
 ```
 

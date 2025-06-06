@@ -959,4 +959,466 @@ Advanced Shell Scripts
    find "$EPUB_DIR" -name "*.epub" -type f | \
    xargs -n 1 -P $MAX_JOBS -I {} bash -c 'check_single_epub "$@"' _ {}
 
-These examples demonstrate the power and flexibility of ``epub-utils`` for various real-world scenarios. Whether you're managing a digital library, performing quality assurance, or building automated workflows, epub-utils provides the tools you need to work effectively with EPUB files.
+Navigation and Table of Contents
+--------------------------------
+
+Working with EPUB Navigation Documents
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Scenario**: Extract and analyze navigation structures from both EPUB 2 and EPUB 3 files.
+
+**CLI Approach - Version-Specific TOC Access**:
+
+.. code-block:: bash
+
+   #!/bin/bash
+   # extract-navigation.sh - Extract navigation from EPUB files
+   
+   EPUB_FILE="$1"
+   
+   if [ -z "$EPUB_FILE" ]; then
+       echo "Usage: $0 <epub-file>"
+       exit 1
+   fi
+   
+   echo "Analyzing navigation in: $(basename "$EPUB_FILE")"
+   echo "========================================"
+   
+   # Try EPUB 3 nav document first
+   echo "Attempting EPUB 3 nav document extraction..."
+   if epub-utils "$EPUB_FILE" toc --nav > /tmp/nav.xml 2>/dev/null; then
+       echo "✅ EPUB 3 nav document found"
+       echo "Navigation structure:"
+       # Extract navigation items with their hierarchy
+       grep -o '<a[^>]*href="[^"]*"[^>]*>[^<]*</a>' /tmp/nav.xml | \
+       sed 's/<a[^>]*href="\([^"]*\)"[^>]*>\([^<]*\)<\/a>/  → \2 (\1)/' | \
+       head -10
+       
+       # Count navigation items
+       nav_count=$(grep -c '<a[^>]*href=' /tmp/nav.xml)
+       echo "Total navigation items: $nav_count"
+   else
+       echo "❌ No EPUB 3 nav document found"
+   fi
+   
+   echo ""
+   echo "Attempting EPUB 2 NCX extraction..."
+   if epub-utils "$EPUB_FILE" toc --ncx > /tmp/ncx.xml 2>/dev/null; then
+       echo "✅ EPUB 2 NCX document found"
+       echo "Table of contents structure:"
+       # Extract NCX navigation points
+       grep -o '<navLabel><text>[^<]*</text></navLabel>' /tmp/ncx.xml | \
+       sed 's/<navLabel><text>\([^<]*\)<\/text><\/navLabel>/  → \1/' | \
+       head -10
+       
+       # Count NCX nav points
+       ncx_count=$(grep -c '<navPoint' /tmp/ncx.xml)
+       echo "Total NCX navigation points: $ncx_count"
+   else
+       echo "❌ No EPUB 2 NCX document found"
+   fi
+   
+   # Compare standard TOC with version-specific extracts
+   echo ""
+   echo "Standard TOC extraction:"
+   standard_toc=$(epub-utils "$EPUB_FILE" toc --format raw 2>/dev/null | wc -l)
+   echo "Standard TOC items: $standard_toc"
+
+**Python Approach - Advanced Navigation Analysis**:
+
+.. code-block:: python
+
+   from epub_utils import Document
+   import xml.etree.ElementTree as ET
+   from pathlib import Path
+   
+   class NavigationAnalyzer:
+       def __init__(self, epub_path):
+           self.doc = Document(epub_path)
+           self.epub_path = Path(epub_path)
+           
+       def analyze_navigation(self):
+           """Comprehensive navigation analysis."""
+           print(f"Analyzing: {self.epub_path.name}")
+           print("=" * 50)
+           
+           # Check EPUB version
+           version = getattr(self.doc.package.metadata, 'version', 'unknown')
+           print(f"EPUB Version: {version}")
+           print()
+           
+           # Analyze EPUB 3 nav document
+           self._analyze_nav_document()
+           
+           # Analyze EPUB 2 NCX document  
+           self._analyze_ncx_document()
+           
+           # Compare with standard TOC
+           self._analyze_standard_toc()
+           
+       def _analyze_nav_document(self):
+           """Analyze EPUB 3 navigation document."""
+           print("EPUB 3 Navigation Document Analysis:")
+           print("-" * 40)
+           
+           try:
+               nav_content = self.doc.nav
+               if nav_content:
+                   print("✅ Nav document found")
+                   
+                   # Parse navigation structure
+                   nav_items = self._parse_nav_structure(nav_content)
+                   print(f"Navigation items found: {len(nav_items)}")
+                   
+                   # Show hierarchy
+                   print("\nNavigation hierarchy:")
+                   for item in nav_items[:10]:  # Show first 10
+                       indent = "  " * item['level']
+                       print(f"{indent}→ {item['title']} ({item['href']})")
+                   
+                   if len(nav_items) > 10:
+                       print(f"  ... and {len(nav_items) - 10} more items")
+                       
+               else:
+                   print("❌ No nav document found")
+                   
+           except Exception as e:
+               print(f"❌ Error accessing nav document: {e}")
+           print()
+           
+       def _analyze_ncx_document(self):
+           """Analyze EPUB 2 NCX document."""
+           print("EPUB 2 NCX Document Analysis:")
+           print("-" * 30)
+           
+           try:
+               ncx_content = self.doc.ncx
+               if ncx_content:
+                   print("✅ NCX document found")
+                   
+                   # Parse NCX structure
+                   ncx_items = self._parse_ncx_structure(ncx_content)
+                   print(f"NCX navigation points: {len(ncx_items)}")
+                   
+                   # Show structure
+                   print("\nNCX structure:")
+                   for item in ncx_items[:10]:  # Show first 10
+                       indent = "  " * item['level']
+                       print(f"{indent}→ {item['title']} ({item['src']})")
+                   
+                   if len(ncx_items) > 10:
+                       print(f"  ... and {len(ncx_items) - 10} more items")
+                       
+               else:
+                   print("❌ No NCX document found")
+                   
+           except Exception as e:
+               print(f"❌ Error accessing NCX document: {e}")
+           print()
+           
+       def _analyze_standard_toc(self):
+           """Analyze standard TOC extraction."""
+           print("Standard TOC Analysis:")
+           print("-" * 22)
+           
+           try:
+               toc = self.doc.get_toc()
+               toc_items = len(toc.get_nav_items())
+               print(f"✅ Standard TOC items: {toc_items}")
+               
+               # Show some items
+               print("\nStandard TOC items:")
+               for i, item in enumerate(toc.get_nav_items()[:5]):
+                   print(f"  → {item.title} ({item.href})")
+               
+           except Exception as e:
+               print(f"❌ Error with standard TOC: {e}")
+           print()
+           
+       def _parse_nav_structure(self, nav_content):
+           """Parse EPUB 3 nav document structure."""
+           items = []
+           try:
+               root = ET.fromstring(nav_content)
+               # Handle namespaces
+               namespaces = {'xhtml': 'http://www.w3.org/1999/xhtml'}
+               
+               def parse_nav_list(ol_element, level=0):
+                   for li in ol_element.findall('.//xhtml:li', namespaces):
+                       a_elem = li.find('.//xhtml:a', namespaces)
+                       if a_elem is not None:
+                           title = a_elem.text or ""
+                           href = a_elem.get('href', '')
+                           items.append({
+                               'title': title.strip(),
+                               'href': href,
+                               'level': level
+                           })
+                           
+                           # Check for nested lists
+                           nested_ol = li.find('.//xhtml:ol', namespaces)
+                           if nested_ol is not None:
+                               parse_nav_list(nested_ol, level + 1)
+               
+               # Find main navigation
+               nav_elem = root.find('.//xhtml:nav[@*="toc"]', namespaces)
+               if nav_elem is None:
+                   nav_elem = root.find('.//xhtml:nav', namespaces)
+               
+               if nav_elem is not None:
+                   ol_elem = nav_elem.find('.//xhtml:ol', namespaces)
+                   if ol_elem is not None:
+                       parse_nav_list(ol_elem)
+                       
+           except ET.ParseError as e:
+               print(f"Warning: Could not parse nav XML: {e}")
+           
+           return items
+           
+       def _parse_ncx_structure(self, ncx_content):
+           """Parse EPUB 2 NCX document structure."""
+           items = []
+           try:
+               root = ET.fromstring(ncx_content)
+               # NCX namespace
+               namespaces = {'ncx': 'http://www.daisy.org/z3986/2005/ncx/'}
+               
+               def parse_nav_point(nav_point, level=0):
+                   # Get label
+                   nav_label = nav_point.find('ncx:navLabel/ncx:text', namespaces)
+                   title = nav_label.text if nav_label is not None else ""
+                   
+                   # Get content source
+                   content = nav_point.find('ncx:content', namespaces)
+                   src = content.get('src', '') if content is not None else ""
+                   
+                   items.append({
+                       'title': title.strip(),
+                       'src': src,
+                       'level': level
+                   })
+                   
+                   # Process child nav points
+                   for child_nav_point in nav_point.findall('ncx:navPoint', namespaces):
+                       parse_nav_point(child_nav_point, level + 1)
+               
+               # Find all top-level navigation points
+               nav_map = root.find('ncx:navMap', namespaces)
+               if nav_map is not None:
+                   for nav_point in nav_map.findall('ncx:navPoint', namespaces):
+                       parse_nav_point(nav_point)
+                       
+           except ET.ParseError as e:
+               print(f"Warning: Could not parse NCX XML: {e}")
+           
+           return items
+   
+   # Usage examples
+   def analyze_single_epub(epub_path):
+       """Analyze a single EPUB file."""
+       analyzer = NavigationAnalyzer(epub_path)
+       analyzer.analyze_navigation()
+   
+   def compare_navigation_across_epubs(epub_directory):
+       """Compare navigation structures across multiple EPUB files."""
+       epub_files = list(Path(epub_directory).glob("*.epub"))
+       
+       print(f"Comparing navigation across {len(epub_files)} EPUB files")
+       print("=" * 60)
+       
+       results = []
+       
+       for epub_path in epub_files:
+           try:
+               doc = Document(str(epub_path))
+               
+               # Check what navigation documents are available
+               has_nav = bool(doc.nav)
+               has_ncx = bool(doc.ncx)
+               standard_toc_count = len(doc.get_toc().get_nav_items())
+               
+               results.append({
+                   'file': epub_path.name,
+                   'has_nav': has_nav,
+                   'has_ncx': has_ncx,
+                   'toc_items': standard_toc_count,
+                   'version': getattr(doc.package.metadata, 'version', 'unknown')
+               })
+               
+           except Exception as e:
+               print(f"Error processing {epub_path.name}: {e}")
+       
+       # Print comparison table
+       print(f"{'File':<30} {'Version':<8} {'Nav':<5} {'NCX':<5} {'TOC Items':<10}")
+       print("-" * 65)
+       
+       for result in results:
+           nav_mark = "✅" if result['has_nav'] else "❌"
+           ncx_mark = "✅" if result['has_ncx'] else "❌"
+           
+           print(f"{result['file']:<30} {result['version']:<8} "
+                 f"{nav_mark:<5} {ncx_mark:<5} {result['toc_items']:<10}")
+   
+   # Example usage
+   if __name__ == "__main__":
+       # Analyze single file
+       analyze_single_epub("/path/to/your/book.epub")
+       
+       # Compare multiple files
+       compare_navigation_across_epubs("/path/to/epub/collection")
+
+Building Smart Reading Lists
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Scenario**: Create curated reading lists based on navigation complexity and structure.
+
+.. code-block:: python
+
+   from epub_utils import Document
+   import json
+   from pathlib import Path
+   from collections import defaultdict
+   
+   class ReadingListBuilder:
+       def __init__(self):
+           self.books = []
+           
+       def analyze_book_complexity(self, epub_path):
+           """Analyze book's structural complexity."""
+           try:
+               doc = Document(str(epub_path))
+               
+               # Get navigation info
+               toc_items = len(doc.get_toc().get_nav_items())
+               has_advanced_nav = bool(doc.nav) or bool(doc.ncx)
+               
+               # Get file structure info
+               files_info = doc.get_files_info()
+               html_files = [f for f in files_info if f['media_type'] == 'application/xhtml+xml']
+               
+               complexity_score = self._calculate_complexity_score(
+                   toc_items, len(html_files), has_advanced_nav
+               )
+               
+               return {
+                   'path': epub_path,
+                   'title': getattr(doc.package.metadata, 'title', ''),
+                   'author': getattr(doc.package.metadata, 'creator', ''),
+                   'toc_items': toc_items,
+                   'html_files': len(html_files),
+                   'has_advanced_nav': has_advanced_nav,
+                   'complexity_score': complexity_score,
+                   'complexity_level': self._get_complexity_level(complexity_score)
+               }
+               
+           except Exception as e:
+               print(f"Error analyzing {epub_path}: {e}")
+               return None
+               
+       def _calculate_complexity_score(self, toc_items, html_files, has_advanced_nav):
+           """Calculate structural complexity score."""
+           score = 0
+           
+           # TOC complexity
+           if toc_items > 50:
+               score += 30
+           elif toc_items > 20:
+               score += 20
+           elif toc_items > 10:
+               score += 10
+           
+           # File structure complexity
+           if html_files > 100:
+               score += 25
+           elif html_files > 50:
+               score += 15
+           elif html_files > 20:
+               score += 10
+           
+           # Advanced navigation features
+           if has_advanced_nav:
+               score += 15
+           
+           return min(score, 100)  # Cap at 100
+           
+       def _get_complexity_level(self, score):
+           """Convert score to complexity level."""
+           if score >= 70:
+               return "Advanced"
+           elif score >= 40:
+               return "Intermediate"
+           else:
+               return "Beginner"
+               
+       def build_reading_lists(self, epub_directory, output_file="reading_lists.json"):
+           """Build categorized reading lists."""
+           epub_files = list(Path(epub_directory).glob("*.epub"))
+           
+           print(f"Analyzing {len(epub_files)} EPUB files for reading lists...")
+           
+           # Analyze all books
+           for epub_path in epub_files:
+               book_info = self.analyze_book_complexity(epub_path)
+               if book_info:
+                   self.books.append(book_info)
+           
+           # Categorize books
+           categories = defaultdict(list)
+           
+           for book in self.books:
+               # By complexity
+               categories[f"complexity_{book['complexity_level'].lower()}"].append(book)
+               
+               # By navigation richness
+               if book['toc_items'] >= 20:
+                   categories['detailed_structure'].append(book)
+               
+               if book['has_advanced_nav']:
+                   categories['advanced_navigation'].append(book)
+           
+           # Create final reading lists
+           reading_lists = {
+               'beginner_friendly': {
+                   'description': 'Books with simple structure, perfect for casual reading',
+                   'books': sorted(categories['complexity_beginner'], 
+                                 key=lambda x: x['toc_items'])[:10]
+               },
+               'intermediate_reads': {
+                   'description': 'Well-structured books with moderate complexity',
+                   'books': sorted(categories['complexity_intermediate'], 
+                                 key=lambda x: x['complexity_score'])[:15]
+               },
+               'advanced_studies': {
+                   'description': 'Complex books with rich navigation, ideal for research',
+                   'books': sorted(categories['complexity_advanced'], 
+                                 key=lambda x: x['complexity_score'], reverse=True)[:10]
+               },
+               'detailed_references': {
+                   'description': 'Books with detailed table of contents',
+                   'books': sorted(categories['detailed_structure'], 
+                                 key=lambda x: x['toc_items'], reverse=True)[:12]
+               },
+               'enhanced_navigation': {
+                   'description': 'Books with advanced navigation features',
+                   'books': categories['advanced_navigation'][:10]
+               }
+           }
+           
+           # Save to file
+           with open(output_file, 'w', encoding='utf-8') as f:
+               json.dump(reading_lists, f, indent=2, ensure_ascii=False, default=str)
+           
+           # Print summary
+           print(f"\nReading Lists Generated:")
+           print("=" * 25)
+           for list_name, list_data in reading_lists.items():
+               print(f"{list_name}: {len(list_data['books'])} books")
+               print(f"  → {list_data['description']}")
+           
+           print(f"\nSaved to: {output_file}")
+           
+   # Usage
+   builder = ReadingListBuilder()
+   builder.build_reading_lists("/path/to/epub/collection")
+
+These examples demonstrate the power and flexibility of ``epub-utils`` for various real-world scenarios. Whether you're managing a digital library, performing quality assurance, building automated workflows, or analyzing navigation structures, epub-utils provides the tools you need to work effectively with EPUB files.

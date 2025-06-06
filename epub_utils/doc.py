@@ -97,6 +97,43 @@ class Document:
 
 		return self._toc
 
+	@property
+	def ncx(self):
+		package = self.package
+
+		if package.version.major < 3:
+			return self.toc
+
+		if not package.toc_href:
+			return None
+
+		toc_href = package.toc_href
+		toc_path = os.path.join(self.__package_href, toc_href)
+		toc_xml_content = self._read_file_from_epub(toc_path)
+
+		_ncx = TableOfContents(toc_xml_content)
+
+		return _ncx
+
+	@property
+	def nav(self):
+		"""Access the Navigation Document (EPUB 3) specifically."""
+		package = self.package
+
+		if package.version.major < 3:
+			return None
+
+		if not package.nav_href:
+			return None
+
+		nav_href = package.nav_href
+		nav_path = os.path.join(self.__package_href, nav_href)
+		nav_xml_content = self._read_file_from_epub(nav_path)
+
+		_nav = TableOfContents(nav_xml_content)
+
+		return _nav
+
 	def find_content_by_id(self, item_id: str) -> str:
 		spine_item = self.package.spine.find_by_idref(item_id)
 		if not spine_item:
@@ -203,5 +240,4 @@ class Document:
 
 			return XHTMLContent(file_content, media_type, file_path)
 		else:
-
 			return file_content

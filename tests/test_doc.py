@@ -85,3 +85,14 @@ def test_document_get_file_by_path_missing_file(doc_path):
 		assert False, 'Expected ValueError for missing file'
 	except ValueError as e:
 		assert 'Missing' in str(e)
+
+
+def test_document_nav_property(doc_path):
+	"""
+	Test that the Document class correctly accesses the Navigation Document via nav property.
+	"""
+	doc = Document(doc_path)
+	nav = doc.nav
+
+	assert nav is not None
+	assert isinstance(nav, TableOfContents)
