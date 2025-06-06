@@ -75,7 +75,7 @@ class Document:
 		return self._package
 
 	@cached_property
-	def __package_href(self):
+	def package_href(self):
 		return os.path.dirname(self.container.rootfile_path)
 
 	@property
@@ -91,7 +91,7 @@ class Document:
 					return None
 				toc_href = package.toc_href
 
-			toc_path = os.path.join(self.__package_href, toc_href)
+			toc_path = os.path.join(self.package_href, toc_href)
 			toc_xml_content = self._read_file_from_epub(toc_path)
 			self._toc = TableOfContents(toc_xml_content)
 
@@ -108,7 +108,7 @@ class Document:
 			return None
 
 		toc_href = package.toc_href
-		toc_path = os.path.join(self.__package_href, toc_href)
+		toc_path = os.path.join(self.package_href, toc_href)
 		toc_xml_content = self._read_file_from_epub(toc_path)
 
 		_ncx = TableOfContents(toc_xml_content)
@@ -127,7 +127,7 @@ class Document:
 			return None
 
 		nav_href = package.nav_href
-		nav_path = os.path.join(self.__package_href, nav_href)
+		nav_path = os.path.join(self.package_href, nav_href)
 		nav_xml_content = self._read_file_from_epub(nav_path)
 
 		_nav = TableOfContents(nav_xml_content)
@@ -143,7 +143,7 @@ class Document:
 		if not manifest_item:
 			raise ValueError(f"Item id '{item_id}' not found in manifest")
 
-		content_path = os.path.join(self.__package_href, manifest_item['href'])
+		content_path = os.path.join(self.package_href, manifest_item['href'])
 		xml_content = self._read_file_from_epub(content_path)
 
 		content = XHTMLContent(xml_content, manifest_item['media_type'], manifest_item['href'])
@@ -155,7 +155,7 @@ class Document:
 		if not manifest_item:
 			raise ValueError(f"Item id '{item_id}' not found in manifest")
 
-		content_path = os.path.join(self.__package_href, manifest_item['href'])
+		content_path = os.path.join(self.package_href, manifest_item['href'])
 		xml_content = self._read_file_from_epub(content_path)
 
 		content = XHTMLContent(xml_content, manifest_item['media_type'], manifest_item['href'])
@@ -231,7 +231,7 @@ class Document:
 
 			try:
 				for item in self.package.manifest.items:
-					manifest_path = os.path.join(self._Document__package_href, item['href'])
+					manifest_path = os.path.join(self._Documentpackage_href, item['href'])
 					if os.path.normpath(manifest_path) == os.path.normpath(file_path):
 						media_type = item.get('media_type', 'application/xhtml+xml')
 						break
