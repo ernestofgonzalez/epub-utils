@@ -232,14 +232,18 @@ def content(ctx, item_id, format, pretty_print):
 	'-fmt',
 	'--format',
 	type=click.Choice(['table', 'raw', 'xml', 'plain', 'kv'], case_sensitive=False),
-	default='table',
-	help='Output format. For file listing: table, raw. For file content: raw, xml, plain, kv. Defaults to table.',
+	default=None,
+	help='Output format. For file listing: table, raw. For file content: raw, xml, plain, kv. Defaults to table for listing, xml for file content.',
 )
 @pretty_print_option()
 @click.pass_context
 def files(ctx, file_path, format, pretty_print):
 	"""List all files in the EPUB archive with their metadata, or output content of a specific file."""
 	doc = Document(ctx.obj['path'])
+	
+	# Set dynamic default based on whether file_path is provided
+	if format is None:
+		format = 'xml' if file_path else 'table'
 
 	if file_path:
 		# Display content of specific file
@@ -252,14 +256,7 @@ def files(ctx, file_path, format, pretty_print):
 					click.echo(content.to_str())
 				elif format == 'xml':
 					if hasattr(content, 'to_xml'):
-						# Check if the to_xml method supports pretty_print parameter
-						import inspect
-
-						sig = inspect.signature(content.to_xml)
-						if 'pretty_print' in sig.parameters:
-							click.echo(content.to_xml(pretty_print=pretty_print))
-						else:
-							click.echo(content.to_xml())
+						click.echo(content.to_xml(pretty_print=pretty_print))
 					else:
 						click.echo(content.to_str())
 				elif format == 'plain':
