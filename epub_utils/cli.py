@@ -181,7 +181,7 @@ def toc(ctx, format, pretty_print, ncx, nav):
 	elif nav:
 		part = 'nav'
 	else:
-		part = "nav"
+		part = 'nav'
 
 	output_document_part(doc, part, format, pretty_print)
 
