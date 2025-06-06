@@ -111,11 +111,25 @@ Display the table of contents file.
 
 .. code-block:: bash
 
-   epub-utils EPUB_FILE toc [--format FORMAT] [--pretty-print]
+   epub-utils EPUB_FILE toc [--format FORMAT] [--pretty-print] [--ncx | --nav]
 
 **Description**:
 Shows the table of contents, which can be either an NCX file (EPUB 2.x) or a 
-Navigation Document (EPUB 3.x).
+Navigation Document (EPUB 3.x). By default, automatically detects and uses the 
+appropriate format for the EPUB version.
+
+**Options**:
+
+``--ncx``
+   Force retrieval of NCX file (EPUB 2 navigation control file). For EPUB 2, 
+   this is the same as the default behavior. For EPUB 3, this specifically 
+   accesses the NCX file if present for backward compatibility.
+
+``--nav``
+   Force retrieval of Navigation Document (EPUB 3 navigation file). Only works 
+   with EPUB 3 documents that have a Navigation Document.
+
+**Note**: The ``--ncx`` and ``--nav`` flags are mutually exclusive.
 
 **Supported formats**: ``xml`` (default), ``raw``
 
@@ -123,7 +137,7 @@ Navigation Document (EPUB 3.x).
 
 .. code-block:: bash
 
-   # Show TOC with highlighting
+   # Show TOC with highlighting (auto-detect format)
    epub-utils book.epub toc
 
    # Extract navigation structure
@@ -131,6 +145,12 @@ Navigation Document (EPUB 3.x).
    
    # Show TOC with pretty formatting
    epub-utils book.epub toc --pretty-print
+
+   # Force NCX format (EPUB 2 style)
+   epub-utils book.epub toc --ncx
+
+   # Force Navigation Document (EPUB 3 style)
+   epub-utils book.epub toc --nav
 
 metadata
 ~~~~~~~~

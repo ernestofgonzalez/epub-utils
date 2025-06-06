@@ -63,6 +63,42 @@ Document Class
          toc = doc.toc
          toc_xml = toc.to_xml()
 
+   .. py:attribute:: ncx
+
+      Access to the NCX (Navigation Control for XML) table of contents.
+
+      :type: TableOfContents or None
+      :returns: NCX table of contents object for EPUB 2, or for EPUB 3 if NCX is present, None otherwise
+
+      **Example**:
+
+      .. code-block:: python
+
+         ncx = doc.ncx
+         if ncx:
+             ncx_xml = ncx.to_xml()
+
+      **Note**: For EPUB 2, this returns the same as ``toc``. For EPUB 3, this specifically 
+      accesses the NCX file if present, which provides backward compatibility.
+
+   .. py:attribute:: nav
+
+      Access to the Navigation Document (EPUB 3 only).
+
+      :type: TableOfContents or None
+      :returns: Navigation Document table of contents object for EPUB 3, None for EPUB 2 or if not present
+
+      **Example**:
+
+      .. code-block:: python
+
+         nav = doc.nav
+         if nav:
+             nav_xml = nav.to_xml()
+
+      **Note**: This property specifically accesses EPUB 3 Navigation Documents. 
+      Returns None for EPUB 2 documents.
+
    .. py:method:: get_files_info()
 
       Get detailed information about all files in the EPUB.

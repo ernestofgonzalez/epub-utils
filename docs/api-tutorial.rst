@@ -204,6 +204,41 @@ Access the table of contents (either NCX or Navigation Document):
    toc_xml = toc.to_xml()
    raw_toc = toc.to_str()
 
+Specific TOC Access
+~~~~~~~~~~~~~~~~~~~
+
+For fine-grained control over which table of contents format to access:
+
+.. code-block:: python
+
+   # Access NCX specifically (EPUB 2 or EPUB 3 with NCX)
+   ncx = doc.ncx
+   if ncx:
+       ncx_xml = ncx.to_xml()
+       print("NCX navigation available")
+   else:
+       print("No NCX navigation found")
+
+   # Access Navigation Document specifically (EPUB 3 only)
+   nav = doc.nav
+   if nav:
+       nav_xml = nav.to_xml()
+       print("Navigation Document available")
+   else:
+       print("No Navigation Document found (likely EPUB 2)")
+
+   # Handle different EPUB versions
+   package = doc.package
+   if package.version.major >= 3:
+       # EPUB 3 - prefer Navigation Document, fallback to NCX
+       nav_doc = doc.nav or doc.ncx
+   else:
+       # EPUB 2 - use NCX
+       nav_doc = doc.ncx
+
+   if nav_doc:
+       print("Table of contents found:", nav_doc.to_str()[:100])
+
 Content Extraction
 ------------------
 
