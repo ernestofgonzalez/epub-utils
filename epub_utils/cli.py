@@ -155,11 +155,33 @@ def package(ctx, format, pretty_print):
 @main.command()
 @format_option()
 @pretty_print_option()
+@click.option(
+	'--ncx',
+	is_flag=True,
+	default=False,
+	help='Force retrieval of NCX file (EPUB 2 navigation control file).',
+)
+@click.option(
+	'--nav',
+	is_flag=True,
+	default=False,
+	help='Force retrieval of Navigation Document (EPUB 3 navigation file).',
+)
 @click.pass_context
-def toc(ctx, format, pretty_print):
+def toc(ctx, format, pretty_print, ncx, nav):
 	"""Outputs the Table of Contents (TOC) of the EPUB file."""
 	doc = Document(ctx.obj['path'])
-	output_document_part(doc, 'toc', format, pretty_print)
+
+	if ncx and nav:
+		click.secho('Error: --ncx and --nav flags cannot be used together.', fg='red', err=True)
+		ctx.exit(1)
+
+	if ncx:
+		part = 'ncx'
+	elif nav:
+		part = 'nav'
+
+	output_document_part(doc, part, format, pretty_print)
 
 
 @main.command()
@@ -240,7 +262,7 @@ def content(ctx, item_id, format, pretty_print):
 def files(ctx, file_path, format, pretty_print):
 	"""List all files in the EPUB archive with their metadata, or output content of a specific file."""
 	doc = Document(ctx.obj['path'])
-	
+
 	# Set dynamic default based on whether file_path is provided
 	if format is None:
 		format = 'xml' if file_path else 'table'
