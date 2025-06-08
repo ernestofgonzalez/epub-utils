@@ -4,6 +4,7 @@ from lxml import etree
 
 from epub_utils.exceptions import ParseError
 from epub_utils.navigation.base import Navigation
+from epub_utils.navigation.ncx.dom import NCXDocument
 from epub_utils.printers import XMLPrinter
 
 
@@ -74,3 +75,8 @@ class NCXNavigation(Navigation):
 		inner_text = re.sub(r'\s+', ' ', inner_text).strip()
 
 		return inner_text
+
+	@property
+	def document(self) -> NCXDocument:
+		"""Get the NCX document root element."""
+		return NCXDocument(self.tree)
