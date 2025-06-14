@@ -1,0 +1,640 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Examples and Use Cases" href="examples.html" /><link rel="prev" title="Use as a command-line tool" href="cli-tutorial.html" />
+
+    <!-- Generated with Sphinx 6.2.0 and Furo 2022.12.07 -->
+        <title>Use as a Python library - epub-utils 0.1.0a1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">epub-utils 0.1.0a1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">epub-utils 0.1.0a1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli-tutorial.html">Use as a command-line tool</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Use as a Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formats.html">Output Formats Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli-reference.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epub-standards.html">EPUB Standards</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="use-as-a-python-library">
+<h1>Use as a Python library<a class="headerlink" href="#use-as-a-python-library" title="Permalink to this heading">#</a></h1>
+<p>This guide covers using <code class="docutils literal notranslate"><span class="pre">epub-utils</span></code> as a Python library. The API is designed to be intuitive
+and follows Python best practices for ease of use and integration into your projects.</p>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
+<p>The main entry point is the <code class="docutils literal notranslate"><span class="pre">Document</span></code> class:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="c1"># Load an EPUB file</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;path/to/book.epub&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access various components</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Author: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">creator</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="core-classes">
+<h2>Core Classes<a class="headerlink" href="#core-classes" title="Permalink to this heading">#</a></h2>
+<section id="document-class">
+<h3>Document Class<a class="headerlink" href="#document-class" title="Permalink to this heading">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">Document</span></code> class is your main interface to an EPUB file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;example.epub&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access major components</span>
+<span class="n">container</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">container</span>      <span class="c1"># Container information</span>
+<span class="n">package</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span>         <span class="c1"># Package/OPF file</span>
+<span class="n">toc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">toc</span>                 <span class="c1"># Table of contents</span>
+
+<span class="c1"># Get file information</span>
+<span class="n">files_info</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_files_info</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Key Methods</strong>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">get_files_info()</span></code>: Returns detailed information about all files in the EPUB</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">list_files()</span></code>: Returns a simple list of files with basic metadata</p></li>
+</ul>
+</section>
+<section id="container-access">
+<h3>Container Access<a class="headerlink" href="#container-access" title="Permalink to this heading">#</a></h3>
+<p>The container provides information from the META-INF/container.xml file:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access container properties</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Package path: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">rootfile_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Media type: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">rootfile_media_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get raw XML</span>
+<span class="n">container_xml</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+<span class="n">raw_container</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">container</span><span class="o">.</span><span class="n">to_str</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="package-and-metadata">
+<h3>Package and Metadata<a class="headerlink" href="#package-and-metadata" title="Permalink to this heading">#</a></h3>
+<p>The package object gives you access to the main OPF file and its metadata:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span>
+
+<span class="c1"># Access metadata</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Author: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">creator</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Language: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">language</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Identifier: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">identifier</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Publisher: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">publisher</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get all metadata as key-value pairs</span>
+<span class="n">kv_metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">to_kv</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">kv_metadata</span><span class="p">)</span>
+
+<span class="c1"># Access manifest and spine</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">manifest</span>
+<span class="n">spine</span> <span class="o">=</span> <span class="n">package</span><span class="o">.</span><span class="n">spine</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="working-with-metadata">
+<h2>Working with Metadata<a class="headerlink" href="#working-with-metadata" title="Permalink to this heading">#</a></h2>
+<section id="extracting-common-fields">
+<h3>Extracting Common Fields<a class="headerlink" href="#extracting-common-fields" title="Permalink to this heading">#</a></h3>
+<p>The metadata object provides easy access to Dublin Core and EPUB-specific metadata:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">metadata</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span>
+
+<span class="c1"># Basic Dublin Core elements</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">title</span>
+<span class="n">creator</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">creator</span>  <span class="c1"># Usually the author</span>
+<span class="n">subject</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">subject</span>  <span class="c1"># Keywords/topics</span>
+<span class="n">description</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">description</span>
+<span class="n">publisher</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">publisher</span>
+<span class="n">contributor</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">contributor</span>
+<span class="n">date</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">date</span>
+<span class="nb">type</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">type</span>
+<span class="nb">format</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">format</span>
+<span class="n">identifier</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">identifier</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">source</span>
+<span class="n">language</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">language</span>
+<span class="n">relation</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">relation</span>
+<span class="n">coverage</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">coverage</span>
+<span class="n">rights</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">rights</span>
+</pre></div>
+</div>
+</section>
+<section id="dynamic-attribute-access">
+<h3>Dynamic Attribute Access<a class="headerlink" href="#dynamic-attribute-access" title="Permalink to this heading">#</a></h3>
+<p>The metadata object supports dynamic attribute access for any metadata field:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access any metadata field by name</span>
+<span class="n">isbn</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;isbn&#39;</span><span class="p">,</span> <span class="s1">&#39;Not available&#39;</span><span class="p">)</span>
+<span class="n">series</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;series&#39;</span><span class="p">,</span> <span class="s1">&#39;Not available&#39;</span><span class="p">)</span>
+
+<span class="c1"># Or use the more direct approach</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">custom_field</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">custom_metadata_field</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="n">custom_field</span> <span class="o">=</span> <span class="s2">&quot;Field not found&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="formatted-output">
+<h3>Formatted Output<a class="headerlink" href="#formatted-output" title="Permalink to this heading">#</a></h3>
+<p>Get metadata in different formats:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># XML format with syntax highlighting</span>
+<span class="n">xml_metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">highlight_syntax</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Raw XML without highlighting</span>
+<span class="n">raw_xml</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">to_xml</span><span class="p">(</span><span class="n">highlight_syntax</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<span class="c1"># Key-value format for easy parsing</span>
+<span class="n">kv_format</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">to_kv</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="manifest-and-spine">
+<h2>Manifest and Spine<a class="headerlink" href="#manifest-and-spine" title="Permalink to this heading">#</a></h2>
+<section id="working-with-the-manifest">
+<h3>Working with the Manifest<a class="headerlink" href="#working-with-the-manifest" title="Permalink to this heading">#</a></h3>
+<p>The manifest lists all files in the EPUB package:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">manifest</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">manifest</span>
+
+<span class="c1"># Get all items</span>
+<span class="n">items</span> <span class="o">=</span> <span class="n">manifest</span><span class="o">.</span><span class="n">items</span>  <span class="c1"># Dictionary of manifest items</span>
+
+<span class="c1"># Find specific items</span>
+<span class="k">for</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID: </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  File: </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Type: </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;media-type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get formatted output</span>
+<span class="n">manifest_xml</span> <span class="o">=</span> <span class="n">manifest</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="understanding-the-spine">
+<h3>Understanding the Spine<a class="headerlink" href="#understanding-the-spine" title="Permalink to this heading">#</a></h3>
+<p>The spine defines the reading order:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">spine</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">spine</span>
+
+<span class="c1"># Get spine items in reading order</span>
+<span class="n">spine_items</span> <span class="o">=</span> <span class="n">spine</span><span class="o">.</span><span class="n">items</span>
+
+<span class="c1"># Get formatted output</span>
+<span class="n">spine_xml</span> <span class="o">=</span> <span class="n">spine</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Permalink to this heading">#</a></h2>
+<section id="working-with-toc">
+<h3>Working with TOC<a class="headerlink" href="#working-with-toc" title="Permalink to this heading">#</a></h3>
+<p>Access the table of contents (either NCX or Navigation Document):</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">toc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">toc</span>
+
+<span class="c1"># Get formatted TOC</span>
+<span class="n">toc_xml</span> <span class="o">=</span> <span class="n">toc</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+<span class="n">raw_toc</span> <span class="o">=</span> <span class="n">toc</span><span class="o">.</span><span class="n">to_str</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="specific-toc-access">
+<h3>Specific TOC Access<a class="headerlink" href="#specific-toc-access" title="Permalink to this heading">#</a></h3>
+<p>For fine-grained control over which table of contents format to access:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access NCX specifically (EPUB 2 or EPUB 3 with NCX)</span>
+<span class="n">ncx</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">ncx</span>
+<span class="k">if</span> <span class="n">ncx</span><span class="p">:</span>
+    <span class="n">ncx_xml</span> <span class="o">=</span> <span class="n">ncx</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;NCX navigation available&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No NCX navigation found&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access Navigation Document specifically (EPUB 3 only)</span>
+<span class="n">nav</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">nav</span>
+<span class="k">if</span> <span class="n">nav</span><span class="p">:</span>
+    <span class="n">nav_xml</span> <span class="o">=</span> <span class="n">nav</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Navigation Document available&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No Navigation Document found (likely EPUB 2)&quot;</span><span class="p">)</span>
+
+<span class="c1"># Handle different EPUB versions</span>
+<span class="n">package</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span>
+<span class="k">if</span> <span class="n">package</span><span class="o">.</span><span class="n">version</span><span class="o">.</span><span class="n">major</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="c1"># EPUB 3 - prefer Navigation Document, fallback to NCX</span>
+    <span class="n">nav_doc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">nav</span> <span class="ow">or</span> <span class="n">doc</span><span class="o">.</span><span class="n">ncx</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># EPUB 2 - use NCX</span>
+    <span class="n">nav_doc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">ncx</span>
+
+<span class="k">if</span> <span class="n">nav_doc</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Table of contents found:&quot;</span><span class="p">,</span> <span class="n">nav_doc</span><span class="o">.</span><span class="n">to_str</span><span class="p">()[:</span><span class="mi">100</span><span class="p">])</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="content-extraction">
+<h2>Content Extraction<a class="headerlink" href="#content-extraction" title="Permalink to this heading">#</a></h2>
+<section id="accessing-document-content">
+<h3>Accessing Document Content<a class="headerlink" href="#accessing-document-content" title="Permalink to this heading">#</a></h3>
+<p>Extract content from specific documents within the EPUB:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># First, find content IDs from the manifest</span>
+<span class="n">manifest</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">manifest</span>
+<span class="n">content_items</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">item_id</span><span class="p">:</span> <span class="n">item</span> <span class="k">for</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="s1">&#39;media-type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;application/xhtml+xml&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># Access content by ID</span>
+<span class="k">for</span> <span class="n">content_id</span> <span class="ow">in</span> <span class="n">content_items</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_content</span><span class="p">(</span><span class="n">content_id</span><span class="p">)</span>
+        <span class="c1"># Process content as needed</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Content ID </span><span class="si">{</span><span class="n">content_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span><span class="si">}</span><span class="s2"> characters&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Could not access content </span><span class="si">{</span><span class="n">content_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="file-information">
+<h2>File Information<a class="headerlink" href="#file-information" title="Permalink to this heading">#</a></h2>
+<section id="detailed-file-analysis">
+<h3>Detailed File Analysis<a class="headerlink" href="#detailed-file-analysis" title="Permalink to this heading">#</a></h3>
+<p>Get comprehensive information about all files in the EPUB:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">files_info</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_files_info</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">file_info</span> <span class="ow">in</span> <span class="n">files_info</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Path: </span><span class="si">{</span><span class="n">file_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Size: </span><span class="si">{</span><span class="n">file_info</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compressed: </span><span class="si">{</span><span class="n">file_info</span><span class="p">[</span><span class="s1">&#39;compressed_size&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modified: </span><span class="si">{</span><span class="n">file_info</span><span class="p">[</span><span class="s1">&#39;modified&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
+
+<span class="c1"># Calculate total size</span>
+<span class="n">total_size</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files_info</span><span class="p">)</span>
+<span class="n">total_compressed</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="s1">&#39;compressed_size&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files_info</span><span class="p">)</span>
+<span class="n">compression_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">total_compressed</span> <span class="o">/</span> <span class="n">total_size</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total size: </span><span class="si">{</span><span class="n">total_size</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compressed size: </span><span class="si">{</span><span class="n">total_compressed</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Compression ratio: </span><span class="si">{</span><span class="n">compression_ratio</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="error-handling">
+<h2>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this heading">#</a></h2>
+<section id="robust-error-handling">
+<h3>Robust Error Handling<a class="headerlink" href="#robust-error-handling" title="Permalink to this heading">#</a></h3>
+<p>epub-utils provides specific exception types for better error handling:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParseError</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;potentially_corrupt.epub&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Try to access metadata</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Successfully loaded: </span><span class="si">{</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="n">ParseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EPUB parsing error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EPUB file not found&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unexpected error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="graceful-degradation">
+<h3>Graceful Degradation<a class="headerlink" href="#graceful-degradation" title="Permalink to this heading">#</a></h3>
+<p>Handle missing or malformed metadata gracefully:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">safe_get_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;Unknown&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Safely extract metadata field with fallback.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="n">field_name</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">ParseError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">default</span>
+
+<span class="c1"># Usage</span>
+<span class="n">title</span> <span class="o">=</span> <span class="n">safe_get_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Untitled&#39;</span><span class="p">)</span>
+<span class="n">author</span> <span class="o">=</span> <span class="n">safe_get_metadata</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="s1">&#39;creator&#39;</span><span class="p">,</span> <span class="s1">&#39;Unknown Author&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Explore the complete <a class="reference internal" href="api-reference.html"><span class="doc">API Reference</span></a> for detailed class documentation</p></li>
+<li><p>See more <a class="reference internal" href="examples.html"><span class="doc">Examples and Use Cases</span></a> for advanced use cases</p></li>
+<li><p>Learn about <a class="reference internal" href="epub-standards.html"><span class="doc">EPUB Standards</span></a> to understand the underlying specifications</p></li>
+<li><p>Check out the <a class="reference internal" href="cli-reference.html"><span class="doc">CLI Reference</span></a> for command-line equivalents</p></li>
+</ul>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="examples.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Examples and Use Cases</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cli-tutorial.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Use as a command-line tool</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Ernesto González
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Use as a Python library</a><ul>
+<li><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li><a class="reference internal" href="#core-classes">Core Classes</a><ul>
+<li><a class="reference internal" href="#document-class">Document Class</a></li>
+<li><a class="reference internal" href="#container-access">Container Access</a></li>
+<li><a class="reference internal" href="#package-and-metadata">Package and Metadata</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#working-with-metadata">Working with Metadata</a><ul>
+<li><a class="reference internal" href="#extracting-common-fields">Extracting Common Fields</a></li>
+<li><a class="reference internal" href="#dynamic-attribute-access">Dynamic Attribute Access</a></li>
+<li><a class="reference internal" href="#formatted-output">Formatted Output</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manifest-and-spine">Manifest and Spine</a><ul>
+<li><a class="reference internal" href="#working-with-the-manifest">Working with the Manifest</a></li>
+<li><a class="reference internal" href="#understanding-the-spine">Understanding the Spine</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#table-of-contents">Table of Contents</a><ul>
+<li><a class="reference internal" href="#working-with-toc">Working with TOC</a></li>
+<li><a class="reference internal" href="#specific-toc-access">Specific TOC Access</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#content-extraction">Content Extraction</a><ul>
+<li><a class="reference internal" href="#accessing-document-content">Accessing Document Content</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#file-information">File Information</a><ul>
+<li><a class="reference internal" href="#detailed-file-analysis">Detailed File Analysis</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#error-handling">Error Handling</a><ul>
+<li><a class="reference internal" href="#robust-error-handling">Robust Error Handling</a></li>
+<li><a class="reference internal" href="#graceful-degradation">Graceful Degradation</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#next-steps">Next Steps</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>

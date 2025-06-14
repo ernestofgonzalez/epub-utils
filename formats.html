@@ -1,0 +1,720 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="CLI Reference" href="cli-reference.html" /><link rel="prev" title="Examples and Use Cases" href="examples.html" />
+
+    <!-- Generated with Sphinx 6.2.0 and Furo 2022.12.07 -->
+        <title>Output Formats Reference - epub-utils 0.1.0a1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">epub-utils 0.1.0a1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">epub-utils 0.1.0a1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli-tutorial.html">Use as a command-line tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-tutorial.html">Use as a Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and Use Cases</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Output Formats Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli-reference.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epub-standards.html">EPUB Standards</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="output-formats-reference">
+<h1>Output Formats Reference<a class="headerlink" href="#output-formats-reference" title="Permalink to this heading">#</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">epub-utils</span></code> supports multiple output formats to suit different use cases. This guide explains each
+format with examples and best practices for when to use each one.</p>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<p>All commands in <code class="docutils literal notranslate"><span class="pre">epub-utils</span></code> support the <code class="docutils literal notranslate"><span class="pre">--format</span></code> option with these values:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">xml</span></code> - Syntax-highlighted XML (default for most commands)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">raw</span></code> - Unformatted, raw content</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kv</span></code> - Key-value pairs (where supported)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">plain</span></code> - Plain text with HTML tags stripped (content command only)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table</span></code> - Formatted table (files command only)</p></li>
+</ul>
+<p>Additionally, most commands support the <code class="docutils literal notranslate"><span class="pre">--pretty-print</span></code> option to format XML output with proper indentation and structure.</p>
+</section>
+<section id="xml-format-default">
+<h2>XML Format (Default)<a class="headerlink" href="#xml-format-default" title="Permalink to this heading">#</a></h2>
+<p>The XML format provides syntax-highlighted, pretty-printed XML output that’s easy to read.</p>
+<p><strong>When to use</strong>: Interactive inspection, debugging, learning EPUB structure</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>xml
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;metadata</span><span class="w"> </span><span class="na">xmlns:dc=</span><span class="s">&quot;http://purl.org/dc/elements/1.1/&quot;</span>
+<span class="w">          </span><span class="na">xmlns:opf=</span><span class="s">&quot;http://www.idpf.org/2007/opf&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:title&gt;</span>The<span class="w"> </span>Great<span class="w"> </span>Gatsby<span class="nt">&lt;/dc:title&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:creator&gt;</span>F.<span class="w"> </span>Scott<span class="w"> </span>Fitzgerald<span class="nt">&lt;/dc:creator&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:language&gt;</span>en<span class="nt">&lt;/dc:language&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:identifier</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;bookid&quot;</span><span class="nt">&gt;</span>urn:uuid:12345678-1234-1234-1234-123456789abc<span class="nt">&lt;/dc:identifier&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:publisher&gt;</span>Scribner<span class="nt">&lt;/dc:publisher&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:date&gt;</span>2021-01-01<span class="nt">&lt;/dc:date&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:subject&gt;</span>Fiction<span class="nt">&lt;/dc:subject&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:subject&gt;</span>Classic<span class="w"> </span>Literature<span class="nt">&lt;/dc:subject&gt;</span>
+<span class="nt">&lt;/metadata&gt;</span>
+</pre></div>
+</div>
+<p><strong>Features</strong>:
+- Color syntax highlighting
+- Proper indentation
+- Easy to read structure
+- Preserves all XML attributes and namespaces</p>
+</section>
+<section id="raw-format">
+<h2>Raw Format<a class="headerlink" href="#raw-format" title="Permalink to this heading">#</a></h2>
+<p>The raw format outputs unprocessed content exactly as stored in the EPUB file.</p>
+<p><strong>When to use</strong>: Piping to other tools, automated processing, debugging XML issues</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>raw
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><span class="nt">&lt;metadata</span><span class="w"> </span><span class="na">xmlns:dc=</span><span class="s">&quot;http://purl.org/dc/elements/1.1/&quot;</span><span class="w"> </span><span class="na">xmlns:opf=</span><span class="s">&quot;http://www.idpf.org/2007/opf&quot;</span><span class="nt">&gt;&lt;dc:title&gt;</span>The<span class="w"> </span>Great<span class="w"> </span>Gatsby<span class="nt">&lt;/dc:title&gt;&lt;dc:creator&gt;</span>F.<span class="w"> </span>Scott<span class="w"> </span>Fitzgerald<span class="nt">&lt;/dc:creator&gt;&lt;dc:language&gt;</span>en<span class="nt">&lt;/dc:language&gt;&lt;dc:identifier</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;bookid&quot;</span><span class="nt">&gt;</span>urn:uuid:12345678-1234-1234-1234-123456789abc<span class="nt">&lt;/dc:identifier&gt;&lt;dc:publisher&gt;</span>Scribner<span class="nt">&lt;/dc:publisher&gt;&lt;dc:date&gt;</span>2021-01-01<span class="nt">&lt;/dc:date&gt;&lt;dc:subject&gt;</span>Fiction<span class="nt">&lt;/dc:subject&gt;&lt;dc:subject&gt;</span>Classic<span class="w"> </span>Literature<span class="nt">&lt;/dc:subject&gt;&lt;/metadata&gt;</span>
+</pre></div>
+</div>
+<p><strong>Use cases</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pipe to xmllint for custom formatting</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>package<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span><span class="p">|</span><span class="w"> </span>xmllint<span class="w"> </span>--format<span class="w"> </span>-
+
+<span class="c1"># Extract specific elements with grep</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>manifest<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;media-type=&quot;text/css&quot;&#39;</span>
+
+<span class="c1"># Validate XML structure</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>toc<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span><span class="p">|</span><span class="w"> </span>xmllint<span class="w"> </span>--valid<span class="w"> </span>-
+</pre></div>
+</div>
+</section>
+<section id="key-value-format">
+<h2>Key-Value Format<a class="headerlink" href="#key-value-format" title="Permalink to this heading">#</a></h2>
+<p>The key-value format presents metadata as simple <code class="docutils literal notranslate"><span class="pre">key:</span> <span class="pre">value</span></code> pairs, perfect for scripting.</p>
+<p><strong>When to use</strong>: Shell scripting, automated data extraction, configuration files</p>
+<p><strong>Supported commands</strong>: <code class="docutils literal notranslate"><span class="pre">metadata</span></code></p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>title: The Great Gatsby
+creator: F. Scott Fitzgerald
+language: en
+identifier: urn:uuid:12345678-1234-1234-1234-123456789abc
+publisher: Scribner
+date: 2021-01-01
+subject: Fiction, Classic Literature
+</pre></div>
+</div>
+<p><strong>Scripting examples</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Extract just the title</span>
+<span class="nv">title</span><span class="o">=</span><span class="k">$(</span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^title:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f2-<span class="k">)</span>
+
+<span class="c1"># Get all metadata into shell variables</span>
+<span class="nb">eval</span><span class="w"> </span><span class="s2">&quot;</span><span class="k">$(</span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^/meta_/&#39;</span><span class="k">)</span><span class="s2">&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Book title: </span><span class="nv">$meta_title</span><span class="s2">&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Author: </span><span class="nv">$meta_creator</span><span class="s2">&quot;</span>
+
+<span class="c1"># Create a simple database</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;filename,title,author&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>books.csv
+<span class="k">for</span><span class="w"> </span>epub<span class="w"> </span><span class="k">in</span><span class="w"> </span>*.epub<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nv">metadata</span><span class="o">=</span><span class="k">$(</span>epub-utils<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$epub</span><span class="s2">&quot;</span><span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="k">)</span>
+<span class="w">    </span><span class="nv">title</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$metadata</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^title:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f2-<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span><span class="s1">&#39;;&#39;</span><span class="k">)</span>
+<span class="w">    </span><span class="nv">author</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$metadata</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;^creator:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="s1">&#39; &#39;</span><span class="w"> </span>-f2-<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">&#39;,&#39;</span><span class="w"> </span><span class="s1">&#39;;&#39;</span><span class="k">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$epub</span><span class="s2">,</span><span class="nv">$title</span><span class="s2">,</span><span class="nv">$author</span><span class="s2">&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>books.csv
+<span class="k">done</span>
+</pre></div>
+</div>
+</section>
+<section id="plain-text-format">
+<h2>Plain Text Format<a class="headerlink" href="#plain-text-format" title="Permalink to this heading">#</a></h2>
+<p>The plain text format strips HTML tags and returns readable text content.</p>
+<p><strong>When to use</strong>: Content analysis, word counting, text extraction</p>
+<p><strong>Supported commands</strong>: <code class="docutils literal notranslate"><span class="pre">content</span></code>, <code class="docutils literal notranslate"><span class="pre">files</span></code> (with file path)</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>content<span class="w"> </span>chapter1<span class="w"> </span>--format<span class="w"> </span>plain
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Chapter 1: The Beginning
+
+In my younger and more vulnerable years my father gave me some advice
+that I&#39;ve carried with me ever since. &quot;Whenever you feel like criticizing
+anyone,&quot; he told me, &quot;just remember that all the people in this world
+haven&#39;t had the advantages that you&#39;ve had.&quot;
+</pre></div>
+</div>
+<p><strong>Use cases</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Count words in a chapter (using content command)</span>
+<span class="nv">word_count</span><span class="o">=</span><span class="k">$(</span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>content<span class="w"> </span>chapter1<span class="w"> </span>--format<span class="w"> </span>plain<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-w<span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Chapter 1 has </span><span class="nv">$word_count</span><span class="s2"> words&quot;</span>
+
+<span class="c1"># Extract all text for analysis (using files command)</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>files<span class="w"> </span>OEBPS/chapter1.xhtml<span class="w"> </span>--format<span class="w"> </span>plain<span class="w"> </span>&gt;<span class="w"> </span>chapter1.txt
+
+<span class="c1"># Search for specific content in any file</span>
+<span class="k">if</span><span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>files<span class="w"> </span>OEBPS/chapter2.xhtml<span class="w"> </span>--format<span class="w"> </span>plain<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;important phrase&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Found the phrase in chapter 2&quot;</span>
+<span class="k">fi</span>
+
+<span class="c1"># Access files by path without knowing manifest IDs</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>files<span class="w"> </span>OEBPS/styles/main.css
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>files<span class="w"> </span>META-INF/container.xml
+</pre></div>
+</div>
+</section>
+<section id="table-format">
+<h2>Table Format<a class="headerlink" href="#table-format" title="Permalink to this heading">#</a></h2>
+<p>The table format presents file information in a readable tabular layout.</p>
+<p><strong>When to use</strong>: File analysis, human-readable file listings</p>
+<p><strong>Supported commands</strong>: <code class="docutils literal notranslate"><span class="pre">files</span></code></p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>files<span class="w"> </span>--format<span class="w"> </span>table
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>File Information for book.epub
+┌────────────────────────────────────────┬──────────┬──────────────┬─────────────────────┐
+│ Path                                   │ Size     │ Compressed   │ Modified            │
+├────────────────────────────────────────┼──────────┼──────────────┼─────────────────────┤
+│ META-INF/container.xml                 │ 230 B    │ 140 B        │ 2021-01-01 10:00:00│
+│ OEBPS/content.opf                      │ 2.1 KB   │ 856 B        │ 2021-01-01 10:00:00│
+│ OEBPS/toc.ncx                          │ 1.8 KB   │ 542 B        │ 2021-01-01 10:00:00│
+│ OEBPS/Text/chapter01.xhtml             │ 12.4 KB  │ 3.2 KB       │ 2021-01-01 10:00:00│
+│ OEBPS/Text/chapter02.xhtml             │ 15.6 KB  │ 4.1 KB       │ 2021-01-01 10:00:00│
+│ OEBPS/Styles/stylesheet.css            │ 3.2 KB   │ 1.1 KB       │ 2021-01-01 10:00:00│
+│ OEBPS/Images/cover.jpg                 │ 145.2 KB │ 144.8 KB     │ 2021-01-01 10:00:00│
+└────────────────────────────────────────┴──────────┴──────────────┴─────────────────────┘
+</pre></div>
+</div>
+</section>
+<section id="command-specific-format-support">
+<h2>Command-Specific Format Support<a class="headerlink" href="#command-specific-format-support" title="Permalink to this heading">#</a></h2>
+<p>Here’s a quick reference for which formats each command supports:</p>
+<div class="table-wrapper colwidths-given docutils container" id="id1">
+<table class="docutils align-default" id="id1">
+<caption><span class="caption-text">Format Support by Command</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 21.1%" />
+<col style="width: 15.8%" />
+<col style="width: 15.8%" />
+<col style="width: 15.8%" />
+<col style="width: 15.8%" />
+<col style="width: 15.8%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Command</p></th>
+<th class="head"><p>XML</p></th>
+<th class="head"><p>Raw</p></th>
+<th class="head"><p>KV</p></th>
+<th class="head"><p>Plain</p></th>
+<th class="head"><p>Table</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">container</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">package</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">toc</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">metadata</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">manifest</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">spine</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">content</span></code></p></td>
+<td><p>✓</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">files</span></code></p></td>
+<td><p>✓*</p></td>
+<td><p>✓</p></td>
+<td><p>✗</p></td>
+<td><p>✓*</p></td>
+<td><p>✓*</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>* For the <code class="docutils literal notranslate"><span class="pre">files</span></code> command: <code class="docutils literal notranslate"><span class="pre">xml</span></code>, <code class="docutils literal notranslate"><span class="pre">plain</span></code>, and <code class="docutils literal notranslate"><span class="pre">table</span></code> formats are only available when specifying a file path. When listing files (no path specified), only <code class="docutils literal notranslate"><span class="pre">table</span></code> and <code class="docutils literal notranslate"><span class="pre">raw</span></code> formats are supported.</p>
+</div>
+</section>
+<section id="advanced-format-usage">
+<h2>Advanced Format Usage<a class="headerlink" href="#advanced-format-usage" title="Permalink to this heading">#</a></h2>
+<section id="combining-formats-with-shell-tools">
+<h3>Combining Formats with Shell Tools<a class="headerlink" href="#combining-formats-with-shell-tools" title="Permalink to this heading">#</a></h3>
+<p><strong>Pretty-print with custom tools</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use xmllint for custom XML formatting</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>package<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span><span class="p">|</span><span class="w"> </span>xmllint<span class="w"> </span>--format<span class="w"> </span>--noblanks<span class="w"> </span>-
+
+<span class="c1"># Convert to JSON using xq (if available)</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span><span class="p">|</span><span class="w"> </span>xq<span class="w"> </span><span class="s1">&#39;.&#39;</span>
+</pre></div>
+</div>
+<p><strong>Processing key-value output</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert to environment variables</span>
+<span class="nb">export</span><span class="w"> </span><span class="k">$(</span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">&#39; &#39;</span><span class="w"> </span><span class="s1">&#39;_&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>tr<span class="w"> </span><span class="s1">&#39;:&#39;</span><span class="w"> </span><span class="s1">&#39;=&#39;</span><span class="k">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Title: </span><span class="nv">$title</span><span class="s2">&quot;</span>
+
+<span class="c1"># Create YAML-like output</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/^/  /&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;1i metadata:&#39;</span>
+</pre></div>
+</div>
+<p><strong>Text analysis workflows</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Analyze reading time (assuming 200 words per minute)</span>
+<span class="nv">words</span><span class="o">=</span><span class="k">$(</span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>content<span class="w"> </span>chapter1<span class="w"> </span>--format<span class="w"> </span>plain<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-w<span class="k">)</span>
+<span class="nv">minutes</span><span class="o">=</span><span class="k">$((</span><span class="nv">words</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="m">200</span><span class="k">))</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Chapter 1 reading time: </span><span class="nv">$minutes</span><span class="s2"> minutes&quot;</span>
+
+<span class="c1"># Extract quotes (lines starting with quotation marks)</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>content<span class="w"> </span>chapter1<span class="w"> </span>--format<span class="w"> </span>plain<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s1">&#39;^&quot;.*&quot;$&#39;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="format-selection-guidelines">
+<h2>Format Selection Guidelines<a class="headerlink" href="#format-selection-guidelines" title="Permalink to this heading">#</a></h2>
+<p>Choose the right format based on your use case:</p>
+<p><strong>For Human Reading</strong>:
+- Use <code class="docutils literal notranslate"><span class="pre">xml</span></code> for inspecting EPUB structure
+- Use <code class="docutils literal notranslate"><span class="pre">table</span></code> for file listings
+- Use <code class="docutils literal notranslate"><span class="pre">plain</span></code> for content reading</p>
+<p><strong>For Automation</strong>:
+- Use <code class="docutils literal notranslate"><span class="pre">raw</span></code> for piping to other XML tools
+- Use <code class="docutils literal notranslate"><span class="pre">kv</span></code> for simple scripting and data extraction
+- Use <code class="docutils literal notranslate"><span class="pre">raw</span></code> with <code class="docutils literal notranslate"><span class="pre">files</span></code> for getting simple file lists</p>
+<p><strong>For Integration</strong>:
+- Use <code class="docutils literal notranslate"><span class="pre">raw</span></code> when feeding into other programs
+- Use <code class="docutils literal notranslate"><span class="pre">kv</span></code> for configuration file generation
+- Use <code class="docutils literal notranslate"><span class="pre">plain</span></code> for text processing workflows</p>
+<p><strong>Performance Considerations</strong>:
+- <code class="docutils literal notranslate"><span class="pre">raw</span></code> format is fastest (no syntax highlighting)
+- <code class="docutils literal notranslate"><span class="pre">xml</span></code> format has slight overhead for highlighting
+- <code class="docutils literal notranslate"><span class="pre">table</span></code> format requires additional formatting computation</p>
+</section>
+<section id="error-handling-with-formats">
+<h2>Error Handling with Formats<a class="headerlink" href="#error-handling-with-formats" title="Permalink to this heading">#</a></h2>
+<p>Different formats handle errors differently:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># XML format shows formatted error messages</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>corrupted.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>xml
+Error:<span class="w"> </span>Unable<span class="w"> </span>to<span class="w"> </span>parse<span class="w"> </span>metadata
+
+<span class="c1"># Raw format may show parsing errors directly</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>corrupted.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>raw
+ParseError:<span class="w"> </span>Invalid<span class="w"> </span>XML<span class="w"> </span>structure
+
+<span class="c1"># KV format gracefully handles missing fields</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>incomplete.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv
+title:
+creator:<span class="w"> </span>Unknown<span class="w"> </span>Author
+language:<span class="w"> </span>en
+</pre></div>
+</div>
+</section>
+<section id="custom-format-processing">
+<h2>Custom Format Processing<a class="headerlink" href="#custom-format-processing" title="Permalink to this heading">#</a></h2>
+<p>You can create custom output formats by post-processing the raw output:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/zsh</span>
+<span class="c1"># custom-json-format.sh - Convert metadata to JSON</span>
+
+<span class="nv">epub_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;{&quot;</span>
+epub-utils<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$epub_file</span><span class="s2">&quot;</span><span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;: &#39;</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>key<span class="w"> </span>value<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$key</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$value</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;  \&quot;</span><span class="nv">$key</span><span class="s2">\&quot;: \&quot;</span><span class="nv">$value</span><span class="s2">\&quot;,&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">done</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;$s/,$//&#39;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;}&quot;</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/zsh</span>
+<span class="c1"># custom-markdown-format.sh - Convert metadata to Markdown</span>
+
+<span class="nv">epub_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# Book Information&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&quot;</span>
+
+epub-utils<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$epub_file</span><span class="s2">&quot;</span><span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="k">while</span><span class="w"> </span><span class="nv">IFS</span><span class="o">=</span><span class="s1">&#39;: &#39;</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>-r<span class="w"> </span>key<span class="w"> </span>value<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$key</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$value</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="nv">formatted_key</span><span class="o">=</span><span class="k">$(</span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$key</span><span class="s2">&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>sed<span class="w"> </span><span class="s1">&#39;s/\b\w/\U&amp;/g&#39;</span><span class="k">)</span><span class="w">  </span><span class="c1"># Title case</span>
+<span class="w">        </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;**</span><span class="nv">$formatted_key</span><span class="s2">**: </span><span class="nv">$value</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="k">done</span>
+</pre></div>
+</div>
+</section>
+<section id="pretty-print-option">
+<h2>Pretty-Print Option<a class="headerlink" href="#pretty-print-option" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">--pretty-print</span></code> (or <code class="docutils literal notranslate"><span class="pre">-pp</span></code>) option enhances XML output by adding proper indentation and structure, making it more readable for human inspection.</p>
+<p><strong>When to use</strong>: Human review, debugging XML structure, cleaner output for documentation</p>
+<p><strong>Supported formats</strong>: <code class="docutils literal notranslate"><span class="pre">xml</span></code> and <code class="docutils literal notranslate"><span class="pre">raw</span></code></p>
+<p><strong>Example without pretty-print</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>raw
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><span class="nt">&lt;metadata</span><span class="w"> </span><span class="na">xmlns:dc=</span><span class="s">&quot;http://purl.org/dc/elements/1.1/&quot;</span><span class="w"> </span><span class="na">xmlns:opf=</span><span class="s">&quot;http://www.idpf.org/2007/opf&quot;</span><span class="nt">&gt;&lt;dc:title&gt;</span>The<span class="w"> </span>Great<span class="w"> </span>Gatsby<span class="nt">&lt;/dc:title&gt;&lt;dc:creator&gt;</span>F.<span class="w"> </span>Scott<span class="w"> </span>Fitzgerald<span class="nt">&lt;/dc:creator&gt;&lt;dc:language&gt;</span>en<span class="nt">&lt;/dc:language&gt;&lt;/metadata&gt;</span>
+</pre></div>
+</div>
+<p><strong>Example with pretty-print</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>epub-utils<span class="w"> </span>book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span>--pretty-print
+</pre></div>
+</div>
+<p><strong>Output</strong>:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;metadata</span><span class="w"> </span><span class="na">xmlns:dc=</span><span class="s">&quot;http://purl.org/dc/elements/1.1/&quot;</span>
+<span class="w">          </span><span class="na">xmlns:opf=</span><span class="s">&quot;http://www.idpf.org/2007/opf&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:title&gt;</span>The<span class="w"> </span>Great<span class="w"> </span>Gatsby<span class="nt">&lt;/dc:title&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:creator&gt;</span>F.<span class="w"> </span>Scott<span class="w"> </span>Fitzgerald<span class="nt">&lt;/dc:creator&gt;</span>
+<span class="w">  </span><span class="nt">&lt;dc:language&gt;</span>en<span class="nt">&lt;/dc:language&gt;</span>
+<span class="nt">&lt;/metadata&gt;</span>
+</pre></div>
+</div>
+<p><strong>Use cases</strong>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Better readability for manual inspection</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>package<span class="w"> </span>--pretty-print
+
+<span class="c1"># Clean output for documentation or examples</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>container<span class="w"> </span>--format<span class="w"> </span>raw<span class="w"> </span>--pretty-print
+
+<span class="c1"># Pipe to file with proper formatting</span>
+epub-utils<span class="w"> </span>book.epub<span class="w"> </span>toc<span class="w"> </span>--pretty-print<span class="w"> </span>&gt;<span class="w"> </span>toc-formatted.xml
+</pre></div>
+</div>
+<p><strong>Note</strong>: Pretty-print has no effect on <code class="docutils literal notranslate"><span class="pre">kv</span></code>, <code class="docutils literal notranslate"><span class="pre">plain</span></code>, or <code class="docutils literal notranslate"><span class="pre">table</span></code> formats as these are already optimized for readability.</p>
+</section>
+<section id="best-practices">
+<h2>Best Practices<a class="headerlink" href="#best-practices" title="Permalink to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p><strong>Default to XML for interactive use</strong> - it’s the most readable</p></li>
+<li><p><strong>Use raw for scripting</strong> - it’s the most reliable for automation</p></li>
+<li><p><strong>Use kv for metadata extraction</strong> - it’s purpose-built for simple parsing</p></li>
+<li><p><strong>Use plain for content analysis</strong> - it removes HTML complexity</p></li>
+<li><p><strong>Use pretty-print for human review</strong> - it makes XML structure clearer</p></li>
+<li><p><strong>Always handle errors</strong> - EPUB files can be malformed</p></li>
+<li><p><strong>Test with various EPUB files</strong> - format output can vary with different EPUB structures</p></li>
+</ol>
+<p>These format options make epub-utils flexible enough to handle everything from quick
+interactive inspection to complex automated workflows.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="cli-reference.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">CLI Reference</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="examples.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Examples and Use Cases</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Ernesto González
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Output Formats Reference</a><ul>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#xml-format-default">XML Format (Default)</a></li>
+<li><a class="reference internal" href="#raw-format">Raw Format</a></li>
+<li><a class="reference internal" href="#key-value-format">Key-Value Format</a></li>
+<li><a class="reference internal" href="#plain-text-format">Plain Text Format</a></li>
+<li><a class="reference internal" href="#table-format">Table Format</a></li>
+<li><a class="reference internal" href="#command-specific-format-support">Command-Specific Format Support</a></li>
+<li><a class="reference internal" href="#advanced-format-usage">Advanced Format Usage</a><ul>
+<li><a class="reference internal" href="#combining-formats-with-shell-tools">Combining Formats with Shell Tools</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#format-selection-guidelines">Format Selection Guidelines</a></li>
+<li><a class="reference internal" href="#error-handling-with-formats">Error Handling with Formats</a></li>
+<li><a class="reference internal" href="#custom-format-processing">Custom Format Processing</a></li>
+<li><a class="reference internal" href="#pretty-print-option">Pretty-Print Option</a></li>
+<li><a class="reference internal" href="#best-practices">Best Practices</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>

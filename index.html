@@ -1,0 +1,521 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Installation Guide" href="installation.html" />
+
+    <!-- Generated with Sphinx 6.2.0 and Furo 2022.12.07 -->
+        <title>epub-utils 0.1.0a1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="#"><div class="brand">epub-utils 0.1.0a1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
+  
+  
+  <span class="sidebar-brand-text">epub-utils 0.1.0a1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli-tutorial.html">Use as a command-line tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-tutorial.html">Use as a Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formats.html">Output Formats Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli-reference.html">CLI Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epub-standards.html">EPUB Standards</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="epub-utils-epub-inspection-and-manipulation">
+<h1>epub-utils: EPUB Inspection and Manipulation<a class="headerlink" href="#epub-utils-epub-inspection-and-manipulation" title="Permalink to this heading">#</a></h1>
+<a class="reference external image-reference" href="https://pypi.org/project/epub-utils/"><img alt="PyPI version" src="https://img.shields.io/pypi/v/epub-utils.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/epub-utils/"><img alt="Python versions" src="https://img.shields.io/pypi/pyversions/epub-utils.svg?logo=python&amp;logoColor=white" /></a>
+<a class="reference external image-reference" href="https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE"><img alt="License" src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" /></a>
+<p><strong>epub-utils</strong> is a comprehensive Python library and command-line tool for working with EPUB files.
+It provides both a programmatic API and an intuitive CLI interface for inspecting and parsing EPUB archives.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>epub-utils supports <strong>EPUB 2.0.1</strong> and <strong>EPUB 3.0+</strong> specifications, ensuring compatibility
+with the vast majority of EPUB files in circulation.</p>
+</div>
+<section id="key-features">
+<h2>Key Features<a class="headerlink" href="#key-features" title="Permalink to this heading">#</a></h2>
+<dl class="simple">
+<dt><strong>Rich CLI Interface</strong></dt><dd><ul class="simple">
+<li><p>Syntax-highlighted XML output</p></li>
+<li><p>Multiple output formats (XML, raw, key-value, plain text)</p></li>
+<li><p>Comprehensive file inspection capabilities</p></li>
+</ul>
+</dd>
+<dt><strong>Complete EPUB Support</strong></dt><dd><ul class="simple">
+<li><p>Parse container.xml and package files</p></li>
+<li><p>Extract and display table of contents</p></li>
+<li><p>Access manifest and spine information</p></li>
+<li><p>Retrieve document content by ID</p></li>
+</ul>
+</dd>
+<dt><strong>Metadata Extraction</strong></dt><dd><ul class="simple">
+<li><p>Dublin Core metadata support</p></li>
+<li><p>EPUB-specific metadata fields</p></li>
+<li><p>Key-value output for easy parsing</p></li>
+</ul>
+</dd>
+<dt><strong>Python API</strong></dt><dd><ul class="simple">
+<li><p>Clean, object-oriented interface</p></li>
+<li><p>Lazy loading for performance</p></li>
+<li><p>Comprehensive error handling</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h2>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>epub-utils
+</pre></div>
+</div>
+</section>
+<section id="basic-cli-usage">
+<h3>Basic CLI Usage<a class="headerlink" href="#basic-cli-usage" title="Permalink to this heading">#</a></h3>
+<p>Inspect an EPUB file with a simple command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Display metadata with beautiful syntax highlighting</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>my-book.epub<span class="w"> </span>metadata
+
+<span class="c1"># Show table of contents structure</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>my-book.epub<span class="w"> </span>toc
+
+<span class="c1"># Get key-value metadata for scripting</span>
+$<span class="w"> </span>epub-utils<span class="w"> </span>my-book.epub<span class="w"> </span>metadata<span class="w"> </span>--format<span class="w"> </span>kv
+</pre></div>
+</div>
+</section>
+<section id="basic-python-usage">
+<h3>Basic Python Usage<a class="headerlink" href="#basic-python-usage" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="c1"># Load an EPUB document</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;path/to/book.epub&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access metadata easily</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Author: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">creator</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Language: </span><span class="si">{</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">language</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get table of contents</span>
+<span class="n">toc_xml</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">toc</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">toc_xml</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="why-epub-utils">
+<h2>Why epub-utils?<a class="headerlink" href="#why-epub-utils" title="Permalink to this heading">#</a></h2>
+<p>epub-utils fills a crucial gap in the Python ecosystem for EPUB file manipulation. While there are
+libraries for creating EPUBs, few focus on inspection and analysis. This tool is perfect for:</p>
+<dl class="simple">
+<dt><strong>Publishers and Authors</strong></dt><dd><p>Validate EPUB structure and metadata before distribution</p>
+</dd>
+<dt><strong>Digital Librarians</strong></dt><dd><p>Batch process and analyze EPUB collections</p>
+</dd>
+<dt><strong>Automation Scripts</strong></dt><dd><p>Extract metadata for catalogs and databases</p>
+</dd>
+<dt><strong>Debugging</strong></dt><dd><p>Inspect malformed or problematic EPUB files</p>
+</dd>
+<dt><strong>Learning</strong></dt><dd><p>Understand EPUB structure and standards compliance</p>
+</dd>
+</dl>
+</section>
+<section id="documentation-contents">
+<h2>Documentation Contents<a class="headerlink" href="#documentation-contents" title="Permalink to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-pypi">Installing from PyPI</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#development-installation">Development Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#virtual-environment-installation">Virtual Environment Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#verifying-installation">Verifying Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#installing-from-source">Installing from Source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#upgrading">Upgrading</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#uninstalling">Uninstalling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#performance-considerations">Performance Considerations</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="cli-tutorial.html">Use as a command-line tool</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#getting-started">Getting Started</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#basic-file-inspection">Basic File Inspection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#working-with-metadata">Working with Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#understanding-epub-structure">Understanding EPUB Structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#content-extraction">Content Extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#output-format-options">Output Format Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api-tutorial.html">Use as a Python library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#core-classes">Core Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#working-with-metadata">Working with Metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#manifest-and-spine">Manifest and Spine</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#table-of-contents">Table of Contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#content-extraction">Content Extraction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#file-information">File Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-tutorial.html#next-steps">Next Steps</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and Use Cases</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#digital-library-management">Digital Library Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#quality-assurance-and-validation">Quality Assurance and Validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#metadata-management">Metadata Management</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#content-analysis-and-statistics">Content Analysis and Statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#automation-and-workflows">Automation and Workflows</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#command-line-power-user-examples">Command-Line Power User Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples.html#navigation-and-table-of-contents">Navigation and Table of Contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="formats.html">Output Formats Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#xml-format-default">XML Format (Default)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#raw-format">Raw Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#key-value-format">Key-Value Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#plain-text-format">Plain Text Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#table-format">Table Format</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#command-specific-format-support">Command-Specific Format Support</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#advanced-format-usage">Advanced Format Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#format-selection-guidelines">Format Selection Guidelines</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#error-handling-with-formats">Error Handling with Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#custom-format-processing">Custom Format Processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#pretty-print-option">Pretty-Print Option</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formats.html#best-practices">Best Practices</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli-reference.html">CLI Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#synopsis">Synopsis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#global-options">Global Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#commands">Commands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#format-options">Format Options</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#exit-codes">Exit Codes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#environment-variables">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#common-usage-patterns">Common Usage Patterns</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#error-handling">Error Handling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#performance-tips">Performance Tips</a></li>
+<li class="toctree-l2"><a class="reference internal" href="cli-reference.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api-reference.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#document-class">Document Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#container-class">Container Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#package-class">Package Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#metadata-class">Metadata Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#manifest-class">Manifest Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#spine-class">Spine Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#tableofcontents-class">TableOfContents Class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#content-classes">Content Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#exception-classes">Exception Classes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#usage-examples">Usage Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#type-hints">Type Hints</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api-reference.html#module-structure">Module Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="epub-standards.html">EPUB Standards</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#understanding-epub-specifications">Understanding EPUB Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#epub-3-3-specification">EPUB 3.3 Specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#epub-compliance-with-epub-utils">EPUB Compliance with epub-utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#common-compliance-issues">Common Compliance Issues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#epub-2-vs-epub-3-differences">EPUB 2 vs EPUB 3 Differences</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#best-practices-for-compliance">Best Practices for Compliance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#testing-and-validation-tools">Testing and Validation Tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#future-standards">Future Standards</a></li>
+<li class="toctree-l2"><a class="reference internal" href="epub-standards.html#resources">Resources</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+</div>
+</section>
+<section id="community-support">
+<h2>Community &amp; Support<a class="headerlink" href="#community-support" title="Permalink to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Source Code</strong>: <a class="reference external" href="https://github.com/ernestofgonzalez/epub-utils">GitHub Repository</a></p></li>
+<li><p><strong>Issues</strong>: <a class="reference external" href="https://github.com/ernestofgonzalez/epub-utils/issues">Bug Reports &amp; Feature Requests</a></p></li>
+<li><p><strong>PyPI</strong>: <a class="reference external" href="https://pypi.org/project/epub-utils/">Package Index</a></p></li>
+</ul>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">epub-utils</span></code> is distributed under the <a class="reference external" href="https://github.com/ernestofgonzalez/epub-utils/blob/main/LICENSE">Apache License 2.0</a>.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="installation.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Installation Guide</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Ernesto González
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">epub-utils: EPUB Inspection and Manipulation</a><ul>
+<li><a class="reference internal" href="#key-features">Key Features</a></li>
+<li><a class="reference internal" href="#quick-start">Quick Start</a><ul>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#basic-cli-usage">Basic CLI Usage</a></li>
+<li><a class="reference internal" href="#basic-python-usage">Basic Python Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#why-epub-utils">Why epub-utils?</a></li>
+<li><a class="reference internal" href="#documentation-contents">Documentation Contents</a><ul>
+</ul>
+</li>
+<li><a class="reference internal" href="#community-support">Community &amp; Support</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>

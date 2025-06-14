@@ -1,0 +1,1336 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="EPUB Standards" href="epub-standards.html" /><link rel="prev" title="CLI Reference" href="cli-reference.html" />
+
+    <!-- Generated with Sphinx 6.2.0 and Furo 2022.12.07 -->
+        <title>API Reference - epub-utils 0.1.0a1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">epub-utils 0.1.0a1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">epub-utils 0.1.0a1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">User Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli-tutorial.html">Use as a command-line tool</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api-tutorial.html">Use as a Python library</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples and Use Cases</a></li>
+<li class="toctree-l1"><a class="reference internal" href="formats.html">Output Formats Reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="cli-reference.html">CLI Reference</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="epub-standards.html">EPUB Standards</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Development</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">#</a></h1>
+<p>This section provides complete API documentation for all classes and methods in epub-utils.</p>
+<section id="document-class">
+<h2>Document Class<a class="headerlink" href="#document-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Document">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Document</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Document" title="Permalink to this definition">#</a></dt>
+<dd><p>Main class for working with EPUB files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Path to the EPUB file</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;book.epub&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Document.container">
+<span class="sig-name descname"><span class="pre">container</span></span><a class="headerlink" href="#Document.container" title="Permalink to this definition">#</a></dt>
+<dd><p>Access to the container information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Container" title="Container">Container</a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Container object with container.xml information</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">container</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">container</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Package path: </span><span class="si">{</span><span class="n">container</span><span class="o">.</span><span class="n">rootfile_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Document.package">
+<span class="sig-name descname"><span class="pre">package</span></span><a class="headerlink" href="#Document.package" title="Permalink to this definition">#</a></dt>
+<dd><p>Access to the package (OPF) information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Package" title="Package">Package</a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Package object with OPF file information</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">package</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Document.toc">
+<span class="sig-name descname"><span class="pre">toc</span></span><a class="headerlink" href="#Document.toc" title="Permalink to this definition">#</a></dt>
+<dd><p>Access to the table of contents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#TableOfContents" title="TableOfContents">TableOfContents</a></p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Table of contents object</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">toc</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">toc</span>
+<span class="n">toc_xml</span> <span class="o">=</span> <span class="n">toc</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Document.ncx">
+<span class="sig-name descname"><span class="pre">ncx</span></span><a class="headerlink" href="#Document.ncx" title="Permalink to this definition">#</a></dt>
+<dd><p>Access to the NCX (Navigation Control for XML) table of contents.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#TableOfContents" title="TableOfContents">TableOfContents</a> or None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>NCX table of contents object for EPUB 2, or for EPUB 3 if NCX is present, None otherwise</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ncx</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">ncx</span>
+<span class="k">if</span> <span class="n">ncx</span><span class="p">:</span>
+    <span class="n">ncx_xml</span> <span class="o">=</span> <span class="n">ncx</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: For EPUB 2, this returns the same as <code class="docutils literal notranslate"><span class="pre">toc</span></code>. For EPUB 3, this specifically
+accesses the NCX file if present, which provides backward compatibility.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Document.nav">
+<span class="sig-name descname"><span class="pre">nav</span></span><a class="headerlink" href="#Document.nav" title="Permalink to this definition">#</a></dt>
+<dd><p>Access to the Navigation Document (EPUB 3 only).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#TableOfContents" title="TableOfContents">TableOfContents</a> or None</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Navigation Document table of contents object for EPUB 3, None for EPUB 2 or if not present</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">nav</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">nav</span>
+<span class="k">if</span> <span class="n">nav</span><span class="p">:</span>
+    <span class="n">nav_xml</span> <span class="o">=</span> <span class="n">nav</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><strong>Note</strong>: This property specifically accesses EPUB 3 Navigation Documents.
+Returns None for EPUB 2 documents.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Document.get_files_info">
+<span class="sig-name descname"><span class="pre">get_files_info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Document.get_files_info" title="Permalink to this definition">#</a></dt>
+<dd><p>Get detailed information about all files in the EPUB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries containing file information</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[Dict[str, Union[str, int]]]</p>
+</dd>
+</dl>
+<p>Each dictionary contains:
+- <code class="docutils literal notranslate"><span class="pre">path</span></code> (str): File path within the EPUB
+- <code class="docutils literal notranslate"><span class="pre">size</span></code> (int): Uncompressed size in bytes
+- <code class="docutils literal notranslate"><span class="pre">compressed_size</span></code> (int): Compressed size in bytes
+- <code class="docutils literal notranslate"><span class="pre">modified</span></code> (str): Last modified date in ISO format</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">files</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_files_info</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">file_info</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">file_info</span><span class="p">[</span><span class="s1">&#39;path&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">file_info</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2"> bytes&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Document.list_files">
+<span class="sig-name descname"><span class="pre">list_files</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Document.list_files" title="Permalink to this definition">#</a></dt>
+<dd><p>Get basic information about all files in the EPUB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of dictionaries with basic file information</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>List[Dict[str, str]]</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">files</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">list_files</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EPUB contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="container-class">
+<h2>Container Class<a class="headerlink" href="#container-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Container</span></span><a class="headerlink" href="#Container" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the META-INF/container.xml file information.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Container.rootfile_path">
+<span class="sig-name descname"><span class="pre">rootfile_path</span></span><a class="headerlink" href="#Container.rootfile_path" title="Permalink to this definition">#</a></dt>
+<dd><p>Path to the main package file within the EPUB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Container.rootfile_media_type">
+<span class="sig-name descname"><span class="pre">rootfile_media_type</span></span><a class="headerlink" href="#Container.rootfile_media_type" title="Permalink to this definition">#</a></dt>
+<dd><p>Media type of the main package file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Container.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Container.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted XML representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted XML string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Container.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Container.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw XML content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw XML string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="package-class">
+<h2>Package Class<a class="headerlink" href="#package-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Package">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Package</span></span><a class="headerlink" href="#Package" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the main OPF package file.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Package.metadata">
+<span class="sig-name descname"><span class="pre">metadata</span></span><a class="headerlink" href="#Package.metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Package metadata information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Metadata" title="Metadata">Metadata</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Package.manifest">
+<span class="sig-name descname"><span class="pre">manifest</span></span><a class="headerlink" href="#Package.manifest" title="Permalink to this definition">#</a></dt>
+<dd><p>Package manifest information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Manifest" title="Manifest">Manifest</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Package.spine">
+<span class="sig-name descname"><span class="pre">spine</span></span><a class="headerlink" href="#Package.spine" title="Permalink to this definition">#</a></dt>
+<dd><p>Package spine information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#Spine" title="Spine">Spine</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Package.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Package.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted XML representation of the complete package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted XML string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Package.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Package.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw XML content of the complete package.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw XML string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="metadata-class">
+<h2>Metadata Class<a class="headerlink" href="#metadata-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Metadata">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Metadata</span></span><a class="headerlink" href="#Metadata" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents Dublin Core and EPUB-specific metadata.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.title">
+<span class="sig-name descname"><span class="pre">title</span></span><a class="headerlink" href="#Metadata.title" title="Permalink to this definition">#</a></dt>
+<dd><p>Book title from dc:title element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.creator">
+<span class="sig-name descname"><span class="pre">creator</span></span><a class="headerlink" href="#Metadata.creator" title="Permalink to this definition">#</a></dt>
+<dd><p>Book author/creator from dc:creator element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#Metadata.language" title="Permalink to this definition">#</a></dt>
+<dd><p>Language code from dc:language element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.identifier">
+<span class="sig-name descname"><span class="pre">identifier</span></span><a class="headerlink" href="#Metadata.identifier" title="Permalink to this definition">#</a></dt>
+<dd><p>Unique identifier from dc:identifier element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.publisher">
+<span class="sig-name descname"><span class="pre">publisher</span></span><a class="headerlink" href="#Metadata.publisher" title="Permalink to this definition">#</a></dt>
+<dd><p>Publisher from dc:publisher element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#Metadata.date" title="Permalink to this definition">#</a></dt>
+<dd><p>Publication date from dc:date element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.subject">
+<span class="sig-name descname"><span class="pre">subject</span></span><a class="headerlink" href="#Metadata.subject" title="Permalink to this definition">#</a></dt>
+<dd><p>Subject/keywords from dc:subject element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.description">
+<span class="sig-name descname"><span class="pre">description</span></span><a class="headerlink" href="#Metadata.description" title="Permalink to this definition">#</a></dt>
+<dd><p>Description from dc:description element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.contributor">
+<span class="sig-name descname"><span class="pre">contributor</span></span><a class="headerlink" href="#Metadata.contributor" title="Permalink to this definition">#</a></dt>
+<dd><p>Contributor from dc:contributor element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#Metadata.type" title="Permalink to this definition">#</a></dt>
+<dd><p>Resource type from dc:type element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.format">
+<span class="sig-name descname"><span class="pre">format</span></span><a class="headerlink" href="#Metadata.format" title="Permalink to this definition">#</a></dt>
+<dd><p>Format from dc:format element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.source">
+<span class="sig-name descname"><span class="pre">source</span></span><a class="headerlink" href="#Metadata.source" title="Permalink to this definition">#</a></dt>
+<dd><p>Source from dc:source element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.relation">
+<span class="sig-name descname"><span class="pre">relation</span></span><a class="headerlink" href="#Metadata.relation" title="Permalink to this definition">#</a></dt>
+<dd><p>Relation from dc:relation element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.coverage">
+<span class="sig-name descname"><span class="pre">coverage</span></span><a class="headerlink" href="#Metadata.coverage" title="Permalink to this definition">#</a></dt>
+<dd><p>Coverage from dc:coverage element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Metadata.rights">
+<span class="sig-name descname"><span class="pre">rights</span></span><a class="headerlink" href="#Metadata.rights" title="Permalink to this definition">#</a></dt>
+<dd><p>Rights information from dc:rights element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Metadata.__getattr__">
+<span class="sig-name descname"><span class="pre">__getattr__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Metadata.__getattr__" title="Permalink to this definition">#</a></dt>
+<dd><p>Dynamic attribute access for any metadata field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – Metadata field name</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Metadata value or empty string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Access any metadata field</span>
+<span class="n">isbn</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">isbn</span> <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;isbn&#39;</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;Not available&#39;</span>
+<span class="n">series</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;series&#39;</span><span class="p">,</span> <span class="s1">&#39;Not available&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Metadata.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Metadata.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted XML representation of metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted XML string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Metadata.to_kv">
+<span class="sig-name descname"><span class="pre">to_kv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Metadata.to_kv" title="Permalink to this definition">#</a></dt>
+<dd><p>Get metadata as key-value pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key-value formatted string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">kv_data</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">to_kv</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">kv_data</span><span class="p">)</span>
+<span class="c1"># Output:</span>
+<span class="c1"># title: The Great Gatsby</span>
+<span class="c1"># creator: F. Scott Fitzgerald</span>
+<span class="c1"># language: en</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Metadata.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Metadata.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw XML content of metadata.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw XML string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="manifest-class">
+<h2>Manifest Class<a class="headerlink" href="#manifest-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Manifest">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Manifest</span></span><a class="headerlink" href="#Manifest" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the package manifest section.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Manifest.items">
+<span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#Manifest.items" title="Permalink to this definition">#</a></dt>
+<dd><p>Dictionary of manifest items.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Dict[str, str]]</p>
+</dd>
+</dl>
+<p>Each item contains:
+- <code class="docutils literal notranslate"><span class="pre">href</span></code>: File path
+- <code class="docutils literal notranslate"><span class="pre">media-type</span></code>: MIME type
+- Other attributes as needed</p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">item_id</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">manifest</span><span class="o">.</span><span class="n">items</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;ID: </span><span class="si">{</span><span class="n">item_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  File: </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;href&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Type: </span><span class="si">{</span><span class="n">item</span><span class="p">[</span><span class="s1">&#39;media-type&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Manifest.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Manifest.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted XML representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted XML string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Manifest.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Manifest.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw XML content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw XML string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="spine-class">
+<h2>Spine Class<a class="headerlink" href="#spine-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Spine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Spine</span></span><a class="headerlink" href="#Spine" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the package spine section.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="Spine.items">
+<span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#Spine.items" title="Permalink to this definition">#</a></dt>
+<dd><p>List of spine items in reading order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict[str, str]]</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">spine</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading order item: </span><span class="si">{</span><span class="n">item</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Spine.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Spine.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted XML representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted XML string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Spine.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Spine.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw XML content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw XML string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="tableofcontents-class">
+<h2>TableOfContents Class<a class="headerlink" href="#tableofcontents-class" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="TableOfContents">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TableOfContents</span></span><a class="headerlink" href="#TableOfContents" title="Permalink to this definition">#</a></dt>
+<dd><p>Represents the table of contents (NCX or Navigation Document).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="TableOfContents.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#TableOfContents.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted XML representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted XML string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="TableOfContents.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#TableOfContents.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw XML content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw XML string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="content-classes">
+<h2>Content Classes<a class="headerlink" href="#content-classes" title="Permalink to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="Content">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Content</span></span><a class="headerlink" href="#Content" title="Permalink to this definition">#</a></dt>
+<dd><p>Base class for EPUB content documents.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="Content.to_xml">
+<span class="sig-name descname"><span class="pre">to_xml</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">highlight_syntax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#Content.to_xml" title="Permalink to this definition">#</a></dt>
+<dd><p>Get formatted content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>highlight_syntax</strong> (<em>bool</em>) – Whether to apply syntax highlighting</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Formatted content string</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="Content.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#Content.to_str" title="Permalink to this definition">#</a></dt>
+<dd><p>Get raw content.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Raw content string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="XHTMLContent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">XHTMLContent</span></span><a class="headerlink" href="#XHTMLContent" title="Permalink to this definition">#</a></dt>
+<dd><p>Specialized class for XHTML content documents.</p>
+<p>Inherits from Content with additional XHTML-specific methods.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="XHTMLContent.to_plain">
+<span class="sig-name descname"><span class="pre">to_plain</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#XHTMLContent.to_plain" title="Permalink to this definition">#</a></dt>
+<dd><p>Get plain text content with HTML tags stripped.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Plain text string</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils.content</span><span class="w"> </span><span class="kn">import</span> <span class="n">XHTMLContent</span>
+
+<span class="c1"># This would typically be accessed through Document</span>
+<span class="c1"># content = XHTMLContent(raw_html)</span>
+<span class="c1"># plain_text = content.to_plain()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exception-classes">
+<h2>Exception Classes<a class="headerlink" href="#exception-classes" title="Permalink to this heading">#</a></h2>
+<dl class="py exception">
+<dt class="sig sig-object py" id="ParseError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ParseError</span></span><a class="headerlink" href="#ParseError" title="Permalink to this definition">#</a></dt>
+<dd><p>Raised when there’s an error parsing EPUB content.</p>
+<p>Base class: <code class="docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p><strong>Example</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParseError</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;corrupted.epub&quot;</span><span class="p">)</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span>
+<span class="k">except</span> <span class="n">ParseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to parse EPUB: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;EPUB file not found&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="usage-examples">
+<h2>Usage Examples<a class="headerlink" href="#usage-examples" title="Permalink to this heading">#</a></h2>
+<section id="basic-usage">
+<h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="c1"># Load document</span>
+<span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;book.epub&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access metadata</span>
+<span class="n">metadata</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Title: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Author: </span><span class="si">{</span><span class="n">metadata</span><span class="o">.</span><span class="n">creator</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Check file structure</span>
+<span class="n">files</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_files_info</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Contains </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">files</span><span class="p">)</span><span class="si">}</span><span class="s2"> files&quot;</span><span class="p">)</span>
+
+<span class="c1"># Get formatted output</span>
+<span class="n">toc_xml</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">toc</span><span class="o">.</span><span class="n">to_xml</span><span class="p">()</span>
+<span class="n">metadata_kv</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">to_kv</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="error-handling">
+<h3>Error Handling<a class="headerlink" href="#error-handling" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils.exceptions</span><span class="w"> </span><span class="kn">import</span> <span class="n">ParseError</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">safe_load_epub</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;success&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;document&#39;</span><span class="p">:</span> <span class="n">doc</span><span class="p">,</span>
+            <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;Unknown&#39;</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="k">except</span> <span class="n">ParseError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;parse_error&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;file_not_found&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="s1">&#39;EPUB file not found&#39;</span>
+        <span class="p">}</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;status&#39;</span><span class="p">:</span> <span class="s1">&#39;unknown_error&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="batch-processing">
+<h3>Batch Processing<a class="headerlink" href="#batch-processing" title="Permalink to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">process_epub_directory</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+    <span class="n">epub_files</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*.epub&quot;</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">epub_path</span> <span class="ow">in</span> <span class="n">epub_files</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">doc</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">epub_path</span><span class="p">))</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span>
+
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">epub_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;title&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;author&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;creator&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;language&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">metadata</span><span class="p">,</span> <span class="s1">&#39;language&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">),</span>
+                <span class="s1">&#39;file_size&#39;</span><span class="p">:</span> <span class="n">epub_path</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_size</span><span class="p">,</span>
+                <span class="s1">&#39;epub_files&#39;</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">get_files_info</span><span class="p">())</span>
+            <span class="p">}</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;file&#39;</span><span class="p">:</span> <span class="n">epub_path</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="p">})</span>
+
+    <span class="k">return</span> <span class="n">results</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="type-hints">
+<h2>Type Hints<a class="headerlink" href="#type-hints" title="Permalink to this heading">#</a></h2>
+<p>For better IDE support and type checking, here are the main type hints:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">epub_utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">Document</span>
+
+<span class="c1"># Function signatures for reference</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_files_info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]:</span> <span class="o">...</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">list_files</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span> <span class="o">...</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_xml</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">highlight_syntax</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">to_kv</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span> <span class="o">...</span>
+
+<span class="c1"># Type-safe usage example</span>
+<span class="n">doc</span><span class="p">:</span> <span class="n">Document</span> <span class="o">=</span> <span class="n">Document</span><span class="p">(</span><span class="s2">&quot;book.epub&quot;</span><span class="p">)</span>
+<span class="n">files_info</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">get_files_info</span><span class="p">()</span>
+<span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">title</span>
+<span class="n">kv_data</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">package</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">to_kv</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="module-structure">
+<h2>Module Structure<a class="headerlink" href="#module-structure" title="Permalink to this heading">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">epub-utils</span></code> package is organized as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>epub_utils/
+├── __init__.py          # Main exports (Document, Container)
+├── doc.py               # Document class
+├── container.py         # Container class
+├── package/
+│   ├── __init__.py      # Package class
+│   ├── metadata.py      # Metadata class
+│   ├── manifest.py      # Manifest class
+│   └── spine.py         # Spine class
+├── content/
+│   ├── __init__.py      # Content classes
+│   ├── base.py          # Base Content class
+│   └── xhtml.py         # XHTMLContent class
+├── toc.py               # TableOfContents class
+├── exceptions.py        # Exception classes
+├── highlighters.py      # Syntax highlighting utilities
+└── cli.py               # Command-line interface
+</pre></div>
+</div>
+<p>For detailed implementation examples, see <a class="reference internal" href="api-tutorial.html"><span class="doc">Use as a Python library</span></a> and <a class="reference internal" href="examples.html"><span class="doc">Examples and Use Cases</span></a>.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="epub-standards.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">EPUB Standards</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="cli-reference.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">CLI Reference</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Ernesto González
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">API Reference</a><ul>
+<li><a class="reference internal" href="#document-class">Document Class</a><ul>
+<li><a class="reference internal" href="#Document"><code class="docutils literal notranslate"><span class="pre">Document</span></code></a><ul>
+<li><a class="reference internal" href="#Document.container"><code class="docutils literal notranslate"><span class="pre">Document.container</span></code></a></li>
+<li><a class="reference internal" href="#Document.package"><code class="docutils literal notranslate"><span class="pre">Document.package</span></code></a></li>
+<li><a class="reference internal" href="#Document.toc"><code class="docutils literal notranslate"><span class="pre">Document.toc</span></code></a></li>
+<li><a class="reference internal" href="#Document.ncx"><code class="docutils literal notranslate"><span class="pre">Document.ncx</span></code></a></li>
+<li><a class="reference internal" href="#Document.nav"><code class="docutils literal notranslate"><span class="pre">Document.nav</span></code></a></li>
+<li><a class="reference internal" href="#Document.get_files_info"><code class="docutils literal notranslate"><span class="pre">Document.get_files_info()</span></code></a></li>
+<li><a class="reference internal" href="#Document.list_files"><code class="docutils literal notranslate"><span class="pre">Document.list_files()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#container-class">Container Class</a><ul>
+<li><a class="reference internal" href="#Container"><code class="docutils literal notranslate"><span class="pre">Container</span></code></a><ul>
+<li><a class="reference internal" href="#Container.rootfile_path"><code class="docutils literal notranslate"><span class="pre">Container.rootfile_path</span></code></a></li>
+<li><a class="reference internal" href="#Container.rootfile_media_type"><code class="docutils literal notranslate"><span class="pre">Container.rootfile_media_type</span></code></a></li>
+<li><a class="reference internal" href="#Container.to_xml"><code class="docutils literal notranslate"><span class="pre">Container.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#Container.to_str"><code class="docutils literal notranslate"><span class="pre">Container.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#package-class">Package Class</a><ul>
+<li><a class="reference internal" href="#Package"><code class="docutils literal notranslate"><span class="pre">Package</span></code></a><ul>
+<li><a class="reference internal" href="#Package.metadata"><code class="docutils literal notranslate"><span class="pre">Package.metadata</span></code></a></li>
+<li><a class="reference internal" href="#Package.manifest"><code class="docutils literal notranslate"><span class="pre">Package.manifest</span></code></a></li>
+<li><a class="reference internal" href="#Package.spine"><code class="docutils literal notranslate"><span class="pre">Package.spine</span></code></a></li>
+<li><a class="reference internal" href="#Package.to_xml"><code class="docutils literal notranslate"><span class="pre">Package.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#Package.to_str"><code class="docutils literal notranslate"><span class="pre">Package.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#metadata-class">Metadata Class</a><ul>
+<li><a class="reference internal" href="#Metadata"><code class="docutils literal notranslate"><span class="pre">Metadata</span></code></a><ul>
+<li><a class="reference internal" href="#Metadata.title"><code class="docutils literal notranslate"><span class="pre">Metadata.title</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.creator"><code class="docutils literal notranslate"><span class="pre">Metadata.creator</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.language"><code class="docutils literal notranslate"><span class="pre">Metadata.language</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.identifier"><code class="docutils literal notranslate"><span class="pre">Metadata.identifier</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.publisher"><code class="docutils literal notranslate"><span class="pre">Metadata.publisher</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.date"><code class="docutils literal notranslate"><span class="pre">Metadata.date</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.subject"><code class="docutils literal notranslate"><span class="pre">Metadata.subject</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.description"><code class="docutils literal notranslate"><span class="pre">Metadata.description</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.contributor"><code class="docutils literal notranslate"><span class="pre">Metadata.contributor</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.type"><code class="docutils literal notranslate"><span class="pre">Metadata.type</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.format"><code class="docutils literal notranslate"><span class="pre">Metadata.format</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.source"><code class="docutils literal notranslate"><span class="pre">Metadata.source</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.relation"><code class="docutils literal notranslate"><span class="pre">Metadata.relation</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.coverage"><code class="docutils literal notranslate"><span class="pre">Metadata.coverage</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.rights"><code class="docutils literal notranslate"><span class="pre">Metadata.rights</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.__getattr__"><code class="docutils literal notranslate"><span class="pre">Metadata.__getattr__()</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.to_xml"><code class="docutils literal notranslate"><span class="pre">Metadata.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.to_kv"><code class="docutils literal notranslate"><span class="pre">Metadata.to_kv()</span></code></a></li>
+<li><a class="reference internal" href="#Metadata.to_str"><code class="docutils literal notranslate"><span class="pre">Metadata.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#manifest-class">Manifest Class</a><ul>
+<li><a class="reference internal" href="#Manifest"><code class="docutils literal notranslate"><span class="pre">Manifest</span></code></a><ul>
+<li><a class="reference internal" href="#Manifest.items"><code class="docutils literal notranslate"><span class="pre">Manifest.items</span></code></a></li>
+<li><a class="reference internal" href="#Manifest.to_xml"><code class="docutils literal notranslate"><span class="pre">Manifest.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#Manifest.to_str"><code class="docutils literal notranslate"><span class="pre">Manifest.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#spine-class">Spine Class</a><ul>
+<li><a class="reference internal" href="#Spine"><code class="docutils literal notranslate"><span class="pre">Spine</span></code></a><ul>
+<li><a class="reference internal" href="#Spine.items"><code class="docutils literal notranslate"><span class="pre">Spine.items</span></code></a></li>
+<li><a class="reference internal" href="#Spine.to_xml"><code class="docutils literal notranslate"><span class="pre">Spine.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#Spine.to_str"><code class="docutils literal notranslate"><span class="pre">Spine.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#tableofcontents-class">TableOfContents Class</a><ul>
+<li><a class="reference internal" href="#TableOfContents"><code class="docutils literal notranslate"><span class="pre">TableOfContents</span></code></a><ul>
+<li><a class="reference internal" href="#TableOfContents.to_xml"><code class="docutils literal notranslate"><span class="pre">TableOfContents.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#TableOfContents.to_str"><code class="docutils literal notranslate"><span class="pre">TableOfContents.to_str()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#content-classes">Content Classes</a><ul>
+<li><a class="reference internal" href="#Content"><code class="docutils literal notranslate"><span class="pre">Content</span></code></a><ul>
+<li><a class="reference internal" href="#Content.to_xml"><code class="docutils literal notranslate"><span class="pre">Content.to_xml()</span></code></a></li>
+<li><a class="reference internal" href="#Content.to_str"><code class="docutils literal notranslate"><span class="pre">Content.to_str()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#XHTMLContent"><code class="docutils literal notranslate"><span class="pre">XHTMLContent</span></code></a><ul>
+<li><a class="reference internal" href="#XHTMLContent.to_plain"><code class="docutils literal notranslate"><span class="pre">XHTMLContent.to_plain()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#exception-classes">Exception Classes</a><ul>
+<li><a class="reference internal" href="#ParseError"><code class="docutils literal notranslate"><span class="pre">ParseError</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#usage-examples">Usage Examples</a><ul>
+<li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+<li><a class="reference internal" href="#error-handling">Error Handling</a></li>
+<li><a class="reference internal" href="#batch-processing">Batch Processing</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#type-hints">Type Hints</a></li>
+<li><a class="reference internal" href="#module-structure">Module Structure</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/scripts/furo.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    </body>
+</html>
