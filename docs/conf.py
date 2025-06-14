@@ -9,7 +9,7 @@
 project = 'epub-utils'
 copyright = '2025, Ernesto González'
 author = 'Ernesto González'
-release = '0.0.0a3'
+release = '0.1.0a1'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
