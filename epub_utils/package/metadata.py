@@ -3,7 +3,7 @@ try:
 except ImportError:
 	import xml.etree.ElementTree as etree
 
-from epub_utils.exceptions import ParseError
+from epub_utils.exceptions import ParseError, ValidationError
 from epub_utils.printers import XMLPrinter
 
 
@@ -51,7 +51,16 @@ class Metadata:
 			self._validate()
 
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing metadata element: {e}')
+			raise ParseError(
+				f'Invalid XML in metadata element: {str(e)}',
+				element_name='metadata',
+				suggestions=[
+					'Check that the metadata contains valid XML',
+					'Verify all metadata elements are properly formatted',
+					'Ensure required Dublin Core elements are present',
+					'Check for invalid characters in metadata values',
+				],
+			) from e
 
 	def _add_field(self, name: str, value: str) -> None:
 		if name in self.fields:
@@ -64,7 +73,7 @@ class Metadata:
 
 	def _validate(self, raise_exception=False) -> None:
 		"""
-		Validate all required fields and raise ValueError if validation fails.
+		Validate all required fields and raise ValidationError if validation fails.
 		"""
 		errors = {}
 
@@ -76,8 +85,18 @@ class Metadata:
 
 		if errors and raise_exception:
 			error_messages = [f'{field}: {msg}' for field, msg in errors.items()]
-			# TODO: save validation errors for check functionality
-			raise ValueError(f'Invalid metadata element: {", ".join(error_messages)}')
+			validation_errors = [f"Missing or invalid '{field}' element" for field in errors.keys()]
+
+			raise ValidationError(
+				'EPUB metadata validation failed',
+				validation_errors=validation_errors,
+				suggestions=[
+					'Ensure all required Dublin Core metadata elements are present',
+					'Check that metadata values are not empty',
+					'Verify the metadata follows EPUB specification requirements',
+					'Use proper Dublin Core namespace for metadata elements',
+				],
+			)
 
 	def _validate_field(self, field_name: str) -> None:
 		"""

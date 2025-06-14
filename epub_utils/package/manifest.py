@@ -56,7 +56,16 @@ class Manifest:
 					self.items.append(item_data)
 
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing manifest element: {e}')
+			raise ParseError(
+				f'Invalid XML in manifest element: {str(e)}',
+				element_name='manifest',
+				suggestions=[
+					'Check that the manifest contains valid XML',
+					'Verify all manifest items are properly formatted',
+					'Ensure required attributes (id, href, media-type) are present',
+					'Check for invalid characters in the XML',
+				],
+			) from e
 
 	def find_by_property(self, property_name: str) -> dict:
 		"""Find the first item with the given property."""
