@@ -7,7 +7,7 @@ from epub_utils.exceptions import ParseError
 from epub_utils.navigation.base import Navigation, NavigationItem
 from epub_utils.printers import XMLPrinter
 
-from .dom import NavAnchor, NavDocument, NavListItem, NavSection
+from .dom import NavDocument, NavListItem
 
 
 class EPUBNavDocNavigation(Navigation):
@@ -15,7 +15,9 @@ class EPUBNavDocNavigation(Navigation):
 
 	MEDIA_TYPES = ['application/xhtml+xml']
 
-	def __init__(self, xml_content: str, media_type: str, href: str) -> None:
+	def __init__(
+		self, xml_content: str, media_type: str = 'application/xhtml+xml', href: str = None
+	) -> None:
 		self.xml_content = xml_content
 
 		self._tree = None

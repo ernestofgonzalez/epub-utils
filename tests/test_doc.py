@@ -2,8 +2,8 @@ import unittest
 
 from epub_utils.container import Container
 from epub_utils.doc import Document
+from epub_utils.navigation import EPUBNavDocNavigation, Navigation
 from epub_utils.package import Manifest, Package
-from epub_utils.toc import TableOfContents
 
 
 def test_document_container(doc_path):
@@ -47,7 +47,7 @@ def test_document_toc(doc_path):
 	Test that the Document class correctly parses the table of contents file.
 	"""
 	doc = Document(doc_path)
-	assert isinstance(doc.toc, TableOfContents)
+	assert isinstance(doc.toc, Navigation)
 
 
 def test_document_find_content_by_id(doc_path):
@@ -95,4 +95,4 @@ def test_document_nav_property(doc_path):
 	nav = doc.nav
 
 	assert nav is not None
-	assert isinstance(nav, TableOfContents)
+	assert isinstance(nav, EPUBNavDocNavigation)

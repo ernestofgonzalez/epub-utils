@@ -178,10 +178,24 @@ def toc(ctx, format, pretty_print, ncx, nav):
 
 	if ncx:
 		part = 'ncx'
+		if doc.ncx is None:
+			click.secho(
+				'Error: This document does not include a Navigation Control eXtended (NCX).',
+				fg='red',
+				err=True,
+			)
+			ctx.exit(1)
 	elif nav:
 		part = 'nav'
+		if doc.nav is None:
+			click.secho(
+				'Error: This document does not include an EPUB Navigation Document.',
+				fg='red',
+				err=True,
+			)
+			ctx.exit(1)
 	else:
-		part = 'nav'
+		part = 'toc'
 
 	output_document_part(doc, part, format, pretty_print)
 
