@@ -10,9 +10,9 @@ Changelog
 --------------------
 
 * Added `toc` retrieval as dictionary (:issue:`4`)
-* Added Comprehensive navigation reading support (`#38 <https://github.com/ernestofgonzalez/epub-utils/pull/38>`, `#39 <https://github.com/ernestofgonzalez/epub-utils/pull/39>`, `#42 <https://github.com/ernestofgonzalez/epub-utils/pull/42>`)
-* Added MacOS test runner (`#41 <https://github.com/ernestofgonzalez/epub-utils/pull/41>`)
-* Added support for Python 3.8 and Python 3.9 (`#40 <https://github.com/ernestofgonzalez/epub-utils/pull/40>`)
+* Added Comprehensive navigation reading support (`#38 <https://github.com/ernestofgonzalez/epub-utils/pull/38>`__, `#39 <https://github.com/ernestofgonzalez/epub-utils/pull/39>`__, `#42 <https://github.com/ernestofgonzalez/epub-utils/pull/42>`__)
+* Added MacOS test runner (`#41 <https://github.com/ernestofgonzalez/epub-utils/pull/41>`__)
+* Added support for Python 3.8 and Python 3.9 (`#40 <https://github.com/ernestofgonzalez/epub-utils/pull/40>`__)
 
 .. _v_0_0_0a5:
 
