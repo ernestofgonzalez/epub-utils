@@ -64,7 +64,7 @@ def test_nav_doc_navigation_interface():
 	assert found_items[0].id == 'ch1'
 
 
-def test_nav_doc_navigation_hierarchy():
+def test_nav_doc_navigation_toc_items_as_dicts():
 	"""Test hierarchical navigation structure."""
 	nav_xml_hierarchical = """<?xml version="1.0" encoding="UTF-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="en">
@@ -93,15 +93,16 @@ def test_nav_doc_navigation_hierarchy():
 
 	nav = EPUBNavDocNavigation(nav_xml_hierarchical, 'application/xhtml+xml', 'nav.xhtml')
 
-	toc_items = nav.get_toc_items()
+	toc_items = nav.get_toc_items_as_dicts()
 
-	expected_structure = [
+	assert toc_items == [
 		{
 			'id': 'ch1',
 			'label': 'Chapter 1',
 			'target': 'chapter1.xhtml',
 			'order': 1,
 			'level': 0,
+			'type': None,
 			'children': [
 				{
 					'id': 'ch1-1',
@@ -109,6 +110,7 @@ def test_nav_doc_navigation_hierarchy():
 					'target': 'chapter1.xhtml#section1',
 					'order': 1,
 					'level': 1,
+					'type': None,
 					'children': [],
 				}
 			],
@@ -119,27 +121,10 @@ def test_nav_doc_navigation_hierarchy():
 			'target': 'chapter2.xhtml',
 			'order': 2,
 			'level': 0,
+			'type': None,
 			'children': [],
 		},
 	]
-
-	def item_to_dict(item):
-		"""Convert NavigationItem to dict for comparison."""
-		return {
-			'id': item.id,
-			'label': item.label,
-			'target': item.target,
-			'order': item.order,
-			'level': item.level,
-			'children': [item_to_dict(child) for child in item.children],
-		}
-
-	actual_structure = [item_to_dict(item) for item in toc_items]
-	assert actual_structure == expected_structure
-
-	hierarchy = nav.get_toc_hierarchy()
-	assert 'items' in hierarchy
-	assert len(hierarchy['items']) == 2
 
 
 def test_nav_doc_navigation_page_list():
