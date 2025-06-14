@@ -106,15 +106,16 @@ def test_ncx_navigation_hierarchy():
 
 	ncx = NCXNavigation(ncx_xml_hierarchical, 'application/x-dtbncx+xml', 'toc.ncx')
 
-	toc_items = ncx.get_toc_items()
+	toc_items = ncx.get_toc_items_as_dicts()
 
-	expected_structure = [
+	assert toc_items == [
 		{
 			'id': 'ch1',
 			'label': 'Chapter 1',
 			'target': 'chapter1.xhtml',
 			'order': 1,
 			'level': 0,
+			'type': None,
 			'children': [
 				{
 					'id': 'ch1-1',
@@ -122,6 +123,7 @@ def test_ncx_navigation_hierarchy():
 					'target': 'chapter1.xhtml#section1',
 					'order': 2,
 					'level': 1,
+					'type': None,
 					'children': [],
 				}
 			],
@@ -132,27 +134,10 @@ def test_ncx_navigation_hierarchy():
 			'target': 'chapter2.xhtml',
 			'order': 3,
 			'level': 0,
+			'type': None,
 			'children': [],
 		},
 	]
-
-	def item_to_dict(item):
-		"""Convert NavigationItem to dict for comparison."""
-		return {
-			'id': item.id,
-			'label': item.label,
-			'target': item.target,
-			'order': item.order,
-			'level': item.level,
-			'children': [item_to_dict(child) for child in item.children],
-		}
-
-	actual_structure = [item_to_dict(item) for item in toc_items]
-	assert actual_structure == expected_structure
-
-	hierarchy = ncx.get_toc_hierarchy()
-	assert 'items' in hierarchy
-	assert len(hierarchy['items']) == 2
 
 
 def test_ncx_navigation_editing():

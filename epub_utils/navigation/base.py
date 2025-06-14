@@ -15,6 +15,24 @@ class NavigationItem:
 	item_type: Optional[str] = None  # semantic type
 	children: List['NavigationItem'] = field(default_factory=list)
 
+	def to_dict(self) -> Dict[str, Any]:
+		"""Convert NavigationItem to dictionary format with all children recursively converted.
+
+		Returns:
+			Dictionary representation with children as nested dictionaries.
+		"""
+		result = {
+			'id': self.id,
+			'label': self.label,
+			'target': self.target,
+			'order': self.order,
+			'level': self.level,
+			'type': self.item_type,
+			'children': [child.to_dict() for child in self.children],
+		}
+
+		return result
+
 
 class Navigation(ABC):
 	"""
@@ -86,39 +104,30 @@ class Navigation(ABC):
 		items.extend(self.get_landmarks())
 		return items
 
-	def get_toc_hierarchy(self) -> Dict[str, Any]:
-		"""Get TOC as nested dictionary structure."""
-		return self._build_hierarchy(self.get_toc_items())
+	def get_toc_items_as_dicts(self) -> List[Dict[str, Any]]:
+		"""Get TOC items as list of dictionaries with recursive children conversion.
 
-	def _build_hierarchy(self, items: List[NavigationItem]) -> Dict[str, Any]:
-		"""Helper to build hierarchical structure."""
-		result = {'items': []}
+		Returns:
+			List of dictionaries representing the TOC structure, where each item
+			contains all its children recursively converted to dictionaries.
+		"""
+		return [item.to_dict() for item in self.get_toc_items()]
 
-		def add_item_to_hierarchy(item: NavigationItem, parent_dict: Dict[str, Any]):
-			item_dict = {
-				'id': item.id,
-				'label': item.label,
-				'target': item.target,
-				'order': item.order,
-				'level': item.level,
-				'type': item.item_type,
-				'children': [],
-			}
+	def get_page_list_as_dicts(self) -> List[Dict[str, Any]]:
+		"""Get page list items as list of dictionaries.
 
-			# Add to parent's items/children list
-			if 'items' in parent_dict:
-				parent_dict['items'].append(item_dict)
-			else:
-				parent_dict['children'].append(item_dict)
+		Returns:
+			List of dictionaries representing the page list structure.
+		"""
+		return [item.to_dict() for item in self.get_page_list()]
 
-			# Add children recursively
-			for child in item.children:
-				add_item_to_hierarchy(child, item_dict)
+	def get_landmarks_as_dicts(self) -> List[Dict[str, Any]]:
+		"""Get landmarks as list of dictionaries.
 
-		for item in items:
-			add_item_to_hierarchy(item, result)
-
-		return result
+		Returns:
+			List of dictionaries representing the landmarks structure.
+		"""
+		return [item.to_dict() for item in self.get_landmarks()]
 
 	# === Format-specific Access ===
 	@property
