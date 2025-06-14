@@ -59,7 +59,16 @@ class Spine:
 					)
 
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing spine element: {e}')
+			raise ParseError(
+				f'Invalid XML in spine element: {str(e)}',
+				element_name='spine',
+				suggestions=[
+					'Check that the spine contains valid XML',
+					'Verify all spine items are properly formatted',
+					'Ensure required attributes (idref) are present',
+					'Check that spine defines the reading order correctly',
+				],
+			) from e
 
 	def find_by_idref(self, itemref_idref: str) -> dict:
 		"""Find an itemref by its idref."""

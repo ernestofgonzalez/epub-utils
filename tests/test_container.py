@@ -1,6 +1,7 @@
 import pytest
 
 from epub_utils.container import Container
+from epub_utils.exceptions import InvalidEPUBError
 
 CONTAINER_XML = """<?xml version="1.0"?>
 <container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">
@@ -25,9 +26,7 @@ def test_invalid_container_xml():
 	Test that the Container class raises an error for invalid XML content.
 	"""
 	invalid_xml = '<invalid></invalid>'
-	with pytest.raises(
-		ValueError, match='Invalid container.xml: Missing rootfile element or full-path attribute.'
-	):
+	with pytest.raises(InvalidEPUBError, match='Invalid container.xml: Missing rootfile element'):
 		Container(invalid_xml)
 
 

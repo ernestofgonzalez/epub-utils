@@ -3,7 +3,7 @@ import re
 from lxml import etree
 
 from epub_utils.content.base import Content
-from epub_utils.exceptions import ParseError
+from epub_utils.exceptions import ParseError, UnsupportedFormatError
 from epub_utils.printers import XMLPrinter
 
 
@@ -20,7 +20,14 @@ class XHTMLContent(Content):
 		self._tree = None
 
 		if media_type not in self.MEDIA_TYPES:
-			raise ValueError(f'Invalid media type for XHTML content: {media_type}')
+			raise UnsupportedFormatError(
+				f"Media type '{media_type}' is not supported for XHTML content",
+				suggestions=[
+					f'Use one of the supported media types: {", ".join(self.MEDIA_TYPES)}',
+					'Check that this is an XHTML content file',
+					'Verify the manifest declares the correct media type',
+				],
+			)
 		super().__init__(media_type, href)
 
 		self._parse(xml_content)
@@ -43,7 +50,15 @@ class XHTMLContent(Content):
 		try:
 			self._tree = etree.fromstring(xml_content.encode('utf-8'))
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing Content file: {e}')
+			raise ParseError(
+				f'Invalid XML in XHTML content file: {str(e)}',
+				suggestions=[
+					'Check that the content file contains valid XHTML',
+					'Verify the file is not corrupted',
+					'Ensure all XML tags are properly closed',
+					'Check for invalid characters in the XML',
+				],
+			) from e
 
 	@property
 	def tree(self):

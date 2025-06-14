@@ -3,7 +3,8 @@ from typing import List, Optional
 
 from lxml import etree
 
-from epub_utils.exceptions import ParseError
+from epub_utils.exceptions import FileNotFoundError as EPUBFileNotFoundError
+from epub_utils.exceptions import ParseError, UnsupportedFormatError
 from epub_utils.navigation.base import Navigation, NavigationItem
 from epub_utils.printers import XMLPrinter
 
@@ -25,7 +26,14 @@ class NCXNavigation(Navigation):
 		self.lang = None
 
 		if media_type not in self.MEDIA_TYPES:
-			raise ValueError(f'Invalid media type for NCX navigation: {media_type}')
+			raise UnsupportedFormatError(
+				f"Media type '{media_type}' is not supported for NCX navigation",
+				suggestions=[
+					f'Use one of the supported media types: {", ".join(self.MEDIA_TYPES)}',
+					'Check that this is an NCX navigation file',
+					'Verify the manifest declares the correct media type',
+				],
+			)
 		super().__init__(media_type, href)
 
 		self._parse(xml_content)
@@ -55,7 +63,15 @@ class NCXNavigation(Navigation):
 			self.lang = root.get('{http://www.w3.org/XML/1998/namespace}lang', '')
 
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing Content file: {e}')
+			raise ParseError(
+				f'Invalid XML in NCX navigation file: {str(e)}',
+				suggestions=[
+					'Check that the NCX file contains valid XML',
+					'Verify the file is not corrupted',
+					'Ensure all XML tags are properly closed',
+					'Check for invalid characters in the XML',
+				],
+			) from e
 
 	@property
 	def tree(self):
@@ -117,7 +133,15 @@ class NCXNavigation(Navigation):
 		ncx_doc = NCXDocument(self.tree)
 		nav_map = ncx_doc.nav_map
 		if not nav_map:
-			raise ValueError('No navMap found in NCX document')
+			raise ParseError(
+				'NCX document is missing required navMap element',
+				element_name='navMap',
+				suggestions=[
+					'Ensure the NCX file contains a navMap element',
+					'Check that the NCX structure follows EPUB specifications',
+					'Verify the NCX file was created correctly',
+				],
+			)
 
 		# Find insertion point
 		if after_id:
@@ -129,7 +153,20 @@ class NCXNavigation(Navigation):
 					break
 
 			if insert_index is None:
-				raise ValueError(f"Navigation item with ID '{after_id}' not found")
+				available_ids = [nav_point.id for nav_point in all_nav_points if nav_point.id]
+				suggestions = [
+					'Check that the navigation item ID is correct',
+					'Verify the item exists in the navigation structure',
+				]
+				if available_ids:
+					id_list = ', '.join(available_ids[:5])
+					if len(available_ids) > 5:
+						id_list += f' (and {len(available_ids) - 5} more)'
+					suggestions.append(f'Available navigation IDs: {id_list}')
+
+				raise EPUBFileNotFoundError(
+					f"Navigation item with ID '{after_id}' not found", suggestions=suggestions
+				)
 
 			# For now, append to the end if we can't find the exact position
 			# More complex insertion logic would require tree manipulation

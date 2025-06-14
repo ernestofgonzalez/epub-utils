@@ -7,6 +7,8 @@ from typing import Dict, List, Optional, Union
 
 from epub_utils.container import Container
 from epub_utils.content import XHTMLContent
+from epub_utils.exceptions import FileNotFoundError as EPUBFileNotFoundError
+from epub_utils.exceptions import InvalidEPUBError
 from epub_utils.navigation import EPUBNavDocNavigation, Navigation, NCXNavigation
 from epub_utils.package import Package
 
@@ -30,10 +32,33 @@ class Document:
 
 		Args:
 		    path (str | Path): The path to the EPUB file.
+
+		Raises:
+		    InvalidEPUBError: If the file is not a valid EPUB archive.
 		"""
 		self.path: Path = Path(path)
-		if not self.path.exists() or not zipfile.is_zipfile(self.path):
-			raise ValueError(f'Invalid EPUB file: {self.path}')
+
+		if not self.path.exists():
+			raise InvalidEPUBError(
+				f'EPUB file does not exist: {self.path}',
+				suggestions=[
+					'Check that the file path is correct',
+					'Verify the file has not been moved or deleted',
+				],
+				file_path=str(self.path),
+			)
+
+		if not zipfile.is_zipfile(self.path):
+			raise InvalidEPUBError(
+				f'File is not a valid ZIP archive: {self.path}',
+				suggestions=[
+					'Ensure the file is a valid EPUB (which is a ZIP archive)',
+					'Check that the file is not corrupted',
+					'Verify the file extension is .epub',
+				],
+				file_path=str(self.path),
+			)
+
 		self._container: Container = None
 		self._package: Package = None
 
@@ -52,16 +77,40 @@ class Document:
 		    str: Decoded contents of the file.
 
 		Raises:
-		    ValueError: If the file is missing from the EPUB archive.
+		    EPUBFileNotFoundError: If the file is missing from the EPUB archive.
 		"""
 		with zipfile.ZipFile(self.path, 'r') as epub_zip:
 			norm_namelist = {os.path.normpath(name): name for name in epub_zip.namelist()}
 			norm_path = os.path.normpath(file_path)
 
 			if norm_path not in norm_namelist:
-				raise ValueError(f'Missing {norm_path} in EPUB file.')
+				available_files = sorted(norm_namelist.keys())[:10]  # Show first 10 files
+				suggestions = [
+					'Check that the file path is correct',
+					'Verify the EPUB file structure is complete',
+				]
+				if available_files:
+					file_list = ', '.join(available_files)
+					if len(norm_namelist) > 10:
+						file_list += f' (and {len(norm_namelist) - 10} more)'
+					suggestions.append(f'Available files include: {file_list}')
 
-			return epub_zip.read(norm_namelist[norm_path]).decode('utf-8')
+				raise EPUBFileNotFoundError(
+					file_path, epub_path=str(self.path), suggestions=suggestions
+				)
+
+			try:
+				return epub_zip.read(norm_namelist[norm_path]).decode('utf-8')
+			except UnicodeDecodeError as e:
+				raise InvalidEPUBError(
+					f"Cannot decode file '{file_path}' as UTF-8",
+					suggestions=[
+						'Check that the file contains valid UTF-8 text',
+						'Verify the EPUB file is not corrupted',
+						'Ensure the file is a text-based format (XML, HTML, etc.)',
+					],
+					file_path=str(self.path),
+				) from e
 
 	@property
 	def container(self) -> Container:
@@ -127,13 +176,55 @@ class Document:
 		return self._nav
 
 	def find_content_by_id(self, item_id: str) -> str:
+		"""
+		Find and return content by its manifest item ID.
+
+		Args:
+		    item_id: The ID of the item in the manifest.
+
+		Returns:
+		    XHTMLContent: The content object for the specified item.
+
+		Raises:
+		    EPUBFileNotFoundError: If the item ID is not found in spine or manifest.
+		"""
 		spine_item = self.package.spine.find_by_idref(item_id)
 		if not spine_item:
-			raise ValueError(f"Item id '{item_id}' not found in spine")
+			spine_ids = [
+				item.get('idref') for item in self.package.spine.itemrefs if item.get('idref')
+			]
+			suggestions = [
+				'Check that the item ID is correct',
+				'Verify the item is included in the spine',
+			]
+			if spine_ids:
+				available_ids = ', '.join(spine_ids[:5])
+				if len(spine_ids) > 5:
+					available_ids += f' (and {len(spine_ids) - 5} more)'
+				suggestions.append(f'Available spine IDs: {available_ids}')
+
+			raise EPUBFileNotFoundError(
+				f"spine item '{item_id}'", epub_path=str(self.path), suggestions=suggestions
+			)
 
 		manifest_item = self.package.manifest.find_by_id(item_id)
 		if not manifest_item:
-			raise ValueError(f"Item id '{item_id}' not found in manifest")
+			manifest_ids = [
+				item.get('id') for item in self.package.manifest.items if item.get('id')
+			]
+			suggestions = [
+				'Check that the item ID is correct',
+				'Verify the item is declared in the manifest',
+			]
+			if manifest_ids:
+				available_ids = ', '.join(manifest_ids[:5])
+				if len(manifest_ids) > 5:
+					available_ids += f' (and {len(manifest_ids) - 5} more)'
+				suggestions.append(f'Available manifest IDs: {available_ids}')
+
+			raise EPUBFileNotFoundError(
+				f"manifest item '{item_id}'", epub_path=str(self.path), suggestions=suggestions
+			)
 
 		content_path = os.path.join(self.package_href, manifest_item['href'])
 		xml_content = self._read_file_from_epub(content_path)
@@ -143,9 +234,36 @@ class Document:
 		return content
 
 	def find_pub_resource_by_id(self, item_id: str) -> str:
+		"""
+		Find and return a publication resource by its manifest item ID.
+
+		Args:
+		    item_id: The ID of the item in the manifest.
+
+		Returns:
+		    str: The raw content of the resource.
+
+		Raises:
+		    EPUBFileNotFoundError: If the item ID is not found in manifest.
+		"""
 		manifest_item = self.package.manifest.find_by_id(item_id)
 		if not manifest_item:
-			raise ValueError(f"Item id '{item_id}' not found in manifest")
+			manifest_ids = [
+				item.get('id') for item in self.package.manifest.items if item.get('id')
+			]
+			suggestions = [
+				'Check that the item ID is correct',
+				'Verify the item is declared in the manifest',
+			]
+			if manifest_ids:
+				available_ids = ', '.join(manifest_ids[:5])
+				if len(manifest_ids) > 5:
+					available_ids += f' (and {len(manifest_ids) - 5} more)'
+				suggestions.append(f'Available manifest IDs: {available_ids}')
+
+			raise EPUBFileNotFoundError(
+				f"manifest item '{item_id}'", epub_path=str(self.path), suggestions=suggestions
+			)
 
 		content_path = os.path.join(self.package_href, manifest_item['href'])
 		xml_content = self._read_file_from_epub(content_path)

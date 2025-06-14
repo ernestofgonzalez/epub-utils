@@ -19,7 +19,7 @@ except ImportError:
 
 import packaging.version
 
-from epub_utils.exceptions import ParseError
+from epub_utils.exceptions import InvalidEPUBError, ParseError, UnsupportedFormatError
 from epub_utils.package.manifest import Manifest
 from epub_utils.package.metadata import Metadata
 from epub_utils.package.spine import Spine
@@ -92,17 +92,37 @@ class Package:
 
 		Raises:
 		    ParseError: If the XML is invalid or cannot be parsed.
+		    InvalidEPUBError: If required OPF elements are missing.
 		"""
 		try:
 			if isinstance(xml_content, str):
 				xml_content = xml_content.encode('utf-8')
 			root = etree.fromstring(xml_content)
+
+			# Check for version attribute
+			if 'version' not in root.attrib:
+				raise InvalidEPUBError(
+					"OPF file missing required 'version' attribute",
+					suggestions=[
+						'Ensure the package element has a version attribute',
+						'Check that this is a valid EPUB OPF file',
+						'Verify the EPUB was created with compliant tools',
+					],
+				)
+
 			self.version = self._parse_version(root.attrib['version'])
 
 			# Parse metadata
 			metadata_el = root.find(self.METADATA_XPATH)
 			if metadata_el is None:
-				raise ValueError('Invalid OPF file: Missing metadata element.')
+				raise InvalidEPUBError(
+					'OPF file missing required metadata element',
+					suggestions=[
+						'Ensure the OPF file contains a metadata section',
+						'Check the EPUB package structure',
+						'Verify all required OPF elements are present',
+					],
+				)
 			metadata_xml = etree.tostring(metadata_el, encoding='unicode')
 			self.metadata = Metadata(metadata_xml)
 
@@ -111,12 +131,30 @@ class Package:
 			if manifest_el is not None:
 				manifest_xml = etree.tostring(manifest_el, encoding='unicode')
 				self.manifest = Manifest(manifest_xml)
+			else:
+				raise InvalidEPUBError(
+					'OPF file missing required manifest element',
+					suggestions=[
+						'Ensure the OPF file contains a manifest section',
+						'Check that all resources are declared in the manifest',
+						'Verify the EPUB package structure is complete',
+					],
+				)
 
 			# Parse spine
 			spine_el = root.find(self.SPINE_XPATH)
 			if spine_el is not None:
 				spine_xml = etree.tostring(spine_el, encoding='unicode')
 				self.spine = Spine(spine_xml)
+			else:
+				raise InvalidEPUBError(
+					'OPF file missing required spine element',
+					suggestions=[
+						'Ensure the OPF file contains a spine section',
+						'Check that reading order is defined in the spine',
+						'Verify the EPUB package structure is complete',
+					],
+				)
 
 			# Parse TOC references
 			if self.version.major == 3:
@@ -125,7 +163,15 @@ class Package:
 				self.toc_href = self._find_toc_href(root)
 
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing OPF file: {e}')
+			raise ParseError(
+				f'Invalid XML in OPF file: {str(e)}',
+				suggestions=[
+					'Check that the OPF file contains valid XML',
+					'Verify the file is not corrupted',
+					'Ensure all XML tags are properly closed',
+					'Check for invalid characters in the XML',
+				],
+			) from e
 
 	def _get_text(self, root: etree.Element, xpath: str) -> str:
 		"""
@@ -199,7 +245,40 @@ class Package:
 		return None
 
 	def _parse_version(self, version):
-		version = packaging.version.Version(version)
-		if version.major not in (1, 2, 3):
-			raise ValueError(f'Unsupported epub version: {version.major}')
-		return version
+		"""
+		Parse and validate the EPUB version.
+
+		Args:
+		    version (str): Version string from the OPF file.
+
+		Returns:
+		    packaging.version.Version: Parsed version object.
+
+		Raises:
+		    UnsupportedFormatError: If the EPUB version is not supported.
+		"""
+		try:
+			version_obj = packaging.version.Version(version)
+		except packaging.version.InvalidVersion as e:
+			raise InvalidEPUBError(
+				f"Invalid version format in OPF file: '{version}'",
+				suggestions=[
+					"Ensure the version follows semantic versioning (e.g., '3.0', '2.0')",
+					'Check that the version attribute is correctly formatted',
+					'Verify the EPUB was created with compliant tools',
+				],
+			) from e
+
+		if version_obj.major not in (1, 2, 3):
+			supported_versions = '1.x, 2.x, 3.x'
+			raise UnsupportedFormatError(
+				f'EPUB version {version_obj.major}.x is not supported',
+				epub_version=str(version_obj),
+				suggestions=[
+					f'Use an EPUB with a supported version ({supported_versions})',
+					'Convert the EPUB to a supported version',
+					'Check the EPUB specification for version requirements',
+				],
+			)
+
+		return version_obj

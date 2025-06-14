@@ -28,7 +28,7 @@ try:
 except ImportError:
 	import xml.etree.ElementTree as etree
 
-from epub_utils.exceptions import ParseError
+from epub_utils.exceptions import InvalidEPUBError, ParseError
 from epub_utils.printers import XMLPrinter
 
 
@@ -78,13 +78,29 @@ class Container:
 		    etree.Element: The rootfile element.
 
 		Raises:
-		    ValueError: If the rootfile element or its 'full-path' attribute is missing.
+		    InvalidEPUBError: If the rootfile element or its 'full-path' attribute is missing.
 		"""
 		rootfile_element = root.find(self.ROOTFILE_XPATH)
-		if rootfile_element is None or 'full-path' not in rootfile_element.attrib:
-			raise ValueError(
-				'Invalid container.xml: Missing rootfile element or full-path attribute.'
+		if rootfile_element is None:
+			raise InvalidEPUBError(
+				'Invalid container.xml: Missing rootfile element',
+				suggestions=[
+					'Ensure the container.xml contains a rootfile element',
+					'Check that the container structure follows EPUB specifications',
+					'Verify the EPUB was created with compliant tools',
+				],
 			)
+
+		if 'full-path' not in rootfile_element.attrib:
+			raise InvalidEPUBError(
+				"Invalid container.xml: Missing 'full-path' attribute in rootfile element",
+				suggestions=[
+					"Ensure the rootfile element has a 'full-path' attribute",
+					'Check that the container.xml follows EPUB specifications',
+					'Verify the EPUB package structure is complete',
+				],
+			)
+
 		return rootfile_element
 
 	def _parse(self, xml_content: str) -> None:
@@ -96,6 +112,7 @@ class Container:
 
 		Raises:
 		    ParseError: If the XML is invalid or cannot be parsed.
+		    InvalidEPUBError: If the container.xml structure is invalid.
 		"""
 		try:
 			if isinstance(xml_content, str):
@@ -103,7 +120,23 @@ class Container:
 			root = etree.fromstring(xml_content)
 			rootfile_element = self._find_rootfile_element(root)
 			self.rootfile_path = rootfile_element.attrib['full-path']
+
 			if not self.rootfile_path.strip():
-				raise ValueError("Invalid container.xml: 'full-path' attribute is empty.")
+				raise InvalidEPUBError(
+					"Invalid container.xml: 'full-path' attribute is empty",
+					suggestions=[
+						"Ensure the rootfile element has a non-empty 'full-path' attribute",
+						'Check that the path points to a valid OPF file',
+						'Verify the EPUB package structure is complete',
+					],
+				)
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing container.xml: {e}')
+			raise ParseError(
+				f'Invalid XML in container.xml: {str(e)}',
+				suggestions=[
+					'Check that the container.xml file contains valid XML',
+					'Verify the file is not corrupted',
+					'Ensure all XML tags are properly closed',
+					'Check for invalid characters in the XML',
+				],
+			) from e

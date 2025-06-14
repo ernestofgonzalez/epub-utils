@@ -1,3 +1,5 @@
+import pytest
+
 from epub_utils.navigation.nav import EPUBNavDocNavigation
 
 NAV_XML = """<?xml version="1.0" encoding="UTF-8"?>
@@ -347,10 +349,12 @@ def test_nav_doc_navigation_item_types():
 
 def test_nav_doc_navigation_invalid_media_type():
 	"""Test that invalid media types raise ValueError."""
-	import pytest
-
-	with pytest.raises(ValueError, match='Invalid media type'):
+	with pytest.raises(ValueError) as excinfo:
 		EPUBNavDocNavigation(NAV_XML, 'application/x-dtbncx+xml', 'nav.xhtml')
+	assert (
+		"Media type 'application/x-dtbncx+xml' is not supported for EPUB Navigation Document"
+		in str(excinfo.value)
+	)
 
 
 def test_nav_doc_navigation_malformed_xml():

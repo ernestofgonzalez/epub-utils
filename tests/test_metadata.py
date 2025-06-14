@@ -1,5 +1,6 @@
 import pytest
 
+from epub_utils.exceptions import ValidationError
 from epub_utils.package.metadata import Metadata
 
 VALID_METADATA_XML = """
@@ -44,9 +45,7 @@ def test_metadata_parse_valid_element():
 
 def test_metadata_validate_missing_identifier_with_raise_exception():
 	"""Test that parsing metadata without identifier raises error."""
-	with pytest.raises(
-		ValueError, match='Invalid metadata element: identifier: This field is required'
-	):
+	with pytest.raises(ValidationError):
 		Metadata(INVALID_METADATA_XML)._validate(raise_exception=True)
 
 

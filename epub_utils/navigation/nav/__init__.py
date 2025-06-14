@@ -3,7 +3,7 @@ from typing import List, Optional
 
 from lxml import etree
 
-from epub_utils.exceptions import ParseError
+from epub_utils.exceptions import ParseError, UnsupportedFormatError
 from epub_utils.navigation.base import Navigation, NavigationItem
 from epub_utils.printers import XMLPrinter
 
@@ -26,7 +26,14 @@ class EPUBNavDocNavigation(Navigation):
 		self.lang = None
 
 		if media_type not in self.MEDIA_TYPES:
-			raise ValueError(f'Invalid media type for navigation document: {media_type}')
+			raise UnsupportedFormatError(
+				f"Media type '{media_type}' is not supported for EPUB Navigation Document",
+				suggestions=[
+					f'Use one of the supported media types: {", ".join(self.MEDIA_TYPES)}',
+					'Check that this is an EPUB 3 Navigation Document',
+					'Verify the manifest declares the correct media type',
+				],
+			)
 		super().__init__(media_type, href)
 
 		self._parse(xml_content)
@@ -55,7 +62,15 @@ class EPUBNavDocNavigation(Navigation):
 			self.lang = root.get('{http://www.w3.org/XML/1998/namespace}lang', '')
 
 		except etree.ParseError as e:
-			raise ParseError(f'Error parsing navigation document: {e}')
+			raise ParseError(
+				f'Invalid XML in EPUB Navigation Document: {str(e)}',
+				suggestions=[
+					'Check that the navigation document contains valid XHTML',
+					'Verify the file is not corrupted',
+					'Ensure all XML tags are properly closed',
+					'Check for invalid characters in the XML',
+				],
+			) from e
 
 	@property
 	def tree(self):

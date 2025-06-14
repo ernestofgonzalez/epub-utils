@@ -1,8 +1,22 @@
 import click
 
 from epub_utils.doc import Document
+from epub_utils.exceptions import (
+	EPUBError,
+	FileNotFoundError,
+)
 
 VERSION = '0.1.0a1'
+
+
+def format_error_message(e: Exception) -> str:
+	"""Format exception messages for CLI output."""
+	if isinstance(e, EPUBError):
+		# Use the custom formatting from our EPUBError class
+		return str(e)
+	else:
+		# For other exceptions, just return the message
+		return str(e)
 
 
 def print_version(ctx, param, value):
@@ -138,8 +152,17 @@ def format_files_table(files_info: list) -> str:
 @click.pass_context
 def container(ctx, format, pretty_print):
 	"""Outputs the container information of the EPUB file."""
-	doc = Document(ctx.obj['path'])
-	output_document_part(doc, 'container', format, pretty_print)
+	try:
+		doc = Document(ctx.obj['path'])
+		output_document_part(doc, 'container', format, pretty_print)
+	except EPUBError as e:
+		click.secho('EPUB Error:', fg='red', bold=True, err=True)
+		click.secho(format_error_message(e), fg='red', err=True)
+		ctx.exit(1)
+	except Exception as e:
+		click.secho('Unexpected Error:', fg='red', bold=True, err=True)
+		click.secho(str(e), fg='red', err=True)
+		ctx.exit(1)
 
 
 @main.command()
@@ -242,26 +265,22 @@ def content(ctx, item_id, format, pretty_print):
 	"""Outputs the content of a document by its manifest item ID."""
 	doc = Document(ctx.obj['path'])
 
-	try:
-		content = doc.find_content_by_id(item_id)
-		if format == 'raw':
+	content = doc.find_content_by_id(item_id)
+	if format == 'raw':
+		click.echo(content.to_str())
+	elif format == 'xml':
+		if hasattr(content, 'to_xml'):
+			click.echo(content.to_xml(pretty_print=pretty_print))
+		else:
 			click.echo(content.to_str())
-		elif format == 'xml':
-			if hasattr(content, 'to_xml'):
-				click.echo(content.to_xml(pretty_print=pretty_print))
-			else:
-				click.echo(content.to_str())
-		elif format == 'plain':
-			click.echo(content.to_plain())
-		elif format == 'kv':
-			click.secho(
-				'Key-value format not supported for content documents. Falling back to raw:\n',
-				fg='yellow',
-			)
-			click.echo(content.to_str())
-	except ValueError as e:
-		click.secho(str(e), fg='red', err=True)
-		ctx.exit(1)
+	elif format == 'plain':
+		click.echo(content.to_plain())
+	elif format == 'kv':
+		click.secho(
+			'Key-value format not supported for content documents. Falling back to raw:\n',
+			fg='yellow',
+		)
+		click.echo(content.to_str())
 
 
 @main.command()
@@ -287,40 +306,42 @@ def files(ctx, file_path, format, pretty_print):
 		# Display content of specific file
 		try:
 			content = doc.get_file_by_path(file_path)
-
-			# Handle XHTMLContent objects
-			if hasattr(content, 'to_str'):
-				if format == 'raw':
-					click.echo(content.to_str())
-				elif format == 'xml':
-					if hasattr(content, 'to_xml'):
-						click.echo(content.to_xml(pretty_print=pretty_print))
-					else:
-						click.echo(content.to_str())
-				elif format == 'plain':
-					if hasattr(content, 'to_plain'):
-						click.echo(content.to_plain())
-					else:
-						click.echo(content.to_str())
-				elif format == 'kv':
-					click.secho(
-						'Key-value format not supported for file content. Falling back to raw:\n',
-						fg='yellow',
-					)
-					click.echo(content.to_str())
-				elif format == 'table':
-					# For file content, table format doesn't make sense, fall back to raw
-					click.secho(
-						'Table format not supported for file content. Falling back to raw:\n',
-						fg='yellow',
-					)
-					click.echo(content.to_str())
-			else:
-				# Handle raw string content (non-XHTML files)
-				click.echo(content)
-		except ValueError as e:
-			click.secho(str(e), fg='red', err=True)
+		except FileNotFoundError as e:
+			click.secho('FileNotFoundError:', fg='red', bold=True, err=True)
+			click.secho(format_error_message(e), fg='red', err=True)
 			ctx.exit(1)
+			return
+
+		# Handle XHTMLContent objects
+		if hasattr(content, 'to_str'):
+			if format == 'raw':
+				click.echo(content.to_str())
+			elif format == 'xml':
+				if hasattr(content, 'to_xml'):
+					click.echo(content.to_xml(pretty_print=pretty_print))
+				else:
+					click.echo(content.to_str())
+			elif format == 'plain':
+				if hasattr(content, 'to_plain'):
+					click.echo(content.to_plain())
+				else:
+					click.echo(content.to_str())
+			elif format == 'kv':
+				click.secho(
+					'Key-value format not supported for file content. Falling back to raw:\n',
+					fg='yellow',
+				)
+				click.echo(content.to_str())
+			elif format == 'table':
+				# For file content, table format doesn't make sense, fall back to raw
+				click.secho(
+					'Table format not supported for file content. Falling back to raw:\n',
+					fg='yellow',
+				)
+				click.echo(content.to_str())
+		else:
+			# Handle raw string content (non-XHTML files)
+			click.echo(content)
 	else:
 		# List all files (existing behavior)
 		files_info = doc.get_files_info()
