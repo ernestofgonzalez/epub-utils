@@ -13,7 +13,9 @@ from .dom import NCXDocument, NCXNavPoint, NCXNavTarget, NCXPageTarget
 class NCXNavigation(Navigation):
 	MEDIA_TYPES = ['application/x-dtbncx+xml']
 
-	def __init__(self, xml_content: str, media_type: str, href: str) -> None:
+	def __init__(
+		self, xml_content: str, media_type: str = 'application/x-dtbncx+xml', href: str = None
+	) -> None:
 		self.xml_content = xml_content
 
 		self._tree = None

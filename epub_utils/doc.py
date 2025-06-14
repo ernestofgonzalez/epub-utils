@@ -3,12 +3,12 @@ import zipfile
 from datetime import datetime
 from functools import cached_property
 from pathlib import Path
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 from epub_utils.container import Container
 from epub_utils.content import XHTMLContent
+from epub_utils.navigation import EPUBNavDocNavigation, Navigation, NCXNavigation
 from epub_utils.package import Package
-from epub_utils.toc import TableOfContents
 
 
 class Document:
@@ -36,7 +36,10 @@ class Document:
 			raise ValueError(f'Invalid EPUB file: {self.path}')
 		self._container: Container = None
 		self._package: Package = None
-		self._toc: TableOfContents = None
+
+		self._toc: Navigation = None
+		self._ncx: NCXNavigation = None
+		self._nav: EPUBNavDocNavigation = None
 
 	def _read_file_from_epub(self, file_path: str) -> str:
 		"""
@@ -79,60 +82,49 @@ class Document:
 		return os.path.dirname(self.container.rootfile_path)
 
 	@property
-	def toc(self):
+	def toc(self) -> Optional[Navigation]:
 		if self._toc is None:
-			package = self.package
-			if package.version.major == 3:
-				if not package.nav_href:
-					return None
-				toc_href = package.nav_href
-			else:
-				if not package.toc_href:
-					return None
-				toc_href = package.toc_href
-
-			toc_path = os.path.join(self.package_href, toc_href)
-			toc_xml_content = self._read_file_from_epub(toc_path)
-			self._toc = TableOfContents(toc_xml_content)
+			if self.nav is not None:
+				# Default to newer EPUB3 Navigation Document when available
+				self._toc = self.nav
+			elif self.ncx is not None:
+				self._toc = self.ncx
 
 		return self._toc
 
 	@property
-	def ncx(self):
-		package = self.package
+	def ncx(self) -> Optional[NCXNavigation]:
+		"""Access the Navigation Control eXtended (EPUB 2)"""
+		if self._ncx is None:
+			package = self.package
 
-		if package.version.major < 3:
-			return self.toc
+			if not package.toc_href:
+				return None
 
-		if not package.toc_href:
-			return None
+			toc_href = package.toc_href
+			toc_path = os.path.join(self.package_href, toc_href)
+			toc_xml_content = self._read_file_from_epub(toc_path)
 
-		toc_href = package.toc_href
-		toc_path = os.path.join(self.package_href, toc_href)
-		toc_xml_content = self._read_file_from_epub(toc_path)
+			self._ncx = NCXNavigation(toc_xml_content)
 
-		_ncx = TableOfContents(toc_xml_content)
-
-		return _ncx
+		return self._ncx
 
 	@property
-	def nav(self):
-		"""Access the Navigation Document (EPUB 3) specifically."""
-		package = self.package
+	def nav(self) -> Optional[EPUBNavDocNavigation]:
+		"""Access the Navigation Document (EPUB 3)."""
+		if self._nav is None:
+			package = self.package
 
-		if package.version.major < 3:
-			return None
+			if not package.nav_href:
+				return None
 
-		if not package.nav_href:
-			return None
+			nav_href = package.nav_href
+			nav_path = os.path.join(self.package_href, nav_href)
+			nav_xml_content = self._read_file_from_epub(nav_path)
 
-		nav_href = package.nav_href
-		nav_path = os.path.join(self.package_href, nav_href)
-		nav_xml_content = self._read_file_from_epub(nav_path)
+			self._nav = EPUBNavDocNavigation(nav_xml_content)
 
-		_nav = TableOfContents(nav_xml_content)
-
-		return _nav
+		return self._nav
 
 	def find_content_by_id(self, item_id: str) -> str:
 		spine_item = self.package.spine.find_by_idref(item_id)
